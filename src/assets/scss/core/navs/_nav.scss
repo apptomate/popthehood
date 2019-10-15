@@ -1,0 +1,48 @@
+//
+// Nav
+//
+
+// Nav wrapper (container)
+
+// Nav wrapper
+.nav-wrapper {
+  padding: 1rem 0;
+  @include border-top-radius($card-border-radius);
+
+  + .card {
+    @include border-top-radius(0);
+    @include border-bottom-radius($card-border-radius);
+  }
+}
+
+// Nav links
+
+.nav-link {
+  color: $nav-link-color;
+
+  &:hover {
+    color: $nav-link-hover-color;
+  }
+
+  i.ni {
+    position: relative;
+    top: 2px;
+  }
+}
+
+.navbar-vertical.navbar-expand-md .navbar-nav {
+  font-weight: 600 !important;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #12017b;
+  border-color: #12017b;
+}
+
+.navbar-light .navbar-brand {
+  color: rgb(94, 114, 228);
+  font-weight: 700;
+  font-size: 1.8rem;
+}

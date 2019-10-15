@@ -1,0 +1,66 @@
+//
+// Icon
+//
+
+.icon {
+  width: 3rem;
+  height: 3rem;
+
+  i,
+  svg {
+    font-size: 3rem - 0.75;
+  }
+
+  + .icon-text {
+    padding-left: 1rem;
+    width: calc(100% - #{3rem} - 1);
+  }
+}
+
+// Extra large icons
+
+.icon-xl {
+  width: 5rem;
+  height: 5rem;
+
+  i,
+  svg {
+    font-size: 5rem - 0.75;
+  }
+
+  + .icon-text {
+    width: calc(100% - 5rem);
+  }
+}
+
+// Large icons
+
+.icon-lg {
+  width: 3rem;
+  height: 3rem;
+
+  i,
+  svg {
+    font-size: 3rem - 0.75;
+  }
+
+  + .icon-text {
+    width: calc(100% - 3rem - 1);
+  }
+}
+
+// Small icon
+
+.icon-sm {
+  width: 3rem;
+  height: 3rem;
+
+  i,
+  svg {
+    font-size: 3rem - 0.75;
+  }
+
+  + .icon-text {
+    width: calc(100% - 3rem - 1);
+  }
+}
