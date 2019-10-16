@@ -16,6 +16,8 @@ import {
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
 import { authLogin } from '../../redux/actions/Index.jsx';
+import swal from 'sweetalert';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +39,22 @@ class Login extends React.Component {
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.loginData !== prevState.loginData) {
+      if (nextProps.loginData.status) {
+        localStorage.setItem('token', nextProps.loginData.tokenString);
+        localStorage.setItem(
+          'userData',
+          JSON.stringify(nextProps.loginData.data[0])
+        );
+        console.error(nextProps.loginData.data[0]);
+      } else if (nextProps.loginData.status == 'Error') {
+        console.error(nextProps.loginData.data);
+        swal('Oops!', 'Invalid UserName Or Password!', 'error');
+      }
+      return { apicall: true };
+    } else return null;
   }
   render() {
     let { email, password } = this.state;
