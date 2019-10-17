@@ -8,8 +8,7 @@ API.interceptors.response.use(
     return response;
   },
   error => {
-    console.error('api', error);
-    if (401 === error.response && error.response.status) {
+    if (error.response && error.response.status === 401) {
       localStorage.clear();
     }
     if (

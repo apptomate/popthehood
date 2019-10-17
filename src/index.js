@@ -17,11 +17,11 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route path="/admin" render={props => <AdminLayout {...props} />} />
         <Route path="/auth" render={props => <AuthLayout {...props} />} />
-        <Redirect from="/" to="/admin/index" />
+        <Route path="/admin" render={props => <AdminLayout {...props} />} />
+        <Redirect from="/" to="/auth/login" />
       </Switch>
-    </BrowserRouter>{' '}
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

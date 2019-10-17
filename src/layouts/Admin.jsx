@@ -6,9 +6,8 @@ import { Container } from 'reactstrap';
 import AdminNavbar from 'components/Navbars/AdminNavbar.jsx';
 import AdminFooter from 'components/Footers/AdminFooter.jsx';
 import Sidebar from 'components/Sidebar/Sidebar.jsx';
-
 import routes from 'routes.js';
-
+import { connect } from 'react-redux';
 class Admin extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -43,6 +42,9 @@ class Admin extends React.Component {
     return 'Brand';
   };
   render() {
+    if (!this.props.loginData.isLogin) {
+      this.props.history.push('/auth/login');
+    }
     return (
       <>
         <Sidebar
@@ -54,7 +56,7 @@ class Admin extends React.Component {
             imgAlt: '...'
           }}
         />
-        <div className='main-content' ref='mainContent'>
+        <div className="main-content" ref="mainContent">
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
@@ -68,5 +70,9 @@ class Admin extends React.Component {
     );
   }
 }
-
-export default Admin;
+const getState = state => {
+  return {
+    loginData: state.authLogin
+  };
+};
+export default connect(getState)(Admin);

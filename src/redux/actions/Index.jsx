@@ -1,9 +1,12 @@
 import API from './API.jsx';
 import { LOGIN_URL } from '../../views/common/helpers/constants';
-import { LOGIN_SUCCESS, LOGIN_ERROR } from './ActionTypes.jsx';
+import { LOGIN_SUCCESS, LOGIN_ERROR, LOGIN_LOADING } from './ActionTypes.jsx';
 
 export function authLogin(formData) {
   return dispatch => {
+    dispatch({
+      type: LOGIN_LOADING
+    });
     API.post(LOGIN_URL, formData)
       .then(response => {
         dispatch({
@@ -12,7 +15,7 @@ export function authLogin(formData) {
         });
       })
       .catch(function(error) {
-        if (error.response && error.response.data.status === 'Error') {
+        if (error.response.data.error) {
           dispatch({
             type: LOGIN_ERROR,
             payload: error.response.data

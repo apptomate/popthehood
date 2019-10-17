@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 // core components
 import AuthNavbar from 'components/Navbars/AuthNavbar.jsx';
 import AuthFooter from 'components/Footers/AuthFooter.jsx';
-
+import { connect } from 'react-redux';
 import routes from 'routes.js';
 
 class Auth extends React.Component {
@@ -32,6 +32,9 @@ class Auth extends React.Component {
     });
   };
   render() {
+    if (this.props.loginData.isLogin) {
+      this.props.history.push('/admin/index');
+    }
     return (
       <>
         <div
@@ -82,5 +85,9 @@ class Auth extends React.Component {
     );
   }
 }
-
-export default Auth;
+const getState = state => {
+  return {
+    loginData: state.authLogin
+  };
+};
+export default connect(getState)(Auth);
