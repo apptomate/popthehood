@@ -16,51 +16,49 @@ import {
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
 import { authLogin } from '../../redux/actions/Index.jsx';
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
+import validator from 'validator';
+import { getAlertToast } from '../common/helpers/functions';
+import Swal from 'sweetalert2';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: null,
       email: '',
-      password: ''
+      password: '',
+      loading: false
     };
     this.onClickLogin = this.onClickLogin.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+  componentDidUpdate() {
+    console.error('token' + this.props.loginData.token);
+    if (this.props.loginData.isLogin) {
+      Swal.fire(getAlertToast('success', 'Login Success'));
+      this.props.history.push('/admin/index');
+    }
+  }
   onClickLogin() {
-    let data = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    this.props.authLogin(data);
+    const { email, password } = this.state;
+    if (!email || !password) {
+      swal.fire(getAlertToast('warning', 'Enter credentials'));
+      return;
+    }
+    if (!validator.isEmail(email)) {
+      swal.fire(getAlertToast('warning', 'Enter valid email'));
+      return;
+    }
+    this.props.authLogin({ email, password });
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let data;
-    if (prevState.loginData !== nextProps.loginData) {
-      if (nextProps.loginData.status === 'Success') {
-        localStorage.setItem('token', nextProps.loginData.tokenString);
-        localStorage.setItem(
-          'userData',
-          JSON.stringify(nextProps.loginData.data[0])
-        );
-        data = nextProps.loginData;
-      } else if (nextProps.loginData.status === 'Error') {
-        data = nextProps.loginData;
-        swal('Oops!', nextProps.loginData.data, 'error');
-      }
-      return { loginData: data };
-    } else return null;
-  }
+
   render() {
-    console.error(this.state.loginData);
-    if (this.state.loginData && this.state.loginData.status === 'Success') {
-      this.props.history.push('/admin/index');
-    }
+    let {
+      loginData: { loading }
+    } = this.props;
     let { email, password } = this.state;
     return (
       <Fragment>
@@ -122,6 +120,7 @@ class Login extends React.Component {
                     color="primary"
                     type="button"
                     onClick={this.onClickLogin}
+                    disabled={loading}
                   >
                     Sign in
                   </Button>
