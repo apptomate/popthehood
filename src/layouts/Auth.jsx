@@ -35,7 +35,7 @@ class Auth extends React.Component {
     return (
       <>
         <div
-          className='main-content'
+          className="main-content"
           style={{
             minHeight: '100vh',
             backgroundImage:
@@ -45,17 +45,17 @@ class Auth extends React.Component {
           }}
         >
           <AuthNavbar />
-          <div className='header py-7 py-lg-8'>
+          <div className="header py-6">
             <Container>
-              <div className='header-body text-center mb-7'>
-                <Row className='justify-content-center'>
-                  <Col lg='5' md='6'>
-                    <h1 className='text-white'>Welcome!</h1>
+              <div className="header-body text-center mb-7">
+                <Row className="justify-content-center">
+                  <Col lg="5" md="6">
+                    <h1 className="text-white">Welcome!</h1>
                   </Col>
                 </Row>
               </div>
             </Container>
-            <div className='separator separator-bottom separator-skew zindex-100'>
+            <div className="separator separator-bottom separator-skew zindex-100">
               {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
@@ -72,8 +72,8 @@ class Auth extends React.Component {
             </div>
           </div>
           {/* Page content */}
-          <Container className='mt--8 pb-5'>
-            <Row className='justify-content-center'>
+          <Container className="mt--8 pb-5">
+            <Row className="justify-content-center">
               <Switch>{this.getRoutes(routes)}</Switch>
             </Row>
           </Container>
