@@ -34,29 +34,33 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    console.error(data);
     this.props.authLogin(data);
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.loginData !== prevState.loginData) {
-      if (nextProps.loginData.status) {
+    let data;
+    if (prevState.loginData !== nextProps.loginData) {
+      if (nextProps.loginData.status === 'Success') {
         localStorage.setItem('token', nextProps.loginData.tokenString);
         localStorage.setItem(
           'userData',
           JSON.stringify(nextProps.loginData.data[0])
         );
-        console.error(nextProps.loginData.data[0]);
-      } else if (nextProps.loginData.status == 'Error') {
-        console.error(nextProps.loginData.data);
-        swal('Oops!', 'Invalid UserName Or Password!', 'error');
+        data = nextProps.loginData;
+      } else if (nextProps.loginData.status === 'Error') {
+        data = nextProps.loginData;
+        swal('Oops!', nextProps.loginData.data, 'error');
       }
-      return { apicall: true };
+      return { loginData: data };
     } else return null;
   }
   render() {
+    console.error(this.state.loginData);
+    if (this.state.loginData && this.state.loginData.status === 'Success') {
+      this.props.history.push('/admin/index');
+    }
     let { email, password } = this.state;
     return (
       <Fragment>

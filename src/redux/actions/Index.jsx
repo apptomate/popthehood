@@ -12,11 +12,12 @@ export function authLogin(formData) {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: LOGIN_ERROR,
-          payload: error
-        });
-        console.error('error' + error);
+        if (error.response && error.response.data.status === 'Error') {
+          dispatch({
+            type: LOGIN_ERROR,
+            payload: error.response.data
+          });
+        }
       });
   };
 }
