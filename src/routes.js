@@ -1,5 +1,5 @@
 import Index from 'views/Index.jsx';
-import Users from 'views/Users.jsx';
+import Users from 'views/users/Users';
 import listVehicle from 'views/listVehicle.jsx';
 import serviceListpage from 'views/serviceListpage.jsx';
 import paymentReport from 'views/paymentReport.jsx';
