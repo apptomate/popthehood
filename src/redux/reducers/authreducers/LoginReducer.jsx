@@ -8,7 +8,7 @@ export default function authLogin(state = arrayInitial, action) {
   switch (type) {
   case types.LOGIN_SUCCESS:
     if (!payload.error) {
-      localStorage.setItem('token', payload.tokenstr);
+      localStorage.setItem('token', payload.token);
       localStorage.setItem('isLogin', true);
       localStorage.setItem('userData', JSON.stringify(payload.user));
     }

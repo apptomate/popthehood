@@ -1,12 +1,11 @@
 import Index from 'views/Index.jsx';
 import Users from 'views/Users.jsx';
-import listVehicle from 'views/listVehicle.jsx';
 import serviceListpage from 'views/serviceListpage.jsx';
 import paymentReport from 'views/paymentReport.jsx';
 import servicesReport from 'views/servicesReport.jsx';
 import Register from 'views/examples/Register.jsx';
 import Login from 'views/login/Login.jsx';
-
+import ListVehicle from 'views/vehicle/ListVehicle.jsx';
 var routes = [
   {
     path: '/index',
@@ -27,7 +26,7 @@ var routes = [
     path: '/list-of-vehicle',
     name: 'List of vehicle',
     icon: 'ni ni-collection text-primary',
-    component: listVehicle,
+    component: ListVehicle,
     layout: '/admin'
   },
 

@@ -13,6 +13,8 @@ export const arrayInitial = {
   isLogin: isLogin === 'true' ? true : false
 };
 
+export const singleArrayInitial = {};
+
 export const singleValueInitial = 0;
 
 export const stringInitial = '';

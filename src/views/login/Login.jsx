@@ -11,7 +11,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
+  Spinner,
   Col
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
@@ -60,6 +60,9 @@ class Login extends React.Component {
       loginData: { loading }
     } = this.props;
     let { email, password } = this.state;
+    if (loading) {
+      return <Spinner size="sm" color="primary" />;
+    }
     return (
       <Fragment>
         <Col lg="5" md="7">
