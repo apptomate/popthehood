@@ -1,5 +1,6 @@
 import React from 'react';
-import { AvForm, AvField, AvInput } from 'availity-reactstrap-validation';
+import imageNotAvailable from '../../../assets/img/icons/common/vehicle_not_available.png';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
 // reactstrap components
 import {
   Button,
@@ -21,9 +22,7 @@ export function VehicleUpdateModal(props) {
     },
     storedImageURL = ''
   } = props.state_data;
-  const img_url = storedImageURL
-    ? storedImageURL
-    : require('../../../assets/img/icons/common/vehicle_not_available.png');
+  const img_url = storedImageURL ? storedImageURL : imageNotAvailable;
   return (
     <Modal
       isOpen={props.modal_toggle}
@@ -109,7 +108,6 @@ export function VehicleUpdateModal(props) {
             label="Special Notes"
             id="specialNotes"
             placeholder="Special Notes"
-            required
           />
         </ModalBody>
         <ModalFooter>
