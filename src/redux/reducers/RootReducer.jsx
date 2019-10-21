@@ -5,6 +5,10 @@ import getAllUsers from './usersReducers/GetAllUsersReducer';
 import updateUser from './usersReducers/PutUserReducer';
 import deleteUser from './usersReducers/DeleteUserReducer';
 import updateVehicle from './vehicleReducers/PutVehicleReducer';
+import deleteVehicle from './vehicleReducers/DeleteVehicleReducer';
+import vehicleByVehicleID from './vehicleReducers/VehicleByVehicleIDReducer';
+import allServices from './servicereducers/AllServicesReducer';
+import allVehicles from './vehicleReducers/AllVehiclesReducer';
 
 const RootReducer = combineReducers({
     authLogin: authLogin,
@@ -12,7 +16,11 @@ const RootReducer = combineReducers({
     getUserVehicleDetails: getUserVehicleDetails,
     updateUser: updateUser,
     deleteUser: deleteUser,
-    updateVehicle: updateVehicle
+    updateVehicle: updateVehicle,
+    getAllVehicles: allVehicles,
+    deleteVehicle: deleteVehicle,
+    vehicleByVehicleID: vehicleByVehicleID,
+    getAllServices: allServices
 });
 
 export default RootReducer;

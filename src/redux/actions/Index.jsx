@@ -4,7 +4,11 @@ import {
     ALLUSERS_URL,
     USERVEHICLE_URL,
     UPDATE_DELETE_USER_URL,
-    UPDATEVEHICLE_URL
+    UPDATEVEHICLE_URL,
+    ALLVEHICLES_URL,
+    DELETEVEHICLE_URL,
+    VEHICLEBYVEHICLEID_URL,
+    ALLSERVICES_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -22,7 +26,19 @@ import {
     DELETEUSER_SUCCESS,
     DELETEUSER_ERROR,
     UPDATEVEHICLE_SUCCESS,
-    UPDATEVEHICLE_ERROR
+    UPDATEVEHICLE_ERROR,
+    ALLVEHICLES_SUCCESS,
+    ALLVEHICLES_LOADING,
+    ALLVEHICLES_ERROR,
+    DELETEVEHICLE_LOADING,
+    DELETEVEHICLE_SUCCESS,
+    DELETEVEHICLE_ERROR,
+    VEHICLEBYVEHICLEID_LOADING,
+    VEHICLEBYVEHICLEID_SUCCESS,
+    VEHICLEBYVEHICLEID_ERROR,
+    ALLSERVICES_LOADING,
+    ALLSERVICES_SUCCESS,
+    ALLSERVICES_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -50,30 +66,6 @@ export function authLogin(formData) {
     };
 }
 
-//Users
-//Get All Users
-export function getAllUsers() {
-    return dispatch => {
-        dispatch({
-            type: ALLUSERS_LOADING
-        });
-        API.get(ALLUSERS_URL, { headers: authHeader() })
-            .then(response => {
-                dispatch({
-                    type: ALLUSERS_SUCCESS,
-                    payload: response.data
-                });
-            })
-            .catch(function(error) {
-                if (error.response) {
-                    dispatch({
-                        type: ALLUSERS_ERROR,
-                        payload: error.response.data
-                    });
-                }
-            });
-    };
-}
 //Update User
 export function updateUser(data) {
     return dispatch => {
@@ -125,29 +117,6 @@ export function deleteUser(user_id) {
             });
     };
 }
-//Users's Vehicle Details
-export function getUserVehicleDetails(data) {
-    return dispatch => {
-        dispatch({
-            type: USERVEHICLE_LOADING
-        });
-        API.get(USERVEHICLE_URL, { headers: authHeader(), params: data })
-            .then(response => {
-                dispatch({
-                    type: USERVEHICLE_SUCCESS,
-                    payload: response.data
-                });
-            })
-            .catch(function(error) {
-                if (error.response) {
-                    dispatch({
-                        type: USERVEHICLE_ERROR,
-                        payload: error.response.data
-                    });
-                }
-            });
-    };
-}
 
 //Update Vehicle
 export function updateVehicle(data) {
@@ -172,6 +141,146 @@ export function updateVehicle(data) {
                         payload: error.response.data
                     });
                 }
+            });
+    };
+}
+
+//Users
+//Get All Users
+export function getAllUsers() {
+    return dispatch => {
+        dispatch({
+            type: ALLUSERS_LOADING
+        });
+        API.get(ALLUSERS_URL, { headers: authHeader() })
+            .then(response => {
+                dispatch({
+                    type: ALLUSERS_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                if (error.response) {
+                    dispatch({
+                        type: ALLUSERS_ERROR,
+                        payload: error.response.data
+                    });
+                }
+            });
+    };
+}
+//Users's Vehicle Details
+export function getUserVehicleDetails(data) {
+    return dispatch => {
+        dispatch({
+            type: USERVEHICLE_LOADING
+        });
+        API.get(USERVEHICLE_URL, { headers: authHeader(), params: data })
+            .then(response => {
+                dispatch({
+                    type: USERVEHICLE_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                if (error.response.data.error) {
+                    dispatch({
+                        type: USERVEHICLE_ERROR,
+                        payload: error.response.data
+                    });
+                }
+            });
+    };
+}
+
+export function getAllVehicles() {
+    return dispatch => {
+        dispatch({
+            type: ALLVEHICLES_LOADING
+        });
+        API.get(ALLVEHICLES_URL, {
+            headers: authHeader()
+        })
+            .then(response => {
+                dispatch({
+                    type: ALLVEHICLES_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                dispatch({
+                    type: ALLVEHICLES_ERROR,
+                    payload: error.response.data
+                });
+            });
+    };
+}
+
+export function deleteVehicle(vehicleID) {
+    return dispatch => {
+        dispatch({
+            type: DELETEVEHICLE_LOADING
+        });
+        API.delete(DELETEVEHICLE_URL + '/' + vehicleID, {
+            headers: authHeader()
+        })
+            .then(response => {
+                dispatch({
+                    type: DELETEVEHICLE_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                dispatch({
+                    type: DELETEVEHICLE_ERROR,
+                    payload: error.response.data
+                });
+            });
+    };
+}
+
+export function vehiclesByVehicleID(vehicleID) {
+    return dispatch => {
+        dispatch({
+            type: VEHICLEBYVEHICLEID_LOADING
+        });
+        API.get(VEHICLEBYVEHICLEID_URL + '/' + vehicleID, {
+            headers: authHeader()
+        })
+            .then(response => {
+                dispatch({
+                    type: VEHICLEBYVEHICLEID_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                dispatch({
+                    type: VEHICLEBYVEHICLEID_ERROR,
+                    payload: error.response.data
+                });
+            });
+    };
+}
+
+export function getAllServices() {
+    return dispatch => {
+        dispatch({
+            type: ALLSERVICES_LOADING
+        });
+        API.get(ALLSERVICES_URL, {
+            headers: authHeader()
+        })
+            .then(response => {
+                dispatch({
+                    type: ALLSERVICES_SUCCESS,
+                    payload: response.data
+                });
+            })
+            .catch(function(error) {
+                dispatch({
+                    type: ALLSERVICES_ERROR,
+                    payload: error.response.data
+                });
             });
     };
 }

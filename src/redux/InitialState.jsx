@@ -13,6 +13,8 @@ export const objectInitial = {
     isLogin: isLogin === 'true' ? true : false
 };
 
+export const singleObjectInitial = {};
+
 export const singleValueInitial = 0;
 
 export const stringInitial = '';
