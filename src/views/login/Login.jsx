@@ -11,7 +11,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
+  Spinner,
   Col
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
@@ -19,7 +19,6 @@ import { authLogin } from '../../redux/actions/Index.jsx';
 import swal from 'sweetalert2';
 import validator from 'validator';
 import { getAlertToast } from '../common/helpers/functions';
-import Swal from 'sweetalert2';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,9 +32,8 @@ class Login extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
   componentDidUpdate() {
-    console.error('token' + this.props.loginData.token);
     if (this.props.loginData.isLogin) {
-      Swal.fire(getAlertToast('success', 'Login Success'));
+      swal.fire(getAlertToast('success', 'Login Success'));
       this.props.history.push('/admin/index');
     }
   }
@@ -60,6 +58,9 @@ class Login extends React.Component {
       loginData: { loading }
     } = this.props;
     let { email, password } = this.state;
+    // if (loading) {
+    //   return <Spinner size="sm" color="primary" />;
+    // }
     return (
       <Fragment>
         <Col lg="5" md="7">

@@ -42,6 +42,7 @@ class Admin extends React.Component {
     return 'Brand';
   };
   render() {
+    console.error(this.getRoutes(routes));
     if (!this.props.loginData.isLogin) {
       this.props.history.push('/auth/login');
     }
