@@ -100,103 +100,127 @@ class vehicleServicepage extends React.Component {
           <Row>
             <div className='col'>
               <Card className='shadow p-4'>
-                <CardHeader className='border-0'>
-                  <h3 style={{ float: 'left' }} className='mb-0'>
-                    Vehicle Service
-                  </h3>
-                </CardHeader>
                 <Row>
-                  <Col sm='12' md={{ size: 6, offset: 3 }}>
-                    <div className='ServiceReport-imgcard'>
-                      <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS8SoNjCcvVLDyBoUHGFWiQx20kLkhsS8op9PZDVgNWYBsknI6c' />
-                    </div>
+                  <Col>
+                    <Row>
+                      <Col md='4' className='item-middle'>
+                        <div className='ServiceReport-imgcard'>
+                          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS8SoNjCcvVLDyBoUHGFWiQx20kLkhsS8op9PZDVgNWYBsknI6c' />
+                        </div>
+                      </Col>
+                      <Col md='8' className=''>
+                        <div className='licence-plate'>
+                          <h4>
+                            LICENCE PLATE NO : <span>AI 93958</span>
+                          </h4>
+                        </div>
+                        <div className='card-profile shadow card mt-4'>
+                          <ListGroup flush>
+                            <ListGroupItem>
+                              <span>Model </span>
+                              <h5>C-Class</h5>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                              <span>Make</span>
+                              <h5>Mercedes-Benz</h5>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                              <span>Year </span>
+                              <h5>2015</h5>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                              <span>Color </span>
+                              <h5>
+                                <h5 color='' className='badge-dot mr-4'>
+                                  <i className='bg-danger' />
+                                  Red
+                                </h5>
+                              </h5>
+                            </ListGroupItem>
+                          </ListGroup>
+                        </div>
+                      </Col>
+                    </Row>
 
-                    <div className='licence-plate'>
-                      <h4>
-                        LICENCE PLATE NO : <span>AI 93958</span>
-                      </h4>
-                    </div>
+                    <Row>
+                      <Col md='6'>
+                        {/* User Name details */}
+                        <div className='card-profile shadow card mt-4'>
+                          <div className='pt-0 pt-md-4 card-body'>
+                            <ul className='licence-plate-userDetails'>
+                              <li>
+                                <span> User Name</span> <h5>Jessica Jones</h5>
+                              </li>
 
-                    <ListGroup flush>
-                      <ListGroupItem>
-                        <span>Model </span>
-                        <h5>C-Class</h5>
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <span>Make</span>
-                        <h5>Mercedes-Benz</h5>
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <span>Year </span>
-                        <h5>2015</h5>
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <span>Color </span>
-                        <h5>
-                          <h5 color='' className='badge-dot mr-4'>
-                            <i className='bg-danger' />
-                            Red
-                          </h5>
-                        </h5>
-                      </ListGroupItem>
-                    </ListGroup>
-                    {/* User Name details */}
-                    <div className='card-profile shadow card mt-4'>
-                      <div className='pt-0 pt-md-4 card-body'>
-                        <ul className='licence-plate-userDetails'>
-                          <li>
-                            <span> User Name</span> <h5>Jessica Jones</h5>
-                          </li>
+                              <li>
+                                <span> Phone Number</span> <h5>0123456789</h5>
+                              </li>
+                              <li>
+                                <span> E-mail id</span>{' '}
+                                <h5>example@gmail.com</h5>
+                              </li>
+                              <li>
+                                <span> E-mail id</span>{' '}
+                                <h5>example@gmail.com</h5>
+                              </li>
+                              <li className='mb-1'>
+                                <span> E-mail id</span>{' '}
+                                <h5>example@gmail.com</h5>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md='6'>
+                        <div className='card-profile shadow card mt-4 p-3'>
+                          <ul className='licence-plate-userDetails'>
+                            <li>
+                              <span> Remainder minutes</span>
+                              <Button className='float-right btn btn-default btn-sm'>
+                                30 minutes
+                              </Button>
+                            </li>
+                            <li>
+                              <span> Tearms & Condition</span>
+                              <Button className='float-right btn btn-success btn-sm'>
+                                Accepted
+                              </Button>
 
-                          <li>
-                            <span> Phone Number</span> <h5>0123456789</h5>
-                          </li>
-                          <li>
-                            <span> E-mail id</span> <h5>example@gmail.com</h5>
-                          </li>
-                          <li>
-                            <span> Remainder minutes</span>
-                            <Button className='float-right btn btn-default btn-sm'>
-                              30 minutes
-                            </Button>
-                          </li>
-                          <li>
-                            <span> Tearms & Condition</span>
-                            <Button className='float-right btn btn-success btn-sm'>
-                              Accepted
-                            </Button>
-
-                            <Button className='float-right btn btn-danger btn-sm'>
-                              Not-Accepted
-                            </Button>
-                          </li>
-                          <li>
-                            <span>Location</span>
-                            <MapWrapper
-                              googleMapURL='https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE'
-                              loadingElement={
-                                <div style={{ height: '100%' }} />
-                              }
-                              containerElement={
-                                <div
-                                  style={{ height: '270px' }}
-                                  className='map-canvas'
-                                  id='map-canvas'
-                                />
-                              }
-                              mapElement={
-                                <div
-                                  style={{
-                                    height: '100%',
-                                    borderRadius: 'inherit'
-                                  }}
-                                />
-                              }
-                            />
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                              <Button className='float-right btn btn-danger btn-sm'>
+                                Not-Accepted
+                              </Button>
+                            </li>
+                            <li className='mb-1'>
+                              <span>Location</span>
+                              <MapWrapper
+                                googleMapURL='https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE'
+                                loadingElement={
+                                  <div style={{ height: '100%' }} />
+                                }
+                                containerElement={
+                                  <div
+                                    style={{ height: '149px' }}
+                                    className='map-canvas'
+                                    id='map-canvas'
+                                  />
+                                }
+                                mapElement={
+                                  <div
+                                    style={{
+                                      height: '100%',
+                                      borderRadius: 'inherit'
+                                    }}
+                                  />
+                                }
+                              />
+                            </li>
+                          </ul>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col></Col>
+                    </Row>
                   </Col>
                 </Row>
                 {/* Service Details */}
@@ -204,15 +228,15 @@ class vehicleServicepage extends React.Component {
                   <h3>Service Details</h3>
 
                   <Row>
-                    <Col sm='12' md={{ size: 8, offset: 2 }}>
+                    <Col>
                       <Card className='shadow mt-3' body>
                         <Row className='Vehicle-Service-plantype'>
-                          <Col sm='4'>
+                          <Col sm='2'>
                             <Button className='btn btn-default btn-sm'>
                               Plan Type
                             </Button>
                           </Col>
-                          <Col sm='6'>
+                          <Col sm='10'>
                             <h5>Vehicle Service Plan Types</h5>
                           </Col>
                         </Row>
@@ -221,23 +245,37 @@ class vehicleServicepage extends React.Component {
                   </Row>
 
                   <Row>
-                    <Col sm='12' md={{ size: 8, offset: 2 }}>
+                    <Col>
                       <Card className='shadow mt-3' body>
                         <Row>
-                          <Col sm='4'>
-                            <Button className='btn btn-default btn-sm'>
+                          <Col>
+                            <Button className='btn btn-default btn-sm mb-1'>
                               Services
                             </Button>
                           </Col>
-                          <Col sm='6'>
-                            <ul className='Vehicle-Service-list'>
-                              <li>Vehicle Service Name</li>
-                              <li>Vehicle Service Name</li>
-                              <li>Vehicle Service Name</li>
-                              <li>Vehicle Service Name</li>
-                              <li>Vehicle Service Name</li>
-                              <li>Vehicle Service Name</li>
-                            </ul>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <Table
+                              className='align-items-center table-flush'
+                              responsive
+                            >
+                              <thead className='thead-light'>
+                                <tr>
+                                  <th scope='col'>Serives</th>
+                                  <th scope='col'>Description</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope='row'>Lorem</th>
+                                  <td>
+                                    Lorem Ipsum is simply dummy text of the
+                                    printing and typesetting industry. Lorem
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </Table>
                           </Col>
                         </Row>
                       </Card>
@@ -327,6 +365,11 @@ class vehicleServicepage extends React.Component {
                     </tbody>
                   </Table>
                 </Card>
+                <center>
+                  <Button className='mt-4' color='info' type='button'>
+                    <i className='fas fa-file-pdf'></i> PDF Download
+                  </Button>
+                </center>
               </Card>
             </div>
           </Row>

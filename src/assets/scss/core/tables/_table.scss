@@ -267,3 +267,19 @@
   margin: 0;
   padding-top: 4px;
 }
+.item-middle {
+  display: flex;
+  align-items: center;
+}
+
+.item-middle-service-date {
+  display: grid;
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card {
+  display: inherit !important;
+}
