@@ -7,8 +7,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  FormGroup,
-  Input
+  FormGroup
 } from 'reactstrap';
 export function VehicleUpdateModal(props) {
   const {
@@ -18,11 +17,13 @@ export function VehicleUpdateModal(props) {
       model = '',
       year = '',
       color = '',
-      specialNotes = '',
-      storedImageURL = ''
+      specialNotes = ''
     },
-    file = ''
+    storedImageURL = ''
   } = props.state_data;
+  const img_url = storedImageURL
+    ? storedImageURL
+    : require('../../../assets/img/icons/common/vehicle_not_available.png');
   return (
     <Modal
       isOpen={props.modal_toggle}
@@ -36,19 +37,17 @@ export function VehicleUpdateModal(props) {
           Update Vehicle
         </ModalHeader>
         <ModalBody className="cus_model1">
-          {storedImageURL ? (
-            <div>
-              <center>
-                <img
-                  alt="No Thumbnail"
-                  src={storedImageURL}
-                  style={{ width: '400px', height: '200px' }}
-                />
-              </center>
-            </div>
-          ) : (
-            ''
-          )}
+          <div>
+            <center>
+              <img
+                alt="No Thumbnail"
+                src={img_url}
+                style={{ width: '400px', height: '200px' }}
+              />
+            </center>
+            <br />
+          </div>
+
           <AvField
             name="licensePlate"
             label="License Plate"
@@ -112,30 +111,6 @@ export function VehicleUpdateModal(props) {
             placeholder="Special Notes"
             required
           />
-          <FormGroup>
-            <Input
-              accept=".png, .jpg, .jpeg"
-              type="file"
-              name="vehicleImage"
-              id="exampleFile1"
-              className="normalUploadBtn"
-              width="50%"
-              onChange={props.fileUploadHandle}
-            />
-          </FormGroup>
-          {file ? (
-            <div>
-              <center>
-                <img
-                  alt="No Thumbnail"
-                  src={file}
-                  style={{ width: '400px', height: '200px' }}
-                />
-              </center>
-            </div>
-          ) : (
-            ''
-          )}
         </ModalBody>
         <ModalFooter>
           <FormGroup>

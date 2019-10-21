@@ -16,15 +16,16 @@ const RootReducer = combineReducers({
   authLogin: authLogin,
   getAllUsers: getAllUsers,
   getUserVehicleDetails: getUserVehicleDetails,
-  getAllVehicles: getAllVehicles,
-  deleteVehicle: deleteVehicle,
-  vehicleByVehicleID: vehicleByVehicleID,
-  getAllServices: getAllServices,
-  getAllServicePlans: getAllServicePlans,
-  getServicePriceByID: getServicePriceByID,
   updateUser: updateUser,
   deleteUser: deleteUser,
-  updateVehicle: updateVehicle
+  updateVehicle: updateVehicle,
+
+  deleteVehicle: deleteVehicle,
+  vehicleByVehicleID: vehicleByVehicleID,
+  getAllVehicles: getAllVehicles,
+  getAllServices: getAllServices,
+  getAllServicePlans: getAllServicePlans,
+  getServicePriceByID: getServicePriceByID
 });
 
 export default RootReducer;

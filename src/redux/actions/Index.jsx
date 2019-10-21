@@ -224,9 +224,12 @@ export function getAllVehicles() {
 
 export function deleteVehicle(vehicleID) {
   return dispatch => {
-    dispatch({
-      type: DELETEVEHICLE_LOADING
-    });
+    // dispatch({
+    //     type: DELETEVEHICLE_LOADING
+    // });
+    // dispatch({
+    //     type: USERVEHICLE_LOADING
+    // });
     API.delete(DELETEVEHICLE_URL + '/' + vehicleID, {
       headers: authHeader()
     })
@@ -235,7 +238,6 @@ export function deleteVehicle(vehicleID) {
           type: DELETEVEHICLE_SUCCESS,
           payload: response.data
         });
-        dispatch(getAllVehicles());
       })
       .catch(function(error) {
         dispatch({
