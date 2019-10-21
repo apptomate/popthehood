@@ -75,6 +75,12 @@ class ViewVehicle extends Component {
                   <p> {specialNotes}</p>
                   <h4>Year:</h4>
                   <p>{year}</p>
+                  <img
+                    width={450}
+                    height={250}
+                    src={vehicleImageURL}
+                    alt="vehicle"
+                  />
                 </CardBody>
               </Card>
             </div>

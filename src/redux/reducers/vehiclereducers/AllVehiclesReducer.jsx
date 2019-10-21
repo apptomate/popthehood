@@ -1,7 +1,7 @@
 import * as types from '../../actions/ActionTypes.jsx';
-import { objectInitial } from '../../InitialState.jsx';
+import { singleObjectInitial } from '../../InitialState.jsx';
 
-export default function allVehicles(state = objectInitial, action) {
+export default function getAllVehicles(state = singleObjectInitial, action) {
   const { type, payload } = action;
   switch (type) {
   case types.ALLVEHICLES_SUCCESS:
