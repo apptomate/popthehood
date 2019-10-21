@@ -2,7 +2,9 @@ import API from './API.jsx';
 import {
     LOGIN_URL,
     ALLUSERS_URL,
-    USERVEHICLE_URL
+    USERVEHICLE_URL,
+    UPDATE_DELETE_USER_URL,
+    UPDATEVEHICLE_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -14,7 +16,13 @@ import {
     ALLUSERS_LOADING,
     USERVEHICLE_SUCCESS,
     USERVEHICLE_ERROR,
-    USERVEHICLE_LOADING
+    USERVEHICLE_LOADING,
+    UPDATEUSER_SUCCESS,
+    UPDATEUSER_ERROR,
+    DELETEUSER_SUCCESS,
+    DELETEUSER_ERROR,
+    UPDATEVEHICLE_SUCCESS,
+    UPDATEVEHICLE_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -66,6 +74,57 @@ export function getAllUsers() {
             });
     };
 }
+//Update User
+export function updateUser(data) {
+    return dispatch => {
+        dispatch({
+            type: ALLUSERS_LOADING
+        });
+        API.put(UPDATE_DELETE_USER_URL, data, { headers: authHeader() })
+            .then(response => {
+                dispatch({
+                    type: UPDATEUSER_SUCCESS,
+                    payload: response.data
+                });
+                dispatch(getAllUsers());
+            })
+            .catch(function(error) {
+                if (error.response) {
+                    dispatch({
+                        type: UPDATEUSER_ERROR,
+                        payload: error.response.data
+                    });
+                }
+            });
+    };
+}
+//Delete User
+export function deleteUser(user_id) {
+    return dispatch => {
+        dispatch({
+            type: ALLUSERS_LOADING
+        });
+        API.delete(UPDATE_DELETE_USER_URL + '/' + user_id, {
+            headers: authHeader()
+        })
+            .then(response => {
+                console.error('Res:/', response.data);
+                dispatch({
+                    type: DELETEUSER_SUCCESS,
+                    payload: response.data
+                });
+                dispatch(getAllUsers());
+            })
+            .catch(function(error) {
+                if (error.response) {
+                    dispatch({
+                        type: DELETEUSER_ERROR,
+                        payload: error.response.data
+                    });
+                }
+            });
+    };
+}
 //Users's Vehicle Details
 export function getUserVehicleDetails(data) {
     return dispatch => {
@@ -80,9 +139,36 @@ export function getUserVehicleDetails(data) {
                 });
             })
             .catch(function(error) {
-                if (error.response.data.error) {
+                if (error.response) {
                     dispatch({
                         type: USERVEHICLE_ERROR,
+                        payload: error.response.data
+                    });
+                }
+            });
+    };
+}
+
+//Update Vehicle
+export function updateVehicle(data) {
+    return dispatch => {
+        dispatch({
+            type: USERVEHICLE_LOADING
+        });
+        API.put(UPDATEVEHICLE_URL, data, { headers: authHeader() })
+            .then(response => {
+                console.error('Rs:/', response);
+                dispatch({
+                    type: UPDATEVEHICLE_SUCCESS,
+                    payload: response.data
+                });
+                var get_data = { userId: data.userId };
+                dispatch(getUserVehicleDetails(get_data));
+            })
+            .catch(function(error) {
+                if (error.response) {
+                    dispatch({
+                        type: UPDATEVEHICLE_ERROR,
                         payload: error.response.data
                     });
                 }
