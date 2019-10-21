@@ -8,7 +8,8 @@ export default function deleteVehicle(state = singleObjectInitial, action) {
     return {
       data: payload,
       loading: false,
-      error: false
+      error: false,
+      isLogin: true
     };
   case types.DELETEVEHICLE_LOADING:
     return { loading: true, error: false };

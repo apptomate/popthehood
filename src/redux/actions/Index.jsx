@@ -47,7 +47,7 @@ import {
   GETSERVICEPRICEBYID_LOADING,
   GETSERVICEPRICEBYID_SUCCESS,
   GETSERVICEPRICEBYID_ERROR
-} from '../../views/common/helpers/constants';
+} from './ActionTypes.jsx';
 
 //Login
 //User Authentication
