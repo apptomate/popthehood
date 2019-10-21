@@ -295,7 +295,8 @@ class Users extends React.Component {
                 year: parseInt(row['_original'].year),
                 color: row['_original'].color,
                 licensePlate: row['_original'].licensePlate,
-                specialNotes: row['_original'].specialNotes
+                specialNotes: row['_original'].specialNotes,
+                storedImageURL: row['_original'].vehicleImageURL
             }
         }));
     };
@@ -327,7 +328,8 @@ class Users extends React.Component {
     editVehicleToggle() {
         this.setState(prevState => ({
             editVehicleModal: !prevState.editVehicleModal,
-            user_vehicle_data: []
+            user_vehicle_data: [],
+            file: ''
         }));
     }
     //Change Checkbox
@@ -401,6 +403,7 @@ class Users extends React.Component {
         if (event.target.files) {
             var upFile = event.target.files[0];
             var file = URL.createObjectURL(upFile);
+            var img_type = upFile.type.split('/')[1];
             const reader = new FileReader();
             reader.readAsDataURL(upFile);
             reader.onload = event => {
@@ -411,7 +414,7 @@ class Users extends React.Component {
                         ...this.state.user_vehicle_data,
                         vehicleImage: processed_file_base64,
                         vehicleImageURL: file,
-                        imageType: upFile.type
+                        imageType: img_type
                     }
                 }));
             };

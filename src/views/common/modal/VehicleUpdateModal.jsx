@@ -18,8 +18,10 @@ export function VehicleUpdateModal(props) {
             model = '',
             year = '',
             color = '',
-            specialNotes = ''
-        }
+            specialNotes = '',
+            storedImageURL = ''
+        },
+        file = ''
     } = props.state_data;
     return (
         <Modal
@@ -34,6 +36,19 @@ export function VehicleUpdateModal(props) {
                     Update Vehicle
                 </ModalHeader>
                 <ModalBody className='cus_model1'>
+                    {storedImageURL ? (
+                        <div>
+                            <center>
+                                <img
+                                    alt='No Thumbnail'
+                                    src={storedImageURL}
+                                    style={{ width: '400px', height: '200px' }}
+                                />
+                            </center>
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     <AvField
                         name='licensePlate'
                         label='License Plate'
@@ -108,23 +123,19 @@ export function VehicleUpdateModal(props) {
                             onChange={props.fileUploadHandle}
                         />
                     </FormGroup>
-                    {/* <div>
-                        <input
-                            type='file'
-                            id='file'
-                            accept='.png, .jpg, .jpeg'
-                            name='vehicleImage'
-                            value=''
-                            onChange={props.fileUploadHandle}
-                            multiple
-                        />
-                        <label htmlFor='file' className='btn-3 nowrap'>
-                            <span>File Upload</span>
-                        </label>
-                        {(this.state.file.length > 0) ?
-                  <Button color="primary" style={{marginLeft:'2rem'}} title="Upload" onClick={() => this.uploadDocument()}><i className='fas fa-upload'></i></Button> 
-                  :''}
-                    </div> */}
+                    {file ? (
+                        <div>
+                            <center>
+                                <img
+                                    alt='No Thumbnail'
+                                    src={file}
+                                    style={{ width: '400px', height: '200px' }}
+                                />
+                            </center>
+                        </div>
+                    ) : (
+                        ''
+                    )}
                 </ModalBody>
                 <ModalFooter>
                     <FormGroup>
