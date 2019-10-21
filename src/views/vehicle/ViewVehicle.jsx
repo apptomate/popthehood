@@ -66,7 +66,7 @@ class ViewVehicle extends Component {
                   <h4>Modified Date:</h4>
                   <p> {modifiedDate}</p>
                   <h4>Name:</h4>
-                  <p> {name}</p>
+                  <p> {name || 'N/A'}</p>
                   <h4>Next Service:</h4>
                   <p> {nextService}</p>
                   <h4>Phone No.</h4>

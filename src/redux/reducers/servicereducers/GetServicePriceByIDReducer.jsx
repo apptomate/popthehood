@@ -7,12 +7,11 @@ export default function getServicePriceByID(
 ) {
   const { type, payload } = action;
   switch (type) {
-  case types.ALLSERVICEPLANS_SUCCESS:
-    console.error(payload);
+  case types.GETSERVICEPRICEBYID_SUCCESS:
     return { allServices: payload, loading: false, error: false };
-  case types.ALLSERVICEPLANS_LOADING:
+  case types.GETSERVICEPRICEBYID_LOADING:
     return { loading: true, error: false };
-  case types.ALLSERVICEPLANS_ERROR:
+  case types.GETSERVICEPRICEBYID_ERROR:
     return { error: payload, loading: false };
   default:
     return state;
