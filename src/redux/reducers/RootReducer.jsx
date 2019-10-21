@@ -11,16 +11,16 @@ import allServices from './servicereducers/AllServicesReducer';
 import allVehicles from './vehicleReducers/AllVehiclesReducer';
 
 const RootReducer = combineReducers({
-    authLogin: authLogin,
-    getAllUsers: getAllUsers,
-    getUserVehicleDetails: getUserVehicleDetails,
-    updateUser: updateUser,
-    deleteUser: deleteUser,
-    updateVehicle: updateVehicle,
-    getAllVehicles: allVehicles,
-    deleteVehicle: deleteVehicle,
-    vehicleByVehicleID: vehicleByVehicleID,
-    getAllServices: allServices
+  authLogin: authLogin,
+  getAllUsers: getAllUsers,
+  getUserVehicleDetails: getUserVehicleDetails,
+  updateUser: updateUser,
+  deleteUser: deleteUser,
+  updateVehicle: updateVehicle,
+  getAllVehicles: allVehicles,
+  deleteVehicle: deleteVehicle,
+  vehicleByVehicleID: vehicleByVehicleID,
+  getAllServices: allServices
 });
 
 export default RootReducer;

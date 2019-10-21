@@ -22,7 +22,8 @@ import {
     getUserVehicleDetails,
     updateUser,
     deleteUser,
-    updateVehicle
+    updateVehicle,
+    deleteVehicle
 } from '../../redux/actions/Index';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
@@ -54,7 +55,6 @@ class Users extends React.Component {
         );
         this.deleteUserVehicleDetail = this.deleteUserVehicleDetail.bind(this);
         this.onChangeVehicleEdit = this.onChangeVehicleEdit.bind(this);
-        this.fileUploadHandle = this.fileUploadHandle.bind(this);
         this.columns = [
             {
                 expander: true,
@@ -295,9 +295,9 @@ class Users extends React.Component {
                 year: parseInt(row['_original'].year),
                 color: row['_original'].color,
                 licensePlate: row['_original'].licensePlate,
-                specialNotes: row['_original'].specialNotes,
-                storedImageURL: row['_original'].vehicleImageURL
-            }
+                specialNotes: row['_original'].specialNotes
+            },
+            storedImageURL: row['_original'].vehicleImageURL
         }));
     };
     //Onchange
@@ -394,37 +394,15 @@ class Users extends React.Component {
             confirmButtonText: 'Yes'
         }).then(result => {
             if (result.value) {
-                //this.props.deleteVehicle(user_id);
+                this.props.deleteVehicle(vehicle_id);
             }
         });
-    }
-    //File Upload Change
-    fileUploadHandle(event) {
-        if (event.target.files) {
-            var upFile = event.target.files[0];
-            var file = URL.createObjectURL(upFile);
-            var img_type = upFile.type.split('/')[1];
-            const reader = new FileReader();
-            reader.readAsDataURL(upFile);
-            reader.onload = event => {
-                var processed_file_base64 = event.target.result.split(',')[1];
-                this.setState(({ prevState }) => ({
-                    file: file,
-                    user_vehicle_data: {
-                        ...this.state.user_vehicle_data,
-                        vehicleImage: processed_file_base64,
-                        vehicleImageURL: file,
-                        imageType: img_type
-                    }
-                }));
-            };
-        }
     }
     componentDidMount() {
         this.props.getAllUsers();
     }
     componentDidUpdate(newProps) {
-        console.error('Props:/', newProps.updateVehicleResponse);
+        console.error('Props:/', newProps.deleteVehicleResponse);
         //const del_data = newProps.deleteUserResponse.data;
         // const updateUserResponse = newProps.updateUserResponse;
         // if (
@@ -439,7 +417,6 @@ class Users extends React.Component {
         // }
     }
     render() {
-        console.error('STATE:/ ', this.state);
         const {
             user_data: {
                 name = '',
@@ -665,7 +642,6 @@ class Users extends React.Component {
                         updateUserVehicleDetails={this.updateUserVehicleDetails}
                         state_data={this.state}
                         onChange_func={this.onChangeVehicleEdit}
-                        fileUploadHandle={this.fileUploadHandle}
                     />
                     {/* Update Vehicle Modal */}
                 </Container>
@@ -679,7 +655,8 @@ const getState = state => {
         getUserVehicleDetailsResponse: state.getUserVehicleDetails,
         updateUserResponse: state.updateUser,
         deleteUserResponse: state.deleteUser,
-        updateVehicleResponse: state.updateVehicle
+        updateVehicleResponse: state.updateVehicle,
+        deleteVehicleResponse: state.deleteVehicle
     };
 };
 export default connect(
@@ -689,6 +666,7 @@ export default connect(
         getUserVehicleDetails,
         updateUser,
         deleteUser,
-        updateVehicle
+        updateVehicle,
+        deleteVehicle
     }
 )(Users);

@@ -100,7 +100,6 @@ export function deleteUser(user_id) {
             headers: authHeader()
         })
             .then(response => {
-                console.error('Res:/', response.data);
                 dispatch({
                     type: DELETEUSER_SUCCESS,
                     payload: response.data
@@ -126,7 +125,6 @@ export function updateVehicle(data) {
         });
         API.put(UPDATEVEHICLE_URL, data, { headers: authHeader() })
             .then(response => {
-                console.error('Rs:/', response);
                 dispatch({
                     type: UPDATEVEHICLE_SUCCESS,
                     payload: response.data
@@ -218,9 +216,12 @@ export function getAllVehicles() {
 
 export function deleteVehicle(vehicleID) {
     return dispatch => {
-        dispatch({
-            type: DELETEVEHICLE_LOADING
-        });
+        // dispatch({
+        //     type: DELETEVEHICLE_LOADING
+        // });
+        // dispatch({
+        //     type: USERVEHICLE_LOADING
+        // });
         API.delete(DELETEVEHICLE_URL + '/' + vehicleID, {
             headers: authHeader()
         })
