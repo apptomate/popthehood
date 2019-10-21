@@ -17,28 +17,22 @@ import ReactTable from 'react-table';
 import Loader from '../common/Loader.jsx';
 import swal from 'sweetalert2';
 import { getConfirm, getAlertToast } from '../common/helpers/functions';
-import { deleteVehicle, updateVehicle } from '../../redux/actions/Index.jsx';
+import { deleteVehicle } from '../../redux/actions/Index.jsx';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
-import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataToDownload: [],
-      editVehicleModal: false,
-      user_vehicle_data: []
+      dataToDownload: []
     };
     this.deleteVehicle = this.deleteVehicle.bind(this);
     this.editVehicle = this.editVehicle.bind(this);
     this.download = this.download.bind(this);
-    this.editVehicleToggle = this.editVehicleToggle.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
-    this.updateVehicle = this.updateVehicle.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.columns = [
       {
         Header: 'License Plate',
@@ -101,7 +95,7 @@ class ListVehicle extends Component {
               placement="bottom"
               target={'edit-vehicle-id-' + row['_original'].vehicleId}
             >
-              Edit Vehicle
+              Edit
             </UncontrolledTooltip>
             <Button
               color="danger"
@@ -136,40 +130,13 @@ class ListVehicle extends Component {
         }
       });
   }
-  editVehicle(e, row) {
-    this.setState(prevState => ({
-      editVehicleModal: !prevState.editVehicleModal,
-      user_vehicle_data: {
-        vehicleId: parseInt(row['_original'].vehicleId),
-        userId: parseInt(this.props.loginData.user.userId),
-        make: row['_original'].make,
-        model: row['_original'].model,
-        year: parseInt(row['_original'].year),
-        color: row['_original'].color,
-        licensePlate: row['_original'].licensePlate,
-        specialNotes: row['_original'].specialNotes,
-        imageType: 'jpg',
-        vehicleImage: '',
-        vehicleImageURL: ''
-      },
-      storedImageURL: row['_original'].vehicleImageURL
-    }));
-  }
+  editVehicle(e, row) {}
   componentDidMount() {
     this.props.getAllVehicles();
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.DeleteData.data !== this.props.DeleteData.data &&
-      this.props.DeleteData.data === 'Deleted Successfully'
-    ) {
+  componentDidUpdate() {
+    if (this.props.DeleteData.data === 'Deleted Successfully') {
       swal.fire(getAlertToast('success', 'Deleted Successfully!'));
-    }
-    if (
-      prevProps.UpdateData.data !== this.props.UpdateData.data &&
-      this.props.UpdateData.data === 'Updated Successfully'
-    ) {
-      swal.fire(getAlertToast('success', 'Updated Successfully!'));
     }
   }
   download() {
@@ -231,31 +198,7 @@ class ListVehicle extends Component {
     });
     doc.save('Vehicles List' + '.pdf');
   }
-  onChange(e) {
-    let { name, value } = e.target;
-    this.setState({
-      user_vehicle_data: { ...this.state.user_vehicle_data, [name]: value }
-    });
-  }
-  // Edit Vehicle Modal Toggle
-  editVehicleToggle() {
-    this.setState(prevState => ({
-      editVehicleModal: !prevState.editVehicleModal,
-      user_vehicle_data: [],
-      file: ''
-    }));
-  }
-  //Update User Vehicle
-  updateVehicle() {
-    let data = {
-      ...this.state.user_vehicle_data
-    };
-    this.props.updateVehicle(data);
-    this.setState(prevState => ({
-      user_vehicle_data: [],
-      editVehicleModal: false
-    }));
-  }
+
   render() {
     const { Vehicles = [] } = this.props;
     // const MyLoader = () => <Loader loading={Vehicles.loading} />;
@@ -324,15 +267,6 @@ class ListVehicle extends Component {
             </div>
           </Row>
         </Container>
-        {/* Update Vehicle Modal */}
-        <VehicleUpdateModal
-          modal_toggle={this.state.editVehicleModal}
-          modal_toggle_func={this.editVehicleToggle}
-          updateUserVehicleDetails={this.updateVehicle}
-          state_data={this.state}
-          onChange_func={this.onChange}
-        />
-        {/* Update Vehicle Modal */}
       </Fragment>
     );
   }
@@ -341,15 +275,13 @@ const getState = state => {
   return {
     loginData: state.authLogin,
     Vehicles: state.getAllVehicles,
-    DeleteData: state.deleteVehicle,
-    UpdateData: state.updateVehicle
+    DeleteData: state.deleteVehicle
   };
 };
 export default connect(
   getState,
   {
     getAllVehicles,
-    deleteVehicle,
-    updateVehicle
+    deleteVehicle
   }
 )(ListVehicle);

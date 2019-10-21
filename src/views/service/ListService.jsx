@@ -7,11 +7,12 @@ import {
   Button,
   UncontrolledTooltip,
   FormGroup,
+  Label,
   Input
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import {
-  //getAllServices,
+  getAllServices,
   getAllServicePlans,
   getServicePriceByID
 } from '../../redux/actions/Index.jsx';
@@ -28,8 +29,6 @@ class ListService extends Component {
     super(props);
     this.state = { dataToDownload: [], initialFilter: true };
     this.onChange = this.onChange.bind(this);
-    this.download = this.download.bind(this);
-    this.downloadPdf = this.downloadPdf.bind(this);
     this.columns = [
       {
         Header: 'Service Name',
@@ -54,92 +53,23 @@ class ListService extends Component {
       {
         Header: 'Is Available',
         accessor: 'isAvailable',
-        className: 'text-center',
-        Cell: ({ row }) => (
-          <Fragment>
-            <h3>
-              <i
-                className={
-                  row['_original'].isAvailable
-                    ? 'far fa-check-circle'
-                    : 'far fa-times-circle'
-                }
-              />
-            </h3>
-          </Fragment>
-        )
+        className: 'text-center'
       }
     ];
   }
   componentDidMount() {
-    this.props.getServicePriceByID(2);
+    this.props.getAllServices();
     this.props.getAllServicePlans();
   }
   onChange(e) {
     let { name, value } = e.target;
     this.props.getServicePriceByID(parseInt(value));
-    this.setState({ [name]: value });
-  }
-  download() {
-    const currentRecords = this.reactTable.getResolvedState().sortedData;
-    var data_to_download = [];
-    for (var index = 0; index < currentRecords.length; index++) {
-      let record_to_download = {};
-      for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
-      }
-      data_to_download.push(record_to_download);
-    }
-    this.setState({ dataToDownload: data_to_download }, () => {
-      this.csvLink.link.click();
-    });
-  }
-  downloadPdf() {
-    const currentRecords = this.reactTable.getResolvedState().sortedData;
-    var data_array = [];
-    for (var index = 0; index < currentRecords.length; index++) {
-      let record_to_download = {};
-      for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
-      }
-      data_array.push(record_to_download);
-    }
-    var doc = new jsPDF('P', 'px', 'a4');
-    doc.autoTable({
-      body: data_array,
-      columns: [
-        { header: 'Service Name', dataKey: 'Service Name' },
-        { header: 'Description', dataKey: 'Description' },
-        { header: 'Prize', dataKey: 'Model' },
-        { header: 'Notes', dataKey: 'Notes' },
-        { header: 'Is Available', dataKey: 'Is Available' }
-      ],
-      columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 100 },
-        2: { cellWidth: 30 },
-        3: { cellWidth: 100 },
-        4: { cellWidth: 30 }
-      },
-      margin: {
-        top: 8,
-        right: 8,
-        bottom: 8,
-        left: 8
-      },
-      rowPageBreak: 'avoid',
-      theme: 'grid'
-    });
-    doc.save('Vehicles List' + '.pdf');
+    this.setState({ initialFilter: false, [name]: value });
   }
   render() {
-    const { servicePlans = [], ServicesByID = [] } = this.props;
-    const { ServicePlan = 2 } = this.state;
-    const MyLoader = () => <Loader loading={ServicesByID.loading} />;
+    const { Services = [], servicePlans = [], ServicesByID = [] } = this.props;
+    const { ServicePlan } = this.state;
+    const MyLoader = () => <Loader loading={Services.loading} />;
     const Plans =
       servicePlans.allServicePlans &&
       servicePlans.allServicePlans.map((type, key) => (
@@ -147,6 +77,9 @@ class ListService extends Component {
           {type.planType}
         </option>
       ));
+    let reports = this.state.initialFilter
+      ? Services.allServices
+      : ServicesByID.allServices;
     return (
       <Fragment>
         <UserHeader />
@@ -159,6 +92,7 @@ class ListService extends Component {
                   <h3 className="mb-0">List Of Available Services</h3>
                   <span style={{ float: 'right', paddingTop: '0.5rem' }}>
                     <FormGroup>
+                      <Label for="exampleSelect">Select</Label>
                       <Input
                         type="select"
                         name="ServicePlan"
@@ -182,7 +116,7 @@ class ListService extends Component {
                     </Button>
                     <CSVLink
                       data={this.state.dataToDownload}
-                      filename={'Service List' + '.csv'}
+                      filename={'Vehicles List' + '.csv'}
                       className="hidden"
                       ref={r => (this.csvLink = r)}
                       target="_blank"
@@ -207,7 +141,7 @@ class ListService extends Component {
                   id="check_issues"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
-                  data={ServicesByID.allServices}
+                  data={reports}
                   columns={this.columns}
                   defaultPageSize={10}
                   pageSizeOptions={[10, 20]}
@@ -234,15 +168,15 @@ class ListService extends Component {
 const getState = state => {
   return {
     loginData: state.authLogin,
-    // Services: state.getAllServices,
+    Services: state.getAllServices,
     servicePlans: state.getAllServicePlans,
-    ServicesByID: state.getServicePriceByID
+    ServicesByID: getServicePriceByID
   };
 };
 export default connect(
   getState,
   {
-    //  getAllServices,
+    getAllServices,
     getAllServicePlans,
     getServicePriceByID
   }

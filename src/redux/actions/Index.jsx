@@ -139,7 +139,6 @@ export function updateVehicle(data) {
         });
         var get_data = { userId: data.userId };
         dispatch(getUserVehicleDetails(get_data));
-        dispatch(getAllVehicles());
       })
       .catch(function(error) {
         if (error.response) {
@@ -236,7 +235,6 @@ export function deleteVehicle(vehicleID) {
           type: DELETEVEHICLE_SUCCESS,
           payload: response.data
         });
-        dispatch(getAllVehicles());
       })
       .catch(function(error) {
         dispatch({

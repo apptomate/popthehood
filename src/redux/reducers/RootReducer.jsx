@@ -7,7 +7,7 @@ import deleteVehicle from './vehicleReducers/DeleteVehicleReducer';
 import vehicleByVehicleID from './vehicleReducers/VehicleByVehicleIDReducer';
 import getAllServices from './servicereducers/AllServicesReducer';
 import getAllServicePlans from './servicereducers/AllServicePlansReducer';
-import getServicePriceByID from './servicereducers/GetServicePriceByIDReducer';
+import { getServicePriceByID } from '../actions/Index';
 import updateUser from './usersReducers/PutUserReducer';
 import deleteUser from './usersReducers/DeleteUserReducer';
 import updateVehicle from './vehicleReducers/PutVehicleReducer';
@@ -19,6 +19,7 @@ const RootReducer = combineReducers({
   updateUser: updateUser,
   deleteUser: deleteUser,
   updateVehicle: updateVehicle,
+
   deleteVehicle: deleteVehicle,
   vehicleByVehicleID: vehicleByVehicleID,
   getAllVehicles: getAllVehicles,
