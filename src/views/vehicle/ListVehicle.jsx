@@ -159,7 +159,7 @@ class ListVehicle extends Component {
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
-    for (var index = 0; index < currentRecords.length; index++) {
+    for (var index = 0; index < currentRecords.length - 1; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
         record_to_download[this.columns[colIndex].Header] = String(
@@ -172,18 +172,20 @@ class ListVehicle extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'Serial Number', dataKey: 'Serial Number' },
+        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Make', dataKey: 'Make' },
+        { header: 'Model', dataKey: 'Model' },
+        { header: 'User Name', dataKey: 'User Name' },
         { header: 'Location', dataKey: 'Location' },
-        { header: 'Item', dataKey: 'Item' },
-        { header: 'Manufacturer', dataKey: 'Manufacturer' },
-        { header: 'Model', dataKey: 'Model' }
+        { header: 'Next Service', dataKey: 'Next Service' }
       ],
       columnStyles: {
-        0: { cellWidth: 30 }, //serial no
-        1: { cellWidth: 120 }, //Location
-        2: { cellWidth: 50 }, //Item
-        3: { cellWidth: 50 }, //Manufacturer
-        4: { cellWidth: 60 } //Model
+        0: { cellWidth: 30 },
+        1: { cellWidth: 30 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 50 },
+        4: { cellWidth: 60 },
+        5: { cellWidth: 60 }
       },
       margin: {
         top: 8,
@@ -199,7 +201,7 @@ class ListVehicle extends Component {
 
   render() {
     const { Vehicles = [] } = this.props;
-    const MyLoader = () => <Loader loading={Vehicles.loading} />;
+    // const MyLoader = () => <Loader loading={Vehicles.loading} />;
     return (
       <Fragment>
         <UserHeader />
@@ -244,7 +246,7 @@ class ListVehicle extends Component {
                 </CardHeader>
                 <ReactTable
                   id="check_issues"
-                  LoadingComponent={MyLoader}
+                  // LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={Vehicles.allVehicles}
                   columns={this.columns}
