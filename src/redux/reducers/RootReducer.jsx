@@ -8,6 +8,9 @@ import vehicleByVehicleID from './vehiclereducers/VehicleByVehicleIDReducer';
 import getAllServices from './servicereducers/AllServicesReducer';
 import getAllServicePlans from './servicereducers/AllServicePlansReducer';
 import { getServicePriceByID } from '../actions/Index';
+import updateUser from './usersReducers/PutUserReducer';
+import deleteUser from './usersReducers/DeleteUserReducer';
+import updateVehicle from './vehicleReducers/PutVehicleReducer';
 
 const RootReducer = combineReducers({
   authLogin: authLogin,
@@ -18,7 +21,10 @@ const RootReducer = combineReducers({
   vehicleByVehicleID: vehicleByVehicleID,
   getAllServices: getAllServices,
   getAllServicePlans: getAllServicePlans,
-  getServicePriceByID: getServicePriceByID
+  getServicePriceByID: getServicePriceByID,
+  updateUser: updateUser,
+  deleteUser: deleteUser,
+  updateVehicle: updateVehicle
 });
 
 export default RootReducer;
