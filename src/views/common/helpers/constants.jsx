@@ -7,3 +7,7 @@ export const DELETEVEHICLE_URL = BASE_URL + 'Vehicles/DeleteVehicle';
 export const VEHICLEBYVEHICLEID_URL = BASE_URL + 'Vehicles/Vehicle';
 export const ALLSERVICES_URL =
   BASE_URL + '/ServiceAvailability/GetAvailableService';
+export const GETSERVICEPRICEBYID_URL =
+  BASE_URL + 'ServicePriceChart/GetServicePriceByID';
+export const ALLSERVICEPLANS_URL =
+  BASE_URL + 'ServiceAvailability/GetServicePlan';

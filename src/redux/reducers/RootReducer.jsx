@@ -1,20 +1,24 @@
 import { combineReducers } from 'redux';
 import authLogin from './authreducers/LoginReducer';
-import allVehicles from './vehiclereducers/AllVehiclesReducer';
+import getAllVehicles from './vehiclereducers/AllVehiclesReducer';
 import getUserVehicleDetails from './usersReducers/GetUsersVehicleDetailsReducer';
 import getAllUsers from './usersReducers/GetAllUsersReducer';
 import deleteVehicle from './vehiclereducers/DeleteVehicleReducer';
 import vehicleByVehicleID from './vehiclereducers/VehicleByVehicleIDReducer';
-import allServices from './servicereducers/AllServicesReducer';
+import getAllServices from './servicereducers/AllServicesReducer';
+import getAllServicePlans from './servicereducers/AllServicePlansReducer';
+import { getServicePriceByID } from '../actions/Index';
 
 const RootReducer = combineReducers({
   authLogin: authLogin,
   getAllUsers: getAllUsers,
   getUserVehicleDetails: getUserVehicleDetails,
-  getAllVehicles: allVehicles,
+  getAllVehicles: getAllVehicles,
   deleteVehicle: deleteVehicle,
   vehicleByVehicleID: vehicleByVehicleID,
-  getAllServices: allServices
+  getAllServices: getAllServices,
+  getAllServicePlans: getAllServicePlans,
+  getServicePriceByID: getServicePriceByID
 });
 
 export default RootReducer;

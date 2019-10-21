@@ -6,7 +6,9 @@ import {
   USERVEHICLE_URL,
   DELETEVEHICLE_URL,
   VEHICLEBYVEHICLEID_URL,
-  ALLSERVICES_URL
+  ALLSERVICES_URL,
+  ALLSERVICEPLANS_URL,
+  GETSERVICEPRICEBYID_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -30,7 +32,13 @@ import {
   VEHICLEBYVEHICLEID_ERROR,
   ALLSERVICES_LOADING,
   ALLSERVICES_SUCCESS,
-  ALLSERVICES_ERROR
+  ALLSERVICES_ERROR,
+  ALLSERVICEPLANS_LOADING,
+  ALLSERVICEPLANS_SUCCESS,
+  ALLSERVICEPLANS_ERROR,
+  GETSERVICEPRICEBYID_LOADING,
+  GETSERVICEPRICEBYID_SUCCESS,
+  GETSERVICEPRICEBYID_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -142,6 +150,7 @@ export function deleteVehicle(vehicleID) {
           type: DELETEVEHICLE_SUCCESS,
           payload: response.data
         });
+        dispatch(getAllVehicles());
       })
       .catch(function(error) {
         dispatch({
@@ -192,6 +201,52 @@ export function getAllServices() {
       .catch(function(error) {
         dispatch({
           type: ALLSERVICES_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function getAllServicePlans() {
+  return dispatch => {
+    dispatch({
+      type: ALLSERVICEPLANS_LOADING
+    });
+    API.get(ALLSERVICEPLANS_URL, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: ALLSERVICEPLANS_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: ALLSERVICEPLANS_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function getServicePriceByID(id) {
+  return dispatch => {
+    dispatch({
+      type: GETSERVICEPRICEBYID_LOADING
+    });
+    API.get(GETSERVICEPRICEBYID_URL + '/' + id, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: GETSERVICEPRICEBYID_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: GETSERVICEPRICEBYID_ERROR,
           payload: error.response.data
         });
       });
