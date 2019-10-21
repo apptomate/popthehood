@@ -5,17 +5,11 @@ import { PropTypes } from 'prop-types';
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  FormGroup,
   Form,
   Input,
   InputGroupAddon,
@@ -27,8 +21,6 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col
@@ -110,12 +102,11 @@ class Sidebar extends React.Component {
           {/* Brand */}
           {logo ? (
             <NavbarBrand className='pt-0' {...navbarBrandProps}>
-              {/* <img
+              <img
                 alt={logo.imgAlt}
                 className='navbar-brand-img'
-                src={logo.imgSrc}
-              /> */}{' '}
-              popTheHood
+                src='https://img1.wsimg.com/isteam/ip/b843ef22-2e01-4297-a41e-18c0345d66fb/logo/2107e31a-1483-4130-9426-ea46ba439f55.png/:/rs=h:88/qt=q:95'
+              />
             </NavbarBrand>
           ) : null}
           {/* User */}

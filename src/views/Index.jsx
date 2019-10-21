@@ -14,7 +14,6 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
   Table,
   Container,
   Row,

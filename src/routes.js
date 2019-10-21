@@ -4,12 +4,9 @@ import listVehicle from 'views/listVehicle.jsx';
 import serviceListpage from 'views/serviceListpage.jsx';
 import paymentReport from 'views/paymentReport.jsx';
 import servicesReport from 'views/servicesReport.jsx';
-import Profile from 'views/examples/Profile.jsx';
-import Maps from 'views/examples/Maps.jsx';
+import vehicleServicepage from 'views/vehicleServicepage.jsx';
 import Register from 'views/examples/Register.jsx';
 import Login from 'views/examples/Login.jsx';
-import Tables from 'views/examples/Tables.jsx';
-import Icons from 'views/examples/Icons.jsx';
 
 var routes = [
   {
@@ -58,6 +55,14 @@ var routes = [
     component: servicesReport,
     layout: '/admin'
   },
+
+  {
+    path: '/vehicle-service',
+    name: 'Vehicle Service Page',
+    icon: 'ni ni-circle-08 text-primary',
+    component: vehicleServicepage,
+    layout: '/admin'
+  },
   {
     path: '/login',
     name: 'Login',
@@ -73,41 +78,5 @@ var routes = [
     component: Register,
     layout: '/auth'
   }
-  // {
-  //   path: '/icons',
-  //   name: 'Icons',
-  //   icon: 'ni ni-planet text-primary',
-  //   component: Icons,
-  //   layout: '/admin'
-  // },
-  // {
-  //   path: '/maps',
-  //   name: 'Maps',
-  //   icon: 'ni ni-pin-3 text-primary',
-  //   component: Maps,
-  //   layout: '/admin'
-  // },
-  // {
-  //   path: '/user-profile',
-  //   name: 'User Profile',
-  //   icon: 'ni ni-single-02 text-primary',
-  //   component: Profile,
-  //   layout: '/admin'
-  // },
-  // {
-  //   path: '/tables',
-  //   name: 'Tables',
-  //   icon: 'ni ni-bullet-list-67 text-primary',
-  //   component: Tables,
-  //   layout: '/admin'
-  // },
-
-  // {
-  //   path: '/empty',
-  //   name: 'Empty',
-  //   icon: 'ni ni-circle-08 text-primary',
-  //   component: Register,
-  //   layout: '/auth'
-  // }
 ];
 export default routes;

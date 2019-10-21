@@ -2,29 +2,20 @@ import React from 'react';
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
   Container,
   Row,
-  Col,
   Badge,
   CardFooter,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Media,
   Pagination,
   PaginationItem,
   PaginationLink,
-  Progress,
-  Table,
-  UncontrolledTooltip
+  Table
 } from 'reactstrap';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
