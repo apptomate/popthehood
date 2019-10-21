@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 // reactstrap components
 import {
   DropdownMenu,
@@ -17,7 +18,7 @@ import {
   Container,
   Media
 } from 'reactstrap';
-
+import img from '../../assets/img/theme/team-4-800x800.jpg';
 class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +30,9 @@ class AdminNavbar extends React.Component {
     window.location.href = '/auth/login';
   }
   render() {
+    const {
+      user: { name }
+    } = this.props.loginData;
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -56,14 +60,11 @@ class AdminNavbar extends React.Component {
                 <DropdownToggle className="pr-0" nav>
                   <Media className="align-items-center">
                     <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={'/static/media/team-4-800x800.23007132.jpg'}
-                      />
+                      <img alt="..." src={img} />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        User Name
+                        {name}
                       </span>
                     </Media>
                   </Media>
@@ -103,4 +104,9 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const getState = state => {
+  return {
+    loginData: state.authLogin
+  };
+};
+export default connect(getState)(AdminNavbar);

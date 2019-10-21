@@ -3,7 +3,10 @@ import {
   LOGIN_URL,
   ALLVEHICLES_URL,
   ALLUSERS_URL,
-  USERVEHICLE_URL
+  USERVEHICLE_URL,
+  DELETEVEHICLE_URL,
+  VEHICLEBYVEHICLEID_URL,
+  ALLSERVICES_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -18,7 +21,16 @@ import {
   ALLUSERS_LOADING,
   USERVEHICLE_SUCCESS,
   USERVEHICLE_ERROR,
-  USERVEHICLE_LOADING
+  USERVEHICLE_LOADING,
+  DELETEVEHICLE_LOADING,
+  DELETEVEHICLE_SUCCESS,
+  DELETEVEHICLE_ERROR,
+  VEHICLEBYVEHICLEID_LOADING,
+  VEHICLEBYVEHICLEID_SUCCESS,
+  VEHICLEBYVEHICLEID_ERROR,
+  ALLSERVICES_LOADING,
+  ALLSERVICES_SUCCESS,
+  ALLSERVICES_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -111,6 +123,75 @@ export function getAllVehicles() {
       .catch(function(error) {
         dispatch({
           type: ALLVEHICLES_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function deleteVehicle(vehicleID) {
+  return dispatch => {
+    dispatch({
+      type: DELETEVEHICLE_LOADING
+    });
+    API.delete(DELETEVEHICLE_URL + '/' + vehicleID, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: DELETEVEHICLE_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: DELETEVEHICLE_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function vehiclesByVehicleID(vehicleID) {
+  return dispatch => {
+    dispatch({
+      type: VEHICLEBYVEHICLEID_LOADING
+    });
+    API.get(VEHICLEBYVEHICLEID_URL + '/' + vehicleID, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: VEHICLEBYVEHICLEID_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: VEHICLEBYVEHICLEID_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function getAllServices() {
+  return dispatch => {
+    dispatch({
+      type: ALLSERVICES_LOADING
+    });
+    API.get(ALLSERVICES_URL, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: ALLSERVICES_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: ALLSERVICES_ERROR,
           payload: error.response.data
         });
       });

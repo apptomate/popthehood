@@ -1,4 +1,4 @@
-export const objectInitial = [];
+export const arrayInitial = [];
 
 const userData = localStorage.getItem('userData') || null;
 
@@ -6,14 +6,14 @@ const token = localStorage.getItem('token');
 
 const isLogin = localStorage.getItem('isLogin');
 
-export const arrayInitial = {
+export const objectInitial = {
   loading: false,
   token,
   user: JSON.parse(userData),
   isLogin: isLogin === 'true' ? true : false
 };
 
-export const singleArrayInitial = {};
+export const singleObjectInitial = {};
 
 export const singleValueInitial = 0;
 

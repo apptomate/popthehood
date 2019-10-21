@@ -1,9 +1,9 @@
 import * as types from '../../actions/ActionTypes.jsx';
-import { arrayInitial } from '../../InitialState.jsx';
+import { objectInitial } from '../../InitialState.jsx';
 import Swal from 'sweetalert2';
 import { getAlertToast } from '../../../views/common/helpers/functions.js';
 
-export default function authLogin(state = arrayInitial, action) {
+export default function authLogin(state = objectInitial, action) {
   const { type, payload } = action;
   switch (type) {
   case types.LOGIN_SUCCESS:
