@@ -5,13 +5,13 @@ import {
   ALLUSERS_URL,
   USERVEHICLE_URL,
   DELETEVEHICLE_URL,
-  VEHICLEBYVEHICLEID_URL,
   ALLSERVICES_URL,
   ALLSERVICEPLANS_URL,
   GETSERVICEPRICEBYID_URL,
   UPDATE_DELETE_USER_URL,
   UPDATEVEHICLE_URL,
-  SERVICEREPORT_URL
+  SERVICEREPORT_URL,
+  VEHICLESERVICEDETAILS_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -33,9 +33,6 @@ import {
   DELETEVEHICLE_LOADING,
   DELETEVEHICLE_SUCCESS,
   DELETEVEHICLE_ERROR,
-  VEHICLEBYVEHICLEID_LOADING,
-  VEHICLEBYVEHICLEID_SUCCESS,
-  VEHICLEBYVEHICLEID_ERROR,
   ALLSERVICES_LOADING,
   ALLSERVICES_SUCCESS,
   ALLSERVICES_ERROR,
@@ -50,7 +47,10 @@ import {
   GETSERVICEPRICEBYID_ERROR,
   GETSERVICEREPORT_LOADING,
   GETSERVICEREPORT_SUCCESS,
-  GETSERVICEREPORT_ERROR
+  GETSERVICEREPORT_ERROR,
+  VEHICLESERVICEDETAILS_LOADING,
+  VEHICLESERVICEDETAILS_SUCCESS,
+  VEHICLESERVICEDETAILS_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -339,6 +339,30 @@ export function getServiceReport() {
           type: GETSERVICEREPORT_ERROR,
           payload: error.response.data
         });
+      });
+  };
+}
+
+//Vehicle Service Details
+export function vehicleServiceDetails(data) {
+  return dispatch => {
+    dispatch({
+      type: VEHICLESERVICEDETAILS_LOADING
+    });
+    API.get(VEHICLESERVICEDETAILS_URL, { headers: authHeader(), params: data })
+      .then(response => {
+        dispatch({
+          type: VEHICLESERVICEDETAILS_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response.data.error) {
+          dispatch({
+            type: VEHICLESERVICEDETAILS_ERROR,
+            payload: error.response.data
+          });
+        }
       });
   };
 }

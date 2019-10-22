@@ -6,7 +6,8 @@ import {
   Container,
   Row,
   Button,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Col
 } from 'reactstrap';
 import { connect } from 'react-redux';
 // core components
@@ -88,12 +89,14 @@ class ListVehicle extends Component {
       },
       {
         Header: 'Actions',
+        className: 'text-center',
         filterable: false,
         Cell: ({ row }) => (
           <Fragment>
             <Button
               className="action_btn"
               id="EditTooltip"
+              size="sm"
               data-tip="Edit Vehicle"
               onClick={e => this.editVehicle(e, row)}
             >
@@ -112,6 +115,7 @@ class ListVehicle extends Component {
               color="danger"
               className="action_btn"
               id="DeleteToolTip"
+              size="sm"
               onClick={e => this.deleteVehicle(e, row)}
             >
               <i
@@ -273,38 +277,50 @@ class ListVehicle extends Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">List Of Vehicle</h3>
-                  <span style={{ float: 'right', paddingTop: '0.5rem' }}>
-                    <Button
-                      color="primary"
-                      size="sm"
-                      onClick={this.download}
-                      id="down_csv"
-                    >
-                      <i className="fas fa-file-download"></i> CSV
-                    </Button>
-                    <CSVLink
-                      data={this.state.dataToDownload}
-                      filename={'Vehicles List' + '.csv'}
-                      className="hidden"
-                      ref={r => (this.csvLink = r)}
-                      target="_blank"
-                    />
-                    <UncontrolledTooltip placement="top" target={'down_csv'}>
-                      Download as CSV
-                    </UncontrolledTooltip>
-                    <Button
-                      color="info"
-                      size="sm"
-                      id="down_pdf"
-                      onClick={this.downloadPdf}
-                    >
-                      <i className="fas fa-file-download"></i> PDF
-                    </Button>
-                    <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                      Download as PDF
-                    </UncontrolledTooltip>
-                  </span>
+                  <Row>
+                    <Col>
+                      <h3 className="mb-0">List Of Vehicle</h3>
+                    </Col>
+                    <Col>
+                      <span style={{ float: 'right', paddingTop: '0.5rem' }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={this.download}
+                          id="down_csv"
+                        >
+                          <i className="fas fa-file-download"></i> CSV
+                        </Button>
+                        <CSVLink
+                          data={this.state.dataToDownload}
+                          filename={'Vehicles List' + '.csv'}
+                          className="hidden"
+                          ref={r => (this.csvLink = r)}
+                          target="_blank"
+                        />
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_csv'}
+                        >
+                          Download as CSV
+                        </UncontrolledTooltip>
+                        <Button
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
+                          onClick={this.downloadPdf}
+                        >
+                          <i className="fas fa-file-download"></i> PDF
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_pdf'}
+                        >
+                          Download as PDF
+                        </UncontrolledTooltip>
+                      </span>
+                    </Col>
+                  </Row>
                 </CardHeader>
                 <ReactTable
                   id="check_issues"

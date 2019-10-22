@@ -7,6 +7,8 @@ export const ALLUSERS_URL = BASE_URL + 'Users/Users';
 export const ALLVEHICLES_URL = BASE_URL + 'Vehicles/Vehicles';
 export const DELETEVEHICLE_URL = BASE_URL + 'Vehicles/DeleteVehicle';
 export const VEHICLEBYVEHICLEID_URL = BASE_URL + 'Vehicles/Vehicle';
+export const VEHICLESERVICEDETAILS_URL =
+  BASE_URL + 'Vehicles/VehicleDetailsList';
 export const ALLSERVICES_URL =
   BASE_URL + '/ServiceAvailability/GetAvailableService';
 export const GETSERVICEPRICEBYID_URL =

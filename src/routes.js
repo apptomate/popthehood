@@ -6,6 +6,7 @@ import Login from 'views/login/Login.jsx';
 import ListVehicle from 'views/vehicle/ListVehicle.jsx';
 import ListService from './views/service/ListService';
 import ServiceReport from './views/serviceReport/ServiceReport';
+import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
 var routes = [
   {
     path: '/index',
@@ -73,6 +74,14 @@ var routes = [
     icon: 'ni ni-circle-08 text-primary',
     component: Register,
     layout: '/auth',
+    showNavbar: false
+  },
+  {
+    path: '/vehicle-service-details/:id',
+    name: 'Vehicle Service',
+    icon: 'ni ni-circle-08 text-primary',
+    component: vehicleServicepage,
+    layout: '/admin',
     showNavbar: false
   }
 ];
