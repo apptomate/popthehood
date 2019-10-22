@@ -10,7 +10,8 @@ import {
   ALLSERVICEPLANS_URL,
   GETSERVICEPRICEBYID_URL,
   UPDATE_DELETE_USER_URL,
-  UPDATEVEHICLE_URL
+  UPDATEVEHICLE_URL,
+  VEHICLESERVICEDETAILS_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -46,7 +47,10 @@ import {
   ALLSERVICEPLANS_ERROR,
   GETSERVICEPRICEBYID_LOADING,
   GETSERVICEPRICEBYID_SUCCESS,
-  GETSERVICEPRICEBYID_ERROR
+  GETSERVICEPRICEBYID_ERROR,
+  VEHICLESERVICEDETAILS_LOADING,
+  VEHICLESERVICEDETAILS_SUCCESS,
+  VEHICLESERVICEDETAILS_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -335,6 +339,31 @@ export function getServicePriceByID(id) {
           type: GETSERVICEPRICEBYID_ERROR,
           payload: error.response.data
         });
+      });
+  };
+}
+
+//Vehicle Service Details
+export function vehicleServiceDetails(data) {
+  return dispatch => {
+    dispatch({
+      type: VEHICLESERVICEDETAILS_LOADING
+    });
+    API.get(VEHICLESERVICEDETAILS_URL, { headers: authHeader(), params: data })
+      .then(response => {
+        console.error('Res:/', response);
+        dispatch({
+          type: VEHICLESERVICEDETAILS_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response.data.error) {
+          dispatch({
+            type: VEHICLESERVICEDETAILS_ERROR,
+            payload: error.response.data
+          });
+        }
       });
   };
 }

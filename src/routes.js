@@ -9,6 +9,7 @@ import Login from 'views/login/Login.jsx';
 import ListVehicle from 'views/vehicle/ListVehicle.jsx';
 import ViewVehicle from './views/vehicle/ViewVehicle';
 import ListService from './views/service/ListService';
+import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
 var routes = [
   {
     path: '/index',
@@ -83,6 +84,14 @@ var routes = [
     name: 'View Vehicle',
     icon: 'ni ni-circle-08 text-primary',
     component: ViewVehicle,
+    layout: '/admin',
+    showNavbar: false
+  },
+  {
+    path: '/vehicle-service-details/:id',
+    name: 'Vehicle Service',
+    icon: 'ni ni-circle-08 text-primary',
+    component: vehicleServicepage,
     layout: '/admin',
     showNavbar: false
   }
