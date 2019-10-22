@@ -11,7 +11,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Spinner,
   Col
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
@@ -64,7 +63,7 @@ class Login extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">Login</div>
-              <Form role="form" onSubmit={this.onClickLogin}>
+              <Form role="form">
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">

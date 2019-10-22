@@ -118,7 +118,7 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <Badge className='f-15' color='danger'>
+            <Badge className="f-15" color="danger">
               <i
                 className={
                   row['_original'].isEmailVerified
@@ -136,7 +136,7 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <Badge className='f-15' color='success'>
+            <Badge className="f-15" color="success">
               <i
                 className={
                   row['_original'].isPhoneNumVerified
@@ -157,37 +157,37 @@ class Users extends React.Component {
           <Fragment>
             <Button
               user_id={row['_original'].userId}
-              className='action_btn'
-              id='EditTooltip'
+              className="action_btn"
+              id="EditTooltip"
               onClick={e => this.editUser(e, row)}
-              size='sm'
+              size="sm"
             >
               <i
-                className='fas fa-pencil-alt edit_i'
+                className="fas fa-pencil-alt edit_i"
                 id={'edit-user-id-' + row['_original'].userId}
               />
             </Button>
             <UncontrolledTooltip
-              placement='bottom'
+              placement="bottom"
               target={'edit-user-id-' + row['_original'].userId}
             >
               Edit User
             </UncontrolledTooltip>
             <Button
-              color='danger'
+              color="danger"
               data-user_id={row['_original'].userId}
-              className='action_btn'
-              id='DeleteTooltip'
+              className="action_btn"
+              id="DeleteTooltip"
               onClick={this.deleteUserDetail}
-              size='sm'
+              size="sm"
             >
               <i
-                className='fas fas fa-trash edit_i'
+                className="fas fas fa-trash edit_i"
                 id={'delete-user-id-' + row['_original'].userId}
               />
             </Button>
             <UncontrolledTooltip
-              placement='bottom'
+              placement="bottom"
               target={'delete-user-id-' + row['_original'].userId}
             >
               Delete User
@@ -227,35 +227,35 @@ class Users extends React.Component {
           <Fragment>
             <Button
               user_id={row['_original'].vehicleId}
-              className='action_btn'
-              id='EditTooltip'
+              className="action_btn"
+              id="EditTooltip"
               onClick={e => this.editUserVehicle(e, row)}
             >
               <i
-                className='fas fa-pencil-alt edit_i'
+                className="fas fa-pencil-alt edit_i"
                 id={'edit-user_vehicle-id-' + row['_original'].vehicleId}
               />
             </Button>
             <UncontrolledTooltip
-              placement='bottom'
+              placement="bottom"
               target={'edit-user_vehicle-id-' + row['_original'].vehicleId}
             >
               Edit Vehicle
             </UncontrolledTooltip>
             <Button
               data-user_vehicle_id={row['_original'].vehicleId}
-              className='action_btn'
-              color='danger'
-              id='DeleteTooltip'
+              className="action_btn"
+              color="danger"
+              id="DeleteTooltip"
               onClick={this.deleteUserVehicleDetail}
             >
               <i
-                className='fas fas fa-trash edit_i'
+                className="fas fas fa-trash edit_i"
                 id={'delete-user_vehicle-id-' + row['_original'].vehicleId}
               />
             </Button>
             <UncontrolledTooltip
-              placement='bottom'
+              placement="bottom"
               target={'delete-user_vehicle-id-' + row['_original'].vehicleId}
             >
               Delete Vehicle
@@ -470,46 +470,46 @@ class Users extends React.Component {
       <>
         <UserHeader />
         {/* Page content */}
-        <Container className='mt--7' fluid>
+        <Container className="mt--7" fluid>
           <Row>
-            <div className='col'>
-              <Card className='shadow'>
-                <CardHeader className='border-0'>
-                  <h3 className='mb-0'>Users List</h3>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <h3 className="mb-0">Users List</h3>
                 </CardHeader>
                 <ReactTable
-                  id='users_table'
+                  id="users_table"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
                   pageSizeOptions={[10, 20]}
-                  noDataText='No Record Found..'
+                  noDataText="No Record Found.."
                   filterable
-                  HeaderClassName='text-bold'
+                  HeaderClassName="text-bold"
                   defaultFilterMethod={(filter, row) =>
                     String(row[filter.id])
                       .toLowerCase()
                       .includes(filter.value.toLowerCase())
                   }
                   onFilteredChange={this.filterData}
-                  className='-striped -highlight'
+                  className="-striped -highlight"
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }}>
                         <br />
                         <ReactTable
-                          id='users_vehicle_table'
+                          id="users_vehicle_table"
                           LoadingComponent={MyLoaderVehicle}
                           ref={r => (this.reactTableVehicle = r)}
                           data={vehicle_data}
                           columns={this.vehicle_columns}
                           defaultPageSize={3}
                           pageSizeOptions={[10, 20]}
-                          noDataText='No Record Found..'
+                          noDataText="No Record Found.."
                           filterable
-                          HeaderClassName='text-bold'
+                          HeaderClassName="text-bold"
                           defaultFilterMethod={(filter, row) =>
                             String(row[filter.id])
                               .toLowerCase()
@@ -532,101 +532,101 @@ class Users extends React.Component {
           >
             <AvForm onValidSubmit={this.updateUserDetails}>
               <ModalHeader toggle={this.editToggle}> Update User</ModalHeader>
-              <ModalBody className='cus_model1'>
+              <ModalBody className="cus_model1">
                 <AvField
-                  name='name'
-                  label='User Name'
-                  placeholder='User Name'
-                  id='username'
+                  name="name"
+                  label="User Name"
+                  placeholder="User Name"
+                  id="username"
                   value={name}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                 />
                 <AvField
-                  name='phoneNumber'
-                  label='Phone Number'
-                  type='tel'
-                  placeholder='Phone Number'
-                  id='phoneNumber'
+                  name="phoneNumber"
+                  label="Phone Number"
+                  type="tel"
+                  placeholder="Phone Number"
+                  id="phoneNumber"
                   value={phoneNumber}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                 />
                 <AvField
-                  name='email'
-                  type='email'
-                  label='Email'
-                  placeholder='Email'
-                  id='email'
+                  name="email"
+                  type="email"
+                  label="Email"
+                  placeholder="Email"
+                  id="email"
                   value={email}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                   disabled
                 />
                 <AvField
-                  name='password'
-                  type='password'
-                  label='Password'
-                  placeholder='Password'
-                  id='password'
+                  name="password"
+                  type="password"
+                  label="Password"
+                  placeholder="Password"
+                  id="password"
                   value={password}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                 />
                 <AvField
-                  name='sourceofReg'
-                  label='Source of Reg'
-                  placeholder='Source of Reg'
-                  id='sourceofReg'
+                  name="sourceofReg"
+                  label="Source of Reg"
+                  placeholder="Source of Reg"
+                  id="sourceofReg"
                   value={sourceofReg}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                 />
                 <Label>Email Verified</Label>
                 <br />
-                <label className='custom-toggle'>
+                <label className="custom-toggle">
                   <input
                     defaultChecked={isEmailVerified}
                     value={isEmailVerified}
-                    type='checkbox'
-                    name='isEmailVerified'
+                    type="checkbox"
+                    name="isEmailVerified"
                     onChange={this.onCheck}
                   />
-                  <span className='custom-toggle-slider rounded-circle' />
+                  <span className="custom-toggle-slider rounded-circle" />
                 </label>
-                <span className='clearfix' />
+                <span className="clearfix" />
                 <Label>Phone Number Verified</Label>
                 <br />
-                <label className='custom-toggle'>
+                <label className="custom-toggle">
                   <input
                     defaultChecked={isPhoneNumVerified}
                     value={isPhoneNumVerified}
-                    type='checkbox'
-                    name='isPhoneNumVerified'
+                    type="checkbox"
+                    name="isPhoneNumVerified"
                     onChange={this.onCheck}
                   />
-                  <span className='custom-toggle-slider rounded-circle' />
+                  <span className="custom-toggle-slider rounded-circle" />
                 </label>
                 <AvField
-                  name='role'
-                  label='Role'
-                  placeholder='Role'
-                  id='role'
+                  name="role"
+                  label="Role"
+                  placeholder="Role"
+                  id="role"
                   value={role}
                   required
                   onChange={this.onChange}
-                  className='blue_lable'
+                  className="blue_lable"
                 />
               </ModalBody>
               <ModalFooter>
                 <FormGroup>
                   <center>
-                    <Button color='success'>Update</Button>
+                    <Button color="success">Update</Button>
                   </center>
                 </FormGroup>
               </ModalFooter>
