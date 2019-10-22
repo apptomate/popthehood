@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
 import swal from 'sweetalert2';
-import { getAlertToast } from '../common/helpers/functions';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { Link } from 'react-router-dom';
 // reactstrap components
 import {
   Card,
@@ -58,17 +58,24 @@ class Users extends React.Component {
       {
         expander: true,
         width: 65,
-        Expander: ({ isExpanded, row, ...rest }) => (
+        Expander: ({ isExpanded, row }) => (
           <Fragment>
-            {isExpanded ? (
-              <i className="fas fa-caret-down" />
-            ) : (
-              <i
-                className="fas fa-caret-right"
-                data-user_id={row['_original'].userId}
-                onClick={this.userVechileFun}
-              />
-            )}
+            {row['_original'].role !== 'Admin' &&
+            row['_original'].vehicleCount ? (
+                <Fragment>
+                  {isExpanded ? (
+                    <i className="fas fa-caret-down" />
+                  ) : (
+                    <i
+                      className="fas fa-caret-right"
+                      data-user_id={row['_original'].userId}
+                      onClick={this.userVechileFun}
+                    />
+                  )}
+                </Fragment>
+              ) : (
+                ''
+              )}
           </Fragment>
         ),
         style: {
@@ -191,7 +198,19 @@ class Users extends React.Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: ({ row }) => {
+          return (
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
+          );
+        }
       },
       { Header: 'Make', accessor: 'make', className: 'text-center' },
       { Header: 'Model', accessor: 'model', className: 'text-center' },
@@ -285,7 +304,7 @@ class Users extends React.Component {
         color: row['_original'].color,
         licensePlate: row['_original'].licensePlate,
         specialNotes: row['_original'].specialNotes,
-        imageType: 'jpg',
+        imageType: '',
         vehicleImage: '',
         vehicleImageURL: ''
       },
