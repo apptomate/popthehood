@@ -10,81 +10,81 @@ import ListVehicle from 'views/vehicle/ListVehicle.jsx';
 import ViewVehicle from './views/vehicle/ViewVehicle';
 import ListService from './views/service/ListService';
 var routes = [
-    {
-        path: '/index',
-        name: 'Dashboard',
-        icon: 'ni ni-tv-2 text-primary',
-        component: Index,
-        layout: '/admin',
-        showNavbar: true
-    },
-    {
-        path: '/users',
-        name: 'Users',
-        icon: 'ni ni-circle-08 text-primary',
-        component: Users,
-        layout: '/admin',
-        showNavbar: true
-    },
+  {
+    path: '/index',
+    name: 'Dashboard',
+    icon: 'ni ni-tv-2 text-primary',
+    component: Index,
+    layout: '/admin',
+    showNavbar: true
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    icon: 'ni ni-circle-08 text-primary',
+    component: Users,
+    layout: '/admin',
+    showNavbar: true
+  },
 
-    {
-        path: '/list-of-vehicle',
-        name: 'List of vehicle',
-        icon: 'ni ni-collection text-primary',
-        component: ListVehicle,
-        layout: '/admin',
-        showNavbar: true
-    },
+  {
+    path: '/list-of-vehicle',
+    name: 'List of vehicle',
+    icon: 'ni ni-collection text-primary',
+    component: ListVehicle,
+    layout: '/admin',
+    showNavbar: true
+  },
 
-    {
-        path: '/service-list',
-        name: 'Available Services',
-        icon: 'fas fa-stream text-primary',
-        component: ListService,
-        layout: '/admin',
-        showNavbar: true
-    },
+  {
+    path: '/service-list',
+    name: 'Available Services',
+    icon: 'fas fa-stream text-primary',
+    component: ListService,
+    layout: '/admin',
+    showNavbar: true
+  },
 
-    {
-        path: '/payment-report',
-        name: 'Payment Report',
-        icon: 'ni ni-credit-card text-primary',
-        component: paymentReport,
-        layout: '/admin',
-        showNavbar: true
-    },
+  {
+    path: '/payment-report',
+    name: 'Payment Report',
+    icon: 'ni ni-credit-card text-primary',
+    component: paymentReport,
+    layout: '/admin',
+    showNavbar: true
+  },
 
-    {
-        path: '/services-report',
-        name: 'Services Report',
-        icon: 'ni ni-chart-bar-32 text-primary',
-        component: servicesReport,
-        layout: '/admin',
-        showNavbar: true
-    },
-    {
-        path: '/login',
-        name: 'Login',
-        icon: 'ni ni-key-25 text-primary',
-        component: Login,
-        layout: '/auth',
-        showNavbar: false
-    },
-    {
-        path: '/register',
-        name: 'Register',
-        icon: 'ni ni-circle-08 text-primary',
-        component: Register,
-        layout: '/auth',
-        showNavbar: false
-    },
-    {
-        path: '/viewvehicle/:id',
-        name: 'View Vehicle',
-        icon: 'ni ni-circle-08 text-primary',
-        component: ViewVehicle,
-        layout: '/admin',
-        showNavbar: false
-    }
+  {
+    path: '/services-report',
+    name: 'Services Report',
+    icon: 'ni ni-chart-bar-32 text-primary',
+    component: servicesReport,
+    layout: '/admin',
+    showNavbar: true
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    icon: 'ni ni-key-25 text-primary',
+    component: Login,
+    layout: '/auth',
+    showNavbar: false
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    icon: 'ni ni-circle-08 text-primary',
+    component: Register,
+    layout: '/auth',
+    showNavbar: false
+  },
+  {
+    path: '/viewvehicle/:id',
+    name: 'View Vehicle',
+    icon: 'ni ni-circle-08 text-primary',
+    component: ViewVehicle,
+    layout: '/admin',
+    showNavbar: false
+  }
 ];
 export default routes;
