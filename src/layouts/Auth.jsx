@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 // core components
 import AuthNavbar from 'components/Navbars/AuthNavbar.jsx';
 import AuthFooter from 'components/Footers/AuthFooter.jsx';
-
+import { connect } from 'react-redux';
 import routes from 'routes.js';
 
 class Auth extends React.Component {
@@ -32,10 +32,13 @@ class Auth extends React.Component {
     });
   };
   render() {
+    if (this.props.loginData.isLogin) {
+      this.props.history.push('/admin/index');
+    }
     return (
       <>
         <div
-          className='main-content'
+          className="main-content"
           style={{
             minHeight: '100vh',
             backgroundImage:
@@ -45,17 +48,17 @@ class Auth extends React.Component {
           }}
         >
           <AuthNavbar />
-          <div className='header py-7 py-lg-8'>
+          <div className="header py-6">
             <Container>
-              <div className='header-body text-center mb-7'>
-                <Row className='justify-content-center'>
-                  <Col lg='5' md='6'>
-                    <h1 className='text-white'>Welcome!</h1>
+              <div className="header-body text-center mb-7">
+                <Row className="justify-content-center">
+                  <Col lg="5" md="6">
+                    <h1 className="text-white">popTheHood</h1>
                   </Col>
                 </Row>
               </div>
             </Container>
-            <div className='separator separator-bottom separator-skew zindex-100'>
+            <div className="separator separator-bottom separator-skew zindex-100">
               {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
@@ -72,8 +75,8 @@ class Auth extends React.Component {
             </div>
           </div>
           {/* Page content */}
-          <Container className='mt--8 pb-5'>
-            <Row className='justify-content-center'>
+          <Container className="mt--8 pb-5">
+            <Row className="justify-content-center">
               <Switch>{this.getRoutes(routes)}</Switch>
             </Row>
           </Container>
@@ -82,5 +85,9 @@ class Auth extends React.Component {
     );
   }
 }
-
-export default Auth;
+const getState = state => {
+  return {
+    loginData: state.authLogin
+  };
+};
+export default connect(getState)(Auth);

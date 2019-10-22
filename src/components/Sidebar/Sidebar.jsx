@@ -55,19 +55,21 @@ class Sidebar extends React.Component {
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={this.closeCollapse}
-            activeClassName='active'
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
+      if (prop.showNavbar === true) {
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={this.closeCollapse}
+              activeClassName='active'
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
+      }
     });
   };
   render() {
@@ -102,11 +104,12 @@ class Sidebar extends React.Component {
           {/* Brand */}
           {logo ? (
             <NavbarBrand className='pt-0' {...navbarBrandProps}>
-              <img
+              {/* <img
                 alt={logo.imgAlt}
                 className='navbar-brand-img'
-                src='https://img1.wsimg.com/isteam/ip/b843ef22-2e01-4297-a41e-18c0345d66fb/logo/2107e31a-1483-4130-9426-ea46ba439f55.png/:/rs=h:88/qt=q:95'
-              />
+                src={logo.imgSrc}
+              /> */}{' '}
+              popTheHood
             </NavbarBrand>
           ) : null}
           {/* User */}
@@ -139,7 +142,7 @@ class Sidebar extends React.Component {
               </DropdownToggle>
               <DropdownMenu className='dropdown-menu-arrow' right>
                 <DropdownItem className='noti-title' header tag='div'>
-                  <h6 className='text-overflow m-0'>Welcome!</h6>
+                  <h6 className='text-overflow m-0'>popTheHood</h6>
                 </DropdownItem>
                 <DropdownItem to='/admin/user-profile' tag={Link}>
                   <i className='ni ni-single-02' />

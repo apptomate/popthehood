@@ -9,13 +9,19 @@ import 'assets/scss/popTheHood-dashboard-react.scss';
 import AdminLayout from 'layouts/Admin.jsx';
 import AuthLayout from 'layouts/Auth.jsx';
 
+import { Provider } from 'react-redux';
+import configureStore from '../src/redux/store/ConfigureStore.jsx';
+const store = configureStore();
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path='/admin' render={props => <AdminLayout {...props} />} />
-      <Route path='/auth' render={props => <AuthLayout {...props} />} />
-      <Redirect from='/' to='/admin/index' />
-    </Switch>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route path='/auth' render={props => <AuthLayout {...props} />} />
+        <Route path='/admin' render={props => <AdminLayout {...props} />} />
+        <Redirect from='/' to='/auth/login' />
+      </Switch>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
