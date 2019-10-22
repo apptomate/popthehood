@@ -8,7 +8,8 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  FormGroup
+  FormGroup,
+  Label
 } from 'reactstrap';
 export function VehicleUpdateModal(props) {
   const {
@@ -46,17 +47,11 @@ export function VehicleUpdateModal(props) {
             </center>
             <br />
           </div>
-
-          <AvField
-            name="licensePlate"
-            label="License Plate"
-            placeholder="License Plate"
-            id="licensePlate"
-            value={licensePlate}
-            required
-            onChange={props.onChange_func}
-            className="blue_lable"
-          />
+          <FormGroup>
+            <Label for="License Plate">
+              License Plate:<h3>{licensePlate}</h3>
+            </Label>
+          </FormGroup>
           <AvField
             name="make"
             label="Make"
