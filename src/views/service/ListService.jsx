@@ -48,11 +48,6 @@ class ListService extends Component {
         className: 'text-center'
       },
       {
-        Header: 'Notes',
-        accessor: 'notes',
-        className: 'text-center'
-      },
-      {
         Header: 'Is Available',
         accessor: 'isAvailable',
         className: 'text-center',
@@ -115,16 +110,14 @@ class ListService extends Component {
       columns: [
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
-        { header: 'Prize', dataKey: 'Model' },
-        { header: 'Notes', dataKey: 'Notes' },
+        { header: 'Prize', dataKey: 'Prize' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 100 },
-        2: { cellWidth: 30 },
-        3: { cellWidth: 100 },
-        4: { cellWidth: 30 }
+        0: { cellWidth: 90 },
+        1: { cellWidth: 200 },
+        2: { cellWidth: 50 },
+        4: { cellWidth: 50 }
       },
       margin: {
         top: 8,

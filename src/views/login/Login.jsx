@@ -11,7 +11,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Spinner,
   Col
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
@@ -60,38 +59,38 @@ class Login extends React.Component {
     let { email, password } = this.state;
     return (
       <Fragment>
-        <Col lg='5' md='7'>
-          <Card className='bg-secondary shadow border-0'>
-            <CardBody className='px-lg-5 py-lg-5'>
-              <div className='text-center text-muted mb-4'>Login</div>
-              <Form role='form'>
-                <FormGroup className='mb-3'>
-                  <InputGroup className='input-group-alternative'>
-                    <InputGroupAddon addonType='prepend'>
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0">
+            <CardBody className="px-lg-5 py-lg-5">
+              <div className="text-center text-muted mb-4">Login</div>
+              <Form role="form">
+                <FormGroup className="mb-3">
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className='ni ni-email-83' />
+                        <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      placeholder='Email'
-                      type='email'
-                      name='email'
+                      placeholder="Email"
+                      type="email"
+                      name="email"
                       value={email}
                       onChange={this.onChange}
                     />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
-                  <InputGroup className='input-group-alternative'>
-                    <InputGroupAddon addonType='prepend'>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className='ni ni-lock-circle-open' />
+                        <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      placeholder='Password'
-                      type='password'
-                      name='password'
+                      placeholder="Password"
+                      type="password"
+                      name="password"
                       value={password}
                       onChange={this.onChange}
                     />
@@ -110,11 +109,11 @@ class Login extends React.Component {
                     <span className="text-muted">Remember me</span>
                   </label>
                 </div> */}
-                <div className='text-center'>
+                <div className="text-center">
                   <Button
-                    className='my-4'
-                    color='primary'
-                    type='button'
+                    className="my-4"
+                    color="primary"
+                    type="button"
                     onClick={this.onClickLogin}
                     disabled={loading}
                   >

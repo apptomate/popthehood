@@ -15,3 +15,5 @@ export const GETSERVICEPRICEBYID_URL =
   BASE_URL + 'ServicePriceChart/GetServicePriceByID';
 export const ALLSERVICEPLANS_URL =
   BASE_URL + 'ServiceAvailability/GetServicePlan';
+export const SERVICEREPORT_URL =
+  BASE_URL + 'Services/GetServiceDetailsLocationWise';
