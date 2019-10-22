@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import 'react-table/react-table.css';
-import ReactTable from 'react-table';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 // reactstrap components
@@ -28,9 +27,10 @@ import {
   Marker
 } from 'react-google-maps';
 import { lat_lng_value } from '../common/helpers/Variables';
+import { preventDefaultFn } from '../common/helpers/functions';
 
 const MapWrapper = withScriptjs(
-  withGoogleMap(props => (
+  withGoogleMap(() => (
     <GoogleMap
       defaultZoom={12}
       defaultCenter={lat_lng_value}
@@ -94,8 +94,15 @@ class vehicleServicepage extends Component {
       requestedServiceDate: ''
     };
     this.editShedule = this.editShedule.bind(this);
+    this.formDataChange = this.formDataChange.bind(this);
   }
-  editShedule(e) {
+  //Form Data Change
+  formDataChange(e) {
+    let { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+  //Edit Schedule Modal
+  editShedule() {
     this.setState(prevState => ({
       editSheduleModal: !prevState.editSheduleModal
     }));
@@ -119,7 +126,6 @@ class vehicleServicepage extends Component {
     const planInfo = vehicle_ser_data.planInfo || [];
     const serviceList = vehicle_ser_data.serviceList || [];
     const userInfo = vehicle_ser_data.userInfo || [];
-    console.error('PROPS:/', vehicle_ser_data);
     // const {
     //   data: {
     //     paymentinfo: {
@@ -390,7 +396,7 @@ class vehicleServicepage extends Component {
                                 role="button"
                                 size="sm"
                                 color=""
-                                onClick={e => e.preventDefault()}
+                                onClick={preventDefaultFn}
                               >
                                 <i className="fas fa-ellipsis-v" />
                               </DropdownToggle>
@@ -400,7 +406,7 @@ class vehicleServicepage extends Component {
                               >
                                 <DropdownItem
                                   href="#pablo"
-                                  onClick={e => e.preventDefault()}
+                                  onClick={preventDefaultFn}
                                 >
                                   <Button
                                     color="primary"

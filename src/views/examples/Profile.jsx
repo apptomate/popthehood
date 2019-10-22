@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
+import { preventDefaultFn } from '../common/helpers/functions';
 
 class Profile extends React.Component {
   render() {
@@ -29,7 +30,7 @@ class Profile extends React.Component {
                 <Row className="justify-content-center">
                   <Col className="order-lg-2" lg="3">
                     <div className="card-profile-image">
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                      <a href="#pablo" onClick={preventDefaultFn}>
                         <img
                           alt="..."
                           className="rounded-circle"
@@ -45,7 +46,7 @@ class Profile extends React.Component {
                       className="mr-4"
                       color="info"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={preventDefaultFn}
                       size="sm"
                     >
                       Connect
@@ -54,7 +55,7 @@ class Profile extends React.Component {
                       className="float-right"
                       color="default"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={preventDefaultFn}
                       size="sm"
                     >
                       Message
@@ -103,7 +104,7 @@ class Profile extends React.Component {
                       Nick Murphy — writes, performs and records all of his own
                       music.
                     </p>
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                    <a href="#pablo" onClick={preventDefaultFn}>
                       Show more
                     </a>
                   </div>
@@ -121,7 +122,7 @@ class Profile extends React.Component {
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={preventDefaultFn}
                         size="sm"
                       >
                         Settings
