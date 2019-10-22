@@ -6,10 +6,10 @@ import {
   Container,
   Row,
   Button,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Col
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { getAllVehicles } from '../../redux/actions/Index.jsx';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
 import 'react-table/react-table.css';
@@ -17,7 +17,11 @@ import ReactTable from 'react-table';
 import Loader from '../common/Loader.jsx';
 import swal from 'sweetalert2';
 import { getConfirm, getAlertToast } from '../common/helpers/functions';
-import { deleteVehicle, updateVehicle } from '../../redux/actions/Index.jsx';
+import {
+  getAllVehicles,
+  deleteVehicle,
+  updateVehicle
+} from '../../redux/actions/Index.jsx';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -47,11 +51,13 @@ class ListVehicle extends Component {
         Cell: ({ row }) => {
           return (
             <Link
-              to={{
-                pathname: 'viewvehicle/' + row['_original'].vehicleId
-              }}
+              to={
+                {
+                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
+                }
+              }
             >
-              {row['_original'].vehicleId}
+              {row['_original'].licensePlate}
             </Link>
           );
         }
@@ -83,12 +89,14 @@ class ListVehicle extends Component {
       },
       {
         Header: 'Actions',
+        className: 'text-center',
         filterable: false,
         Cell: ({ row }) => (
           <Fragment>
             <Button
               className="action_btn"
               id="EditTooltip"
+              size="sm"
               data-tip="Edit Vehicle"
               onClick={e => this.editVehicle(e, row)}
             >
@@ -107,6 +115,7 @@ class ListVehicle extends Component {
               color="danger"
               className="action_btn"
               id="DeleteToolTip"
+              size="sm"
               onClick={e => this.deleteVehicle(e, row)}
             >
               <i
@@ -158,7 +167,7 @@ class ListVehicle extends Component {
   componentDidMount() {
     this.props.getAllVehicles();
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       prevProps.DeleteData.data !== this.props.DeleteData.data &&
       this.props.DeleteData.data === 'Deleted Successfully'
@@ -251,14 +260,14 @@ class ListVehicle extends Component {
       ...this.state.user_vehicle_data
     };
     this.props.updateVehicle(data);
-    this.setState(prevState => ({
+    this.setState({
       user_vehicle_data: [],
       editVehicleModal: false
-    }));
+    });
   }
   render() {
     const { Vehicles = [] } = this.props;
-    // const MyLoader = () => <Loader loading={Vehicles.loading} />;
+    const MyLoader = () => <Loader loading={Vehicles.loading} />;
     return (
       <Fragment>
         <UserHeader />
@@ -268,42 +277,54 @@ class ListVehicle extends Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">List Of Vehicle</h3>
-                  <span style={{ float: 'right', paddingTop: '0.5rem' }}>
-                    <Button
-                      color="primary"
-                      size="sm"
-                      onClick={this.download}
-                      id="down_csv"
-                    >
-                      <i className="fas fa-file-download"></i> CSV
-                    </Button>
-                    <CSVLink
-                      data={this.state.dataToDownload}
-                      filename={'Vehicles List' + '.csv'}
-                      className="hidden"
-                      ref={r => (this.csvLink = r)}
-                      target="_blank"
-                    />
-                    <UncontrolledTooltip placement="top" target={'down_csv'}>
-                      Download as CSV
-                    </UncontrolledTooltip>
-                    <Button
-                      color="info"
-                      size="sm"
-                      id="down_pdf"
-                      onClick={this.downloadPdf}
-                    >
-                      <i className="fas fa-file-download"></i> PDF
-                    </Button>
-                    <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                      Download as PDF
-                    </UncontrolledTooltip>
-                  </span>
+                  <Row>
+                    <Col>
+                      <h3 className="mb-0">List Of Vehicle</h3>
+                    </Col>
+                    <Col>
+                      <span style={{ float: 'right', paddingTop: '0.5rem' }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={this.download}
+                          id="down_csv"
+                        >
+                          <i className="fas fa-file-download"></i> CSV
+                        </Button>
+                        <CSVLink
+                          data={this.state.dataToDownload}
+                          filename={'Vehicles List' + '.csv'}
+                          className="hidden"
+                          ref={r => (this.csvLink = r)}
+                          target="_blank"
+                        />
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_csv'}
+                        >
+                          Download as CSV
+                        </UncontrolledTooltip>
+                        <Button
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
+                          onClick={this.downloadPdf}
+                        >
+                          <i className="fas fa-file-download"></i> PDF
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_pdf'}
+                        >
+                          Download as PDF
+                        </UncontrolledTooltip>
+                      </span>
+                    </Col>
+                  </Row>
                 </CardHeader>
                 <ReactTable
                   id="check_issues"
-                  // LoadingComponent={MyLoader}
+                  LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={Vehicles.allVehicles}
                   columns={this.columns}

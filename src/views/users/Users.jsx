@@ -16,7 +16,8 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  FormGroup
+  FormGroup,
+  Badge
 } from 'reactstrap';
 import {
   getAllUsers,
@@ -117,7 +118,7 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <h3>
+            <Badge className="f-15" color="danger">
               <i
                 className={
                   row['_original'].isEmailVerified
@@ -125,7 +126,7 @@ class Users extends React.Component {
                     : 'far fa-times-circle'
                 }
               />
-            </h3>
+            </Badge>
           </Fragment>
         )
       },
@@ -135,7 +136,7 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <h3>
+            <Badge className="f-15" color="success">
               <i
                 className={
                   row['_original'].isPhoneNumVerified
@@ -143,7 +144,7 @@ class Users extends React.Component {
                     : 'far fa-times-circle'
                 }
               />
-            </h3>
+            </Badge>
           </Fragment>
         )
       },
@@ -159,6 +160,7 @@ class Users extends React.Component {
               className="action_btn"
               id="EditTooltip"
               onClick={e => this.editUser(e, row)}
+              size="sm"
             >
               <i
                 className="fas fa-pencil-alt edit_i"
@@ -177,6 +179,7 @@ class Users extends React.Component {
               className="action_btn"
               id="DeleteTooltip"
               onClick={this.deleteUserDetail}
+              size="sm"
             >
               <i
                 className="fas fas fa-trash edit_i"

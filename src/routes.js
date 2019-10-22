@@ -1,14 +1,11 @@
 import Index from 'views/Index.jsx';
 import Users from 'views/users/Users';
-import listVehicle from 'views/listVehicle.jsx';
-import serviceListpage from 'views/serviceListpage.jsx';
 import paymentReport from 'views/paymentReport.jsx';
-import servicesReport from 'views/servicesReport.jsx';
 import Register from 'views/examples/Register.jsx';
 import Login from 'views/login/Login.jsx';
 import ListVehicle from 'views/vehicle/ListVehicle.jsx';
-import ViewVehicle from './views/vehicle/ViewVehicle';
 import ListService from './views/service/ListService';
+import ServiceReport from './views/serviceReport/ServiceReport';
 import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
 var routes = [
   {
@@ -59,7 +56,7 @@ var routes = [
     path: '/services-report',
     name: 'Services Report',
     icon: 'ni ni-chart-bar-32 text-primary',
-    component: servicesReport,
+    component: ServiceReport,
     layout: '/admin',
     showNavbar: true
   },
@@ -77,14 +74,6 @@ var routes = [
     icon: 'ni ni-circle-08 text-primary',
     component: Register,
     layout: '/auth',
-    showNavbar: false
-  },
-  {
-    path: '/viewvehicle/:id',
-    name: 'View Vehicle',
-    icon: 'ni ni-circle-08 text-primary',
-    component: ViewVehicle,
-    layout: '/admin',
     showNavbar: false
   },
   {

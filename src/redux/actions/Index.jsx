@@ -5,12 +5,12 @@ import {
   ALLUSERS_URL,
   USERVEHICLE_URL,
   DELETEVEHICLE_URL,
-  VEHICLEBYVEHICLEID_URL,
   ALLSERVICES_URL,
   ALLSERVICEPLANS_URL,
   GETSERVICEPRICEBYID_URL,
   UPDATE_DELETE_USER_URL,
   UPDATEVEHICLE_URL,
+  SERVICEREPORT_URL,
   VEHICLESERVICEDETAILS_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
@@ -33,9 +33,6 @@ import {
   DELETEVEHICLE_LOADING,
   DELETEVEHICLE_SUCCESS,
   DELETEVEHICLE_ERROR,
-  VEHICLEBYVEHICLEID_LOADING,
-  VEHICLEBYVEHICLEID_SUCCESS,
-  VEHICLEBYVEHICLEID_ERROR,
   ALLSERVICES_LOADING,
   ALLSERVICES_SUCCESS,
   ALLSERVICES_ERROR,
@@ -48,6 +45,9 @@ import {
   GETSERVICEPRICEBYID_LOADING,
   GETSERVICEPRICEBYID_SUCCESS,
   GETSERVICEPRICEBYID_ERROR,
+  GETSERVICEREPORT_LOADING,
+  GETSERVICEREPORT_SUCCESS,
+  GETSERVICEREPORT_ERROR,
   VEHICLESERVICEDETAILS_LOADING,
   VEHICLESERVICEDETAILS_SUCCESS,
   VEHICLESERVICEDETAILS_ERROR
@@ -251,29 +251,6 @@ export function deleteVehicle(vehicleID) {
   };
 }
 
-export function vehiclesByVehicleID(vehicleID) {
-  return dispatch => {
-    dispatch({
-      type: VEHICLEBYVEHICLEID_LOADING
-    });
-    API.get(VEHICLEBYVEHICLEID_URL + '/' + vehicleID, {
-      headers: authHeader()
-    })
-      .then(response => {
-        dispatch({
-          type: VEHICLEBYVEHICLEID_SUCCESS,
-          payload: response.data
-        });
-      })
-      .catch(function(error) {
-        dispatch({
-          type: VEHICLEBYVEHICLEID_ERROR,
-          payload: error.response.data
-        });
-      });
-  };
-}
-
 export function getAllServices() {
   return dispatch => {
     dispatch({
@@ -337,6 +314,29 @@ export function getServicePriceByID(id) {
       .catch(function(error) {
         dispatch({
           type: GETSERVICEPRICEBYID_ERROR,
+          payload: error.response.data
+        });
+      });
+  };
+}
+
+export function getServiceReport() {
+  return dispatch => {
+    dispatch({
+      type: GETSERVICEREPORT_LOADING
+    });
+    API.get(SERVICEREPORT_URL, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: GETSERVICEREPORT_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        dispatch({
+          type: GETSERVICEREPORT_ERROR,
           payload: error.response.data
         });
       });

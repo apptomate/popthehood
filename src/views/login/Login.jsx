@@ -11,7 +11,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Spinner,
   Col
 } from '../../../node_modules/reactstrap';
 import { connect } from 'react-redux';
