@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 // reactstrap components
 import {
@@ -26,12 +27,13 @@ import {
   GoogleMap,
   Marker
 } from 'react-google-maps';
+import { lat_lng_value } from '../common/helpers/Variables';
 
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
       defaultZoom={12}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
+      defaultCenter={lat_lng_value}
       defaultOptions={{
         scrollwheel: false,
         styles: [
@@ -78,7 +80,7 @@ const MapWrapper = withScriptjs(
         ]
       }}
     >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
+      <Marker position={lat_lng_value} />
     </GoogleMap>
   ))
 );
@@ -88,14 +90,16 @@ class vehicleServicepage extends Component {
     super(props);
     this.state = {
       vehicleId: null,
-      defaultModal: false
+      editSheduleModal: false,
+      requestedServiceDate: ''
     };
+    this.editShedule = this.editShedule.bind(this);
   }
-  toggleModal = state => {
-    this.setState({
-      [state]: !this.state[state]
-    });
-  };
+  editShedule(e) {
+    this.setState(prevState => ({
+      editSheduleModal: !prevState.editSheduleModal
+    }));
+  }
   componentDidMount() {
     const {
       match: { params }
@@ -108,7 +112,73 @@ class vehicleServicepage extends Component {
   }
 
   render() {
-    console.error('Props::/', this.props.vehicleServiceDetailsResponse);
+    const vehicle_ser_data =
+      this.props.vehicleServiceDetailsResponse.data || [];
+    const vehicleInfo = vehicle_ser_data.vehicleInfo || [];
+    const paymentinfo = vehicle_ser_data.paymentinfo || [];
+    const planInfo = vehicle_ser_data.planInfo || [];
+    const serviceList = vehicle_ser_data.serviceList || [];
+    const userInfo = vehicle_ser_data.userInfo || [];
+    console.error('PROPS:/', vehicle_ser_data);
+    // const {
+    //   data: {
+    //     paymentinfo: {
+    //       due: payment_det_due = null,
+    //       paid: payment_det_paid = null,
+    //       paymentDate: payment_det_paymentDate = '',
+    //       paymentDetailId: payment_det_paymentDetailId = null,
+    //       paymentStatus: payment_det_paymentStatus = '',
+    //       paymentType: payment_det_paymentType = '',
+    //       promocode_ReducedAmount: payment_det_promocode_ReducedAmount = '',
+    //       totalAmount: payment_det_totalAmount = null
+    //     },
+    //     planInfo: {
+    //       planType: plan_det_planType = '',
+    //       serviceDescription: plan_det_serviceDescription = ''
+    //     },
+    //     serviceList = [],
+    //     userInfo: {
+    //       email: user_det_email = '',
+    //       locationFullAddress: user_det_locationFullAddress = '',
+    //       locationID: user_det_locationID = null,
+    //       locationLatitude: user_det_locationLatitude = null,
+    //       locationLongitude: user_det_locationLongitude = null,
+    //       name: user_det_name = '',
+    //       phoneNumber: user_det_phoneNumber = '',
+    //       userId: user_det_userId = null
+    //     },
+    //     vehicleInfo: {
+    //       vehicleId: vehicle_det_vehicleId = null,
+    //       userId: vehicle_det_userId = null,
+    //       make: vehicle_det_make = '',
+    //       model: vehicle_det_model = '',
+    //       year: vehicle_det_year = null,
+    //       color: vehicle_det_color = '',
+    //       imageType: vehicle_det_imageType = null,
+    //       licensePlate: vehicle_det_licensePlate = '',
+    //       specialNotes: vehicle_det_specialNotes = null,
+    //       vehicleImage: vehicle_det_vehicleImage = null,
+    //       vehicleImageURL: vehicle_det_vehicleImageURL = ''
+    //     }
+    //   }
+    // } = this.props.vehicleServiceDetailsResponse;
+
+    const payment_tbl_column = [
+      'Date',
+      'Type',
+      'Status',
+      'Total Amount',
+      'Discount',
+      'Paid',
+      'Due'
+    ];
+    const serv_list_column = [
+      'SERVICE DATE',
+      'SERVICE NAME',
+      'STATUS',
+      'AMOUNT'
+    ];
+
     return (
       <>
         <UserHeader />
@@ -122,35 +192,35 @@ class vehicleServicepage extends Component {
                     <Row>
                       <Col md="4" className="item-middle">
                         <div className="ServiceReport-imgcard">
-                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS8SoNjCcvVLDyBoUHGFWiQx20kLkhsS8op9PZDVgNWYBsknI6c" />
+                          <img src={vehicleInfo.vehicleImageURL} />
                         </div>
                       </Col>
                       <Col md="8" className="">
                         <div className="licence-plate">
                           <h4>
-                            LICENCE PLATE NO : <span>AI 93958</span>
+                            LICENCE PLATE NO :{' '}
+                            <span>{vehicleInfo.licensePlate}</span>
                           </h4>
                         </div>
                         <div className="card-profile shadow card mt-4">
                           <ListGroup flush>
                             <ListGroupItem>
                               <span>Model </span>
-                              <h5>C-Class</h5>
+                              <h5>{vehicleInfo.model}</h5>
                             </ListGroupItem>
                             <ListGroupItem>
                               <span>Make</span>
-                              <h5>Mercedes-Benz</h5>
+                              <h5>{vehicleInfo.make}</h5>
                             </ListGroupItem>
                             <ListGroupItem>
                               <span>Year </span>
-                              <h5>2015</h5>
+                              <h5>{vehicleInfo.year}</h5>
                             </ListGroupItem>
                             <ListGroupItem>
                               <span>Color </span>
                               <h5>
                                 <h5 color="" className="badge-dot mr-4">
-                                  <i className="bg-danger" />
-                                  Red
+                                  {vehicleInfo.color}
                                 </h5>
                               </h5>
                             </ListGroupItem>
@@ -166,23 +236,19 @@ class vehicleServicepage extends Component {
                           <div className="pt-0 pt-md-4 card-body">
                             <ul className="licence-plate-userDetails">
                               <li>
-                                <span> User Name</span> <h5>Jessica Jones</h5>
+                                <span> User Name</span> <h5>{userInfo.name}</h5>
                               </li>
 
                               <li>
-                                <span> Phone Number</span> <h5>0123456789</h5>
+                                <span> Phone Number</span>{' '}
+                                <h5>{userInfo.phoneNumber}</h5>
                               </li>
                               <li>
-                                <span> E-mail id</span>{' '}
-                                <h5>example@gmail.com</h5>
+                                <span> E-mail</span> <h5>{userInfo.email}</h5>
                               </li>
                               <li>
-                                <span> E-mail id</span>{' '}
-                                <h5>example@gmail.com</h5>
-                              </li>
-                              <li className="mb-1">
-                                <span> E-mail id</span>{' '}
-                                <h5>example@gmail.com</h5>
+                                <span> Address</span>{' '}
+                                <h5>{userInfo.locationFullAddress}</h5>
                               </li>
                             </ul>
                           </div>
@@ -201,8 +267,7 @@ class vehicleServicepage extends Component {
                               <span> Tearms & Condition</span>
                               <Button className="float-right btn btn-success btn-sm">
                                 Accepted
-                              </Button>
-
+                              </Button>{' '}
                               <Button className="float-right btn btn-danger btn-sm">
                                 Not-Accepted
                               </Button>
@@ -254,7 +319,7 @@ class vehicleServicepage extends Component {
                             </Button>
                           </Col>
                           <Col sm="10">
-                            <h5>Vehicle Service Plan Types</h5>
+                            <h5>{planInfo.planType}</h5>
                           </Col>
                         </Row>
                       </Card>
@@ -286,10 +351,7 @@ class vehicleServicepage extends Component {
                               <tbody>
                                 <tr>
                                   <th scope="row">Lorem</th>
-                                  <td>
-                                    Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry. Lorem
-                                  </td>
+                                  <td>{planInfo.serviceDescription}</td>
                                 </tr>
                               </tbody>
                             </Table>
@@ -305,58 +367,56 @@ class vehicleServicepage extends Component {
                   <Table className="align-items-center table-flush" responsive>
                     <thead className="thead-light">
                       <tr>
-                        <th scope="col">Service Date</th>
-                        <th scope="col" style={{ textAlign: 'center' }}>
-                          History
-                        </th>
-                        <th scope="col" style={{ textAlign: 'center' }}>
-                          Status
-                        </th>
-
+                        {serv_list_column.map((column_head, index) => (
+                          <th key={index} scope="col">
+                            {column_head}
+                          </th>
+                        ))}
                         <th scope="col" />
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">20-10-2019</th>
-                        <td style={{ textAlign: 'center' }}>
-                          <Button
-                            color="link"
-                            onClick={() => this.toggleModal('defaultModal')}
-                          >
-                            History link
-                          </Button>
-                        </td>
-                        <td style={{ textAlign: 'center' }}>Services Status</td>
-
-                        <td className="text-right">
-                          <UncontrolledDropdown>
-                            <DropdownToggle
-                              className="btn-icon-only text-light"
-                              href="#pablo"
-                              role="button"
-                              size="sm"
-                              color=""
-                              onClick={e => e.preventDefault()}
-                            >
-                              <i className="fas fa-ellipsis-v" />
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
+                      {serviceList.map((data, index) => (
+                        <tr key={index}>
+                          <td scope="row">{data.requestedServiceDate}</td>
+                          <td>{data.serviceName}</td>
+                          <td>{data.status}</td>
+                          <td>{data.serviceAmount}</td>
+                          <td className="text-right">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
                                 href="#pablo"
+                                role="button"
+                                size="sm"
+                                color=""
                                 onClick={e => e.preventDefault()}
                               >
-                                <Button color="primary" size="sm" type="button">
-                                  <i className="fas fa-edit"></i> Edit
-                                </Button>
-                                <Button color="danger" size="sm" type="button">
-                                  <i className="fas fa-trash-alt"></i> Delete
-                                </Button>
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </td>
-                      </tr>
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
+                              >
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                >
+                                  <Button
+                                    color="primary"
+                                    size="sm"
+                                    type="button"
+                                    data-schedule_id={data.scheduleID}
+                                    onClick={this.editShedule}
+                                  >
+                                    <i className="fas fa-edit"></i> Edit
+                                  </Button>
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 </Card>
@@ -366,18 +426,22 @@ class vehicleServicepage extends Component {
                   <Table className="align-items-center table-flush" responsive>
                     <thead className="thead-light">
                       <tr>
-                        <th scope="col">Dummy</th>
-                        <th scope="col">Dummy</th>
-                        <th scope="col">Dummy</th>
-                        <th scope="col">Dummy</th>
+                        {payment_tbl_column.map((column, index) => (
+                          <th key={index} scope="col">
+                            {column}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Dummy</th>
-                        <td>Dummy</td>
-                        <td>Dummy</td>
-                        <td>Dummy</td>
+                        <th scope="row">{paymentinfo.paymentDate}</th>
+                        <td>{paymentinfo.paymentType}</td>
+                        <td>{paymentinfo.paymentStatus}</td>
+                        <td>{paymentinfo.totalAmount}</td>
+                        <td>{paymentinfo.promocode_ReducedAmount}</td>
+                        <td>{paymentinfo.paid}</td>
+                        <td>{paymentinfo.due}</td>
                       </tr>
                     </tbody>
                   </Table>
@@ -392,50 +456,46 @@ class vehicleServicepage extends Component {
           </Row>
           <Modal
             className="modal-dialog-centered"
-            isOpen={this.state.defaultModal}
-            toggle={() => this.toggleModal('defaultModal')}
+            isOpen={this.state.editSheduleModal}
+            toggle={this.editShedule}
           >
             <div className="modal-header">
               <h4 className="modal-title" id="modal-title-default">
-                History
+                Update Schedule
               </h4>
               <button
                 aria-label="Close"
                 className="close"
                 data-dismiss="modal"
                 type="button"
-                onClick={() => this.toggleModal('defaultModal')}
+                onClick={this.editShedule}
               >
                 <span aria-hidden={true}>×</span>
               </button>
             </div>
             <div className="modal-body">
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Dummy</th>
-                    <th scope="col">Dummy</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Dummy</th>
-                    <td>Dummy</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <AvForm onValidSubmit={this.updateVehicleServideDetails}>
+                <AvField
+                  name="requestedServiceDate"
+                  label="Requested Service Date"
+                  type="date"
+                  required
+                  onChange={this.formDataChange}
+                  className="blue_lable"
+                  value={this.state.requestedServiceDate}
+                  selected={this.state.requestedServiceDate}
+                  placeholder="Requested Service Date"
+                />
+                <center>
+                  <Button color="success">Update</Button>
+                </center>
+              </AvForm>
+              <center>
+                <hr />
+                <Button color="success">Complete Schedule </Button>
+              </center>
             </div>
-            <div className="modal-footer">
-              <Button
-                className="ml-auto"
-                color="link"
-                data-dismiss="modal"
-                type="button"
-                onClick={() => this.toggleModal('defaultModal')}
-              >
-                Close
-              </Button>
-            </div>
+            <div className="modal-footer"></div>
           </Modal>
         </Container>
       </>

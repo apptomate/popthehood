@@ -346,12 +346,8 @@ export function getServicePriceByID(id) {
 //Vehicle Service Details
 export function vehicleServiceDetails(data) {
   return dispatch => {
-    dispatch({
-      type: VEHICLESERVICEDETAILS_LOADING
-    });
     API.get(VEHICLESERVICEDETAILS_URL, { headers: authHeader(), params: data })
       .then(response => {
-        console.error('Res:/', response);
         dispatch({
           type: VEHICLESERVICEDETAILS_SUCCESS,
           payload: response.data
