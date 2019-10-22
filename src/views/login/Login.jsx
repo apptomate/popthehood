@@ -128,7 +128,7 @@ class Login extends React.Component {
               <a
                 className="text-light"
                 href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={preventDefaultFn}
               >
                 <small>Forgot password?</small>
               </a>
@@ -137,7 +137,7 @@ class Login extends React.Component {
               <a
                 className="text-light"
                 href="Register.jsx"
-                onClick={e => e.preventDefault()}
+                onClick={preventDefaultFn}
               >
                 <small>Create new account</small>
               </a>
