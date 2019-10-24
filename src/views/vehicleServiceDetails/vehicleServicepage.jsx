@@ -608,7 +608,7 @@ class vehicleServicepage extends Component {
                   placeholder={'DD/MM/YYYY HH:MM:SS'}
                   required
                   onChange={this.formDataChange}
-                  className="blue_lable"
+                  className="blue_label"
                   value={requestedServiceDate}
                   selected={requestedServiceDate}
                 />

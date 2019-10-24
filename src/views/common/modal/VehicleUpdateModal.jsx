@@ -60,7 +60,7 @@ export function VehicleUpdateModal(props) {
             value={make}
             required
             onChange={props.onChange_func}
-            className="blue_lable"
+            className="blue_label"
           />
           <AvField
             name="model"
@@ -70,13 +70,13 @@ export function VehicleUpdateModal(props) {
             value={model}
             required
             onChange={props.onChange_func}
-            className="blue_lable"
+            className="blue_label"
           />
           <AvField
             name="year"
             placeholder="Year"
             onChange={props.onChange_func}
-            className="blue_lable"
+            className="blue_label"
             required
             value={year}
             label="Year"
@@ -91,14 +91,14 @@ export function VehicleUpdateModal(props) {
             value={color}
             required
             onChange={props.onChange_func}
-            className="blue_lable"
+            className="blue_label"
           />
           <AvField
             type="textarea"
             name="specialNotes"
             required
             onChange={props.onChange_func}
-            className="blue_lable"
+            className="blue_label"
             value={specialNotes}
             label="Special Notes"
             id="specialNotes"

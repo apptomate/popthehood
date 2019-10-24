@@ -533,7 +533,7 @@ class Users extends React.Component {
                   value={name}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="phoneNumber"
@@ -544,7 +544,7 @@ class Users extends React.Component {
                   value={phoneNumber}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="email"
@@ -555,7 +555,7 @@ class Users extends React.Component {
                   value={email}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                   disabled
                 />
                 <AvField
@@ -568,7 +568,7 @@ class Users extends React.Component {
                   value={password}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="sourceofReg"
@@ -579,7 +579,7 @@ class Users extends React.Component {
                   value={sourceofReg}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <Label>Email Verified</Label>
                 <br />
