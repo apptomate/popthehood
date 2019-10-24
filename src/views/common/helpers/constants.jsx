@@ -17,3 +17,5 @@ export const ALLSERVICEPLANS_URL =
   BASE_URL + 'ServiceAvailability/GetServicePlan';
 export const SERVICEREPORT_URL =
   BASE_URL + 'Services/GetServiceDetailsLocationWise';
+export const UPDATEVEHICLESERVICE_URL =
+  BASE_URL + 'Services/UpdateServiceSchedule';

@@ -11,6 +11,7 @@ import {
   UPDATE_DELETE_USER_URL,
   UPDATEVEHICLE_URL,
   SERVICEREPORT_URL,
+  UPDATEVEHICLESERVICE_URL,
   VEHICLESERVICEDETAILS_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
@@ -48,9 +49,10 @@ import {
   GETSERVICEREPORT_LOADING,
   GETSERVICEREPORT_SUCCESS,
   GETSERVICEREPORT_ERROR,
-  VEHICLESERVICEDETAILS_LOADING,
   VEHICLESERVICEDETAILS_SUCCESS,
-  VEHICLESERVICEDETAILS_ERROR
+  VEHICLESERVICEDETAILS_ERROR,
+  UPDATEVEHICLESERVICE_SUCCESS,
+  UPDATEVEHICLESERVICE_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -357,6 +359,27 @@ export function vehicleServiceDetails(data) {
         if (error.response.data.error) {
           dispatch({
             type: VEHICLESERVICEDETAILS_ERROR,
+            payload: error.response.data
+          });
+        }
+      });
+  };
+}
+
+//Update Vehicle Details
+export function updateVehicleService(data) {
+  return dispatch => {
+    API.put(UPDATEVEHICLESERVICE_URL, data, { headers: authHeader() })
+      .then(response => {
+        dispatch({
+          type: UPDATEVEHICLESERVICE_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response) {
+          dispatch({
+            type: UPDATEVEHICLESERVICE_ERROR,
             payload: error.response.data
           });
         }
