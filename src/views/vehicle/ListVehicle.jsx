@@ -157,7 +157,7 @@ class ListVehicle extends Component {
         color: row['_original'].color,
         licensePlate: row['_original'].licensePlate,
         specialNotes: row['_original'].specialNotes,
-        imageType: 'jpg',
+        imageType: '',
         vehicleImage: '',
         vehicleImageURL: ''
       },

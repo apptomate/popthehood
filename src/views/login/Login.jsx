@@ -36,7 +36,8 @@ class Login extends React.Component {
       this.props.history.push('/admin/index');
     }
   }
-  onClickLogin() {
+  onClickLogin(e) {
+    e.preventDefault();
     const { email, password } = this.state;
     if (!email || !password) {
       swal.fire(getAlertToast('warning', 'Enter credentials'));
@@ -63,7 +64,7 @@ class Login extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">Login</div>
-              <Form role="form">
+              <Form role="form" onSubmit={this.onClickLogin}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
@@ -113,7 +114,7 @@ class Login extends React.Component {
                   <Button
                     className="my-4"
                     color="primary"
-                    type="button"
+                    type="submit"
                     onClick={this.onClickLogin}
                     disabled={loading}
                   >

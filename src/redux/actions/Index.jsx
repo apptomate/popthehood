@@ -11,7 +11,8 @@ import {
   UPDATE_DELETE_USER_URL,
   UPDATEVEHICLE_URL,
   SERVICEREPORT_URL,
-  VEHICLESERVICEDETAILS_URL
+  VEHICLESERVICEDETAILS_URL,
+  DASHBOARD_URL
 } from '../../views/common/helpers/constants';
 import { authHeader } from '../../views/common/helpers/functions.js';
 import {
@@ -48,9 +49,11 @@ import {
   GETSERVICEREPORT_LOADING,
   GETSERVICEREPORT_SUCCESS,
   GETSERVICEREPORT_ERROR,
-  VEHICLESERVICEDETAILS_LOADING,
   VEHICLESERVICEDETAILS_SUCCESS,
-  VEHICLESERVICEDETAILS_ERROR
+  VEHICLESERVICEDETAILS_ERROR,
+  DASHBOARD_LOADING,
+  DASHBOARD_SUCCESS,
+  DASHBOARD_ERROR
 } from './ActionTypes.jsx';
 
 //Login
@@ -68,10 +71,10 @@ export function authLogin(formData) {
         });
       })
       .catch(function(error) {
-        if (error.response.data.error) {
+        if (error.response) {
           dispatch({
             type: LOGIN_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -96,7 +99,7 @@ export function updateUser(data) {
         if (error.response) {
           dispatch({
             type: UPDATEUSER_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -122,7 +125,7 @@ export function deleteUser(user_id) {
         if (error.response) {
           dispatch({
             type: DELETEUSER_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -149,7 +152,7 @@ export function updateVehicle(data) {
         if (error.response) {
           dispatch({
             type: UPDATEVEHICLE_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -174,7 +177,7 @@ export function getAllUsers() {
         if (error.response) {
           dispatch({
             type: ALLUSERS_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -194,10 +197,10 @@ export function getUserVehicleDetails(data) {
         });
       })
       .catch(function(error) {
-        if (error.response.data.error) {
+        if (error.response) {
           dispatch({
             type: USERVEHICLE_ERROR,
-            payload: error.response.data
+            payload: error.response
           });
         }
       });
@@ -219,10 +222,12 @@ export function getAllVehicles() {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: ALLVEHICLES_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: ALLVEHICLES_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -243,10 +248,12 @@ export function deleteVehicle(vehicleID) {
         dispatch(getAllVehicles());
       })
       .catch(function(error) {
-        dispatch({
-          type: DELETEVEHICLE_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: DELETEVEHICLE_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -266,10 +273,12 @@ export function getAllServices() {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: ALLSERVICES_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: ALLSERVICES_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -289,10 +298,12 @@ export function getAllServicePlans() {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: ALLSERVICEPLANS_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: ALLSERVICEPLANS_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -312,10 +323,12 @@ export function getServicePriceByID(id) {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: GETSERVICEPRICEBYID_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: GETSERVICEPRICEBYID_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -335,10 +348,12 @@ export function getServiceReport() {
         });
       })
       .catch(function(error) {
-        dispatch({
-          type: GETSERVICEREPORT_ERROR,
-          payload: error.response.data
-        });
+        if (error.response) {
+          dispatch({
+            type: GETSERVICEREPORT_ERROR,
+            payload: error.response
+          });
+        }
       });
   };
 }
@@ -354,10 +369,35 @@ export function vehicleServiceDetails(data) {
         });
       })
       .catch(function(error) {
-        if (error.response.data.error) {
+        if (error.response) {
           dispatch({
             type: VEHICLESERVICEDETAILS_ERROR,
-            payload: error.response.data
+            payload: error.response
+          });
+        }
+      });
+  };
+}
+
+export function dashboard() {
+  return dispatch => {
+    dispatch({
+      type: DASHBOARD_LOADING
+    });
+    API.get(DASHBOARD_URL, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: DASHBOARD_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response) {
+          dispatch({
+            type: DASHBOARD_ERROR,
+            payload: error.response
           });
         }
       });

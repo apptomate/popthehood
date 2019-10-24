@@ -7,12 +7,13 @@ import ListVehicle from 'views/vehicle/ListVehicle.jsx';
 import ListService from './views/service/ListService';
 import ServiceReport from './views/serviceReport/ServiceReport';
 import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
+import Dashboard from './views/dashboard/Dashboard';
 var routes = [
   {
     path: '/index',
     name: 'Dashboard',
     icon: 'ni ni-tv-2 text-primary',
-    component: Index,
+    component: Dashboard,
     layout: '/admin',
     showNavbar: true
   },

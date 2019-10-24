@@ -6,9 +6,8 @@ import {
   Row,
   Button,
   UncontrolledTooltip,
-  FormGroup,
   Label,
-  Input
+  Col
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { getServiceReport } from '../../redux/actions/Index.jsx';
@@ -21,14 +20,26 @@ import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+const downFileName =
+  'Service Report-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataToDownload: []
+      dataToDownload: [],
+      startDate: '',
+      endDate: '',
+      filter: false
     };
     this.download = this.download.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
+    this.onClickFilter = this.onClickFilter.bind(this);
+    this.sdateChange = this.sdateChange.bind(this);
+    this.edateChange = this.edateChange.bind(this);
+    this.resetFilter = this.resetFilter.bind(this);
     this.columns = [
       {
         Header: 'License Plate',
@@ -93,7 +104,7 @@ class ServiceReport extends Component {
     var data_to_download = [];
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
-      for (var colIndex = 0; colIndex < this.columns.length - 1; colIndex++) {
+      for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
         record_to_download[this.columns[colIndex].Header] = String(
           currentRecords[index][this.columns[colIndex].accessor]
         ).replace(',', '');
@@ -108,7 +119,7 @@ class ServiceReport extends Component {
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
-    for (var index = 0; index < currentRecords.length - 1; index++) {
+    for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
         record_to_download[this.columns[colIndex].Header] = String(
@@ -125,16 +136,19 @@ class ServiceReport extends Component {
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
         { header: 'User Name', dataKey: 'User Name' },
-        { header: 'Location', dataKey: 'Location' },
-        { header: 'Next Service', dataKey: 'Next Service' }
+        { header: 'Status', dataKey: 'Status' },
+        { header: 'Plan Type', dataKey: 'Plan Type' },
+        { header: 'Due Amount', dataKey: 'Due Amount' },
+        { header: 'Paid Amount', dataKey: 'Paid Amount' }
       ],
       columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 30 },
+        0: { cellWidth: 50 },
+        1: { cellWidth: 50 },
         2: { cellWidth: 50 },
         3: { cellWidth: 50 },
         4: { cellWidth: 60 },
-        5: { cellWidth: 60 }
+        5: { cellWidth: 50 },
+        6: { cellWidth: 50 }
       },
       margin: {
         top: 8,
@@ -145,11 +159,43 @@ class ServiceReport extends Component {
       rowPageBreak: 'avoid',
       theme: 'grid'
     });
-    doc.save('Service Report' + '.pdf');
+    doc.save(downFileName + '.pdf');
+  }
+  onClickFilter(e) {
+    console.error(this.state.startDate, this.state.endDate);
+    this.setState({ filter: true });
+  }
+  sdateChange(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+  edateChange(date) {
+    this.setState({
+      endDate: date
+    });
+  }
+  resetFilter(e) {
+    e.preventDefault();
+    this.setState({
+      endDate: '',
+      startDate: '',
+      filter: false
+    });
   }
   render() {
     const { Services = [] } = this.props;
+    let { filter, startDate, endDate, dataToDownload } = this.state;
     const MyLoader = () => <Loader loading={Services.loading} />;
+    let data,
+      current_date = '';
+    if (filter) {
+      data = Services.services.filter(
+        service => service.requestedServiceDate > current_date
+      );
+    } else {
+      data = Services.services;
+    }
     return (
       <Fragment>
         <UserHeader />
@@ -159,54 +205,95 @@ class ServiceReport extends Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Service Report</h3>
-                  <span style={{ float: 'right', paddingTop: '0.5rem' }}>
-                    <FormGroup>
-                      <Label for="exampleSelect">Select</Label>
-                      <Input type="select" name="select" id="exampleSelect">
-                        <option disabled selected>
-                          ---Select Service---
-                        </option>
-                        <option>Upcoming Services</option>
-                        <option>Due Services</option>
-                      </Input>
-                    </FormGroup>
-                    <Button
-                      color="primary"
-                      size="sm"
-                      onClick={this.download}
-                      id="down_csv"
-                    >
-                      <i className="fas fa-file-download"></i> CSV
-                    </Button>
-                    <CSVLink
-                      data={this.state.dataToDownload}
-                      filename={'Service Report' + '.csv'}
-                      className="hidden"
-                      ref={r => (this.csvLink = r)}
-                      target="_blank"
-                    />
-                    <UncontrolledTooltip placement="top" target={'down_csv'}>
-                      Download as CSV
-                    </UncontrolledTooltip>
-                    <Button
-                      color="info"
-                      size="sm"
-                      id="down_pdf"
-                      onClick={this.downloadPdf}
-                    >
-                      <i className="fas fa-file-download"></i> PDF
-                    </Button>
-                    <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                      Download as PDF
-                    </UncontrolledTooltip>
-                  </span>
+                  <Row>
+                    <Col md="5">
+                      <h3 className="mb-0">Service Report</h3>
+                    </Col>
+                    <Col md="4">
+                      <Label for="startdate">Start Date</Label>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={this.sdateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select Start Date"
+                      />
+                      <Label for="endtdate">End Date</Label>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={this.edateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select End Date"
+                      />
+                      <div className="flex" style={{ marginTop: '32px' }}>
+                        <Button
+                          color="primary"
+                          id="FilterTooltip"
+                          onClick={this.onClickFilter}
+                        >
+                          {' '}
+                          <i className="fas fa-filter"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                          placement={'top'}
+                          target={'FilterTooltip'}
+                        >
+                          Filter
+                        </UncontrolledTooltip>
+
+                        <Button
+                          color="primary"
+                          style={{ marginLeft: '10px' }}
+                          onClick={this.resetFilter}
+                          id="reset_tool"
+                        >
+                          <i className="fas fa-history"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                          placement={'top'}
+                          target={'reset_tool'}
+                        >
+                          Reset
+                        </UncontrolledTooltip>
+                      </div>
+                    </Col>
+                    <Col md="3">
+                      <Button
+                        color="primary"
+                        size="sm"
+                        onClick={this.download}
+                        id="down_csv"
+                      >
+                        <i className="fas fa-file-download"></i> CSV
+                      </Button>
+                      <CSVLink
+                        data={dataToDownload}
+                        filename={downFileName + '.csv'}
+                        className="hidden"
+                        ref={r => (this.csvLink = r)}
+                        target="_blank"
+                      />
+                      <UncontrolledTooltip placement="top" target={'down_csv'}>
+                        Download as CSV
+                      </UncontrolledTooltip>
+                      <Button
+                        color="info"
+                        size="sm"
+                        id="down_pdf"
+                        onClick={this.downloadPdf}
+                      >
+                        <i className="fas fa-file-download"></i> PDF
+                      </Button>
+                      <UncontrolledTooltip placement="top" target={'down_pdf'}>
+                        Download as PDF
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
                 </CardHeader>
                 <ReactTable
-                  id="check_issues"
+                  id="service_report"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
-                  data={Services.services}
+                  data={data}
                   columns={this.columns}
                   defaultPageSize={10}
                   pageSizeOptions={[10, 20]}
