@@ -16,8 +16,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  FormGroup,
-  Badge
+  FormGroup
 } from 'reactstrap';
 import {
   getAllUsers,
@@ -118,15 +117,13 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <Badge className="f-15" color="danger">
-              <i
-                className={
-                  row['_original'].isEmailVerified
-                    ? 'far fa-check-circle'
-                    : 'far fa-times-circle'
-                }
-              />
-            </Badge>
+            <i
+              className={
+                row['_original'].isEmailVerified
+                  ? 'far fa-check-circle color-success'
+                  : 'far fa-times-circle color-danger'
+              }
+            />
           </Fragment>
         )
       },
@@ -136,19 +133,16 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => (
           <Fragment>
-            <Badge className="f-15" color="success">
-              <i
-                className={
-                  row['_original'].isPhoneNumVerified
-                    ? 'far fa-check-circle'
-                    : 'far fa-times-circle'
-                }
-              />
-            </Badge>
+            <i
+              className={
+                row['_original'].isPhoneNumVerified
+                  ? 'far fa-check-circle color-success'
+                  : 'far fa-times-circle color-danger'
+              }
+            />
           </Fragment>
         )
       },
-      { Header: 'Role', accessor: 'role', className: 'text-center' },
       {
         Header: 'Actions',
         filterable: false,
@@ -289,7 +283,6 @@ class Users extends React.Component {
         isPhoneNumVerified: row['_original'].isPhoneNumVerified,
         isPromoCodeApplicable: row['_original'].isPromoCodeApplicable,
         createdDate: row['_original'].createdDate,
-        role: row['_original'].role,
         vehicleCount: parseInt(row['_original'].vehicleCount)
       }
     }));
@@ -452,8 +445,7 @@ class Users extends React.Component {
         password = '',
         sourceofReg = '',
         isEmailVerified = '',
-        isPhoneNumVerified = '',
-        role = ''
+        isPhoneNumVerified = ''
       }
     } = this.state;
     const {
@@ -506,7 +498,7 @@ class Users extends React.Component {
                           data={vehicle_data}
                           columns={this.vehicle_columns}
                           defaultPageSize={3}
-                          pageSizeOptions={[10, 20]}
+                          pageSizeOptions={[3, 6, 9]}
                           noDataText="No Record Found.."
                           filterable
                           HeaderClassName="text-bold"
@@ -535,8 +527,8 @@ class Users extends React.Component {
               <ModalBody className="cus_model1">
                 <AvField
                   name="name"
-                  label="User Name"
-                  placeholder="User Name"
+                  label="Name"
+                  placeholder="Name"
                   id="username"
                   value={name}
                   required
@@ -572,6 +564,7 @@ class Users extends React.Component {
                   label="Password"
                   placeholder="Password"
                   id="password"
+                  disabled
                   value={password}
                   required
                   onChange={this.onChange}
@@ -580,6 +573,7 @@ class Users extends React.Component {
                 <AvField
                   name="sourceofReg"
                   label="Source of Reg"
+                  disabled
                   placeholder="Source of Reg"
                   id="sourceofReg"
                   value={sourceofReg}
@@ -612,16 +606,6 @@ class Users extends React.Component {
                   />
                   <span className="custom-toggle-slider rounded-circle" />
                 </label>
-                <AvField
-                  name="role"
-                  label="Role"
-                  placeholder="Role"
-                  id="role"
-                  value={role}
-                  required
-                  onChange={this.onChange}
-                  className="blue_lable"
-                />
               </ModalBody>
               <ModalFooter>
                 <FormGroup>

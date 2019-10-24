@@ -93,7 +93,7 @@ class vehicleServicepage extends Component {
     super(props);
     this.state = {
       vehicleId: null,
-      editSheduleModal: false,
+      editScheduleModal: false,
       requestedServiceDate: '',
       status: '',
       servicePlanID: null,
@@ -110,18 +110,31 @@ class vehicleServicepage extends Component {
   //Update Schedule
   updateVehicleServideDetails(e) {
     const update_type = e.currentTarget.dataset.update_vehi_serv_method;
+    const {
+      scheduleID,
+      servicePlanID,
+      requestedServiceDate,
+      actualServiceDate,
+      serviceOutDate,
+      status,
+      isTeamsandConditionsAccepted,
+      remainderMinutes,
+      serviceAmount,
+      serviceName,
+      servicePriceChartId
+    } = this.state;
     var data = {
-      scheduleID: parseInt(this.state.scheduleID),
-      servicePlanID: parseInt(this.state.servicePlanID),
-      requestedServiceDate: this.state.requestedServiceDate,
-      actualServiceDate: this.state.actualServiceDate,
-      serviceOutDate: this.state.actualServiceDate,
-      status: update_type === 'update_status' ? 'Completed' : this.state.status,
-      isTeamsandConditionsAccepted: this.state.isTeamsandConditionsAccepted,
-      remainderMinutes: parseInt(this.state.remainderMinutes),
-      serviceAmount: this.state.serviceAmount,
-      serviceName: this.state.serviceName,
-      servicePriceChartId: parseFloat(this.state.servicePriceChartId)
+      scheduleID: parseInt(scheduleID),
+      servicePlanID: parseInt(servicePlanID),
+      requestedServiceDate: requestedServiceDate,
+      actualServiceDate: actualServiceDate,
+      serviceOutDate: serviceOutDate,
+      status: update_type === 'update_status' ? 'Completed' : status,
+      isTeamsandConditionsAccepted: isTeamsandConditionsAccepted,
+      remainderMinutes: parseInt(remainderMinutes),
+      serviceAmount: serviceAmount,
+      serviceName: serviceName,
+      servicePriceChartId: parseFloat(servicePriceChartId)
     };
     this.props.updateVehicleService(data);
   }
@@ -146,7 +159,7 @@ class vehicleServicepage extends Component {
       is_teamsand_conditions_accepted = ''
     } = e.currentTarget.dataset;
     this.setState(prevState => ({
-      editSheduleModal: !prevState.editSheduleModal,
+      editScheduleModal: !prevState.editScheduleModal,
       scheduleID: schedule_id,
       servicePlanID: service_plan_id,
       requestedServiceDate: requested_service_date,
@@ -172,6 +185,7 @@ class vehicleServicepage extends Component {
   }
 
   render() {
+    const { editScheduleModal, requestedServiceDate, status } = this.state;
     const vehicle_ser_data =
       this.props.vehicleServiceDetailsResponse.data || [];
     const vehicleInfo = vehicle_ser_data.vehicleInfo || [];
@@ -564,7 +578,7 @@ class vehicleServicepage extends Component {
           </Row>
           <Modal
             className="modal-dialog-centered"
-            isOpen={this.state.editSheduleModal}
+            isOpen={editScheduleModal}
             toggle={this.editShedule}
           >
             <div className="modal-header">
@@ -595,14 +609,14 @@ class vehicleServicepage extends Component {
                   required
                   onChange={this.formDataChange}
                   className="blue_lable"
-                  value={this.state.requestedServiceDate}
-                  selected={this.state.requestedServiceDate}
+                  value={requestedServiceDate}
+                  selected={requestedServiceDate}
                 />
                 <center>
                   <Button color="success">Update</Button>
                 </center>
               </AvForm>
-              {this.state.status !== 'On Due' ? (
+              {status !== 'On Due' ? (
                 <center>
                   <hr />
                   <Button

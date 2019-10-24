@@ -1,8 +1,14 @@
 import React from 'react';
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from 'reactstrap';
+import { connect } from 'react-redux';
 class Header extends React.Component {
   render() {
+    const {
+      dashboard = {
+        report: {}
+      }
+    } = this.props.Dashboard;
     return (
       <>
         <div
@@ -31,7 +37,7 @@ class Header extends React.Component {
                             Users
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {dashboard.report.users}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -55,7 +61,7 @@ class Header extends React.Component {
                             List of vehicle
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            2,356
+                            {dashboard.report.vehicles}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -78,7 +84,10 @@ class Header extends React.Component {
                           >
                             Total Services
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">
+                            {' '}
+                            {dashboard.report.services}
+                          </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-green text-white rounded-circle shadow">
@@ -121,5 +130,13 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;
+const getState = state => {
+  return {
+    loginData: state.authLogin,
+    Dashboard: state.dashboard
+  };
+};
+export default connect(
+  getState,
+  {}
+)(Header);

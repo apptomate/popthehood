@@ -57,8 +57,8 @@ class ListService extends Component {
               <i
                 className={
                   row['_original'].isAvailable
-                    ? 'far fa-check-circle'
-                    : 'far fa-times-circle'
+                    ? 'far fa-check-circle color-success'
+                    : 'far fa-times-circle color-danger'
                 }
               />
             </h3>
@@ -145,25 +145,25 @@ class ListService extends Component {
       <Fragment>
         <UserHeader />
         {/* Page content */}
-        <Container className='mt--7' fluid>
+        <Container className="mt--7" fluid>
           <Row>
-            <div className='col'>
-              <Card className='shadow'>
-                <CardHeader className='border-0'>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="border-0">
                   <Row>
                     <Col sm>
-                      <h3 className='mb-0'>List Of Available Services</h3>
+                      <h3 className="mb-0">List Of Available Services</h3>
                     </Col>
                     <Col sm>
                       <FormGroup style={{ float: 'right' }}>
                         <Input
-                          type='select'
-                          name='ServicePlan'
-                          id='exampleSelect'
+                          type="select"
+                          name="ServicePlan"
+                          id="exampleSelect"
                           value={ServicePlan}
                           onChange={this.onChange}
                         >
-                          <option disabled value=''>
+                          <option disabled value="">
                             Select an Service Plan
                           </option>
                           {Plans}
@@ -178,36 +178,36 @@ class ListService extends Component {
                         }}
                       >
                         <Button
-                          color='primary'
-                          size='sm'
+                          color="primary"
+                          size="sm"
                           onClick={this.download}
-                          id='down_csv'
+                          id="down_csv"
                         >
-                          <i className='fas fa-file-download'></i> CSV
+                          <i className="fas fa-file-download"></i> CSV
                         </Button>
                         <CSVLink
                           data={this.state.dataToDownload}
                           filename={'Service List' + '.csv'}
-                          className='hidden'
+                          className="hidden"
                           ref={r => (this.csvLink = r)}
-                          target='_blank'
+                          target="_blank"
                         />
                         <UncontrolledTooltip
-                          placement='top'
+                          placement="top"
                           target={'down_csv'}
                         >
                           Download as CSV
                         </UncontrolledTooltip>
                         <Button
-                          color='info'
-                          size='sm'
-                          id='down_pdf'
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
                           onClick={this.downloadPdf}
                         >
-                          <i className='fas fa-file-download'></i> PDF
+                          <i className="fas fa-file-download"></i> PDF
                         </Button>
                         <UncontrolledTooltip
-                          placement='top'
+                          placement="top"
                           target={'down_pdf'}
                         >
                           Download as PDF
@@ -217,23 +217,23 @@ class ListService extends Component {
                   </Row>
                 </CardHeader>
                 <ReactTable
-                  id='check_issues'
+                  id="check_issues"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={ServicesByID.allServices}
                   columns={this.columns}
-                  defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
-                  noDataText='No Record Found..'
+                  defaultPageSize={25}
+                  pageSizeOptions={[5, 10, 15, 20, 25]}
+                  noDataText="No Record Found.."
                   filterable
-                  HeaderClassName='text-bold'
+                  HeaderClassName="text-bold"
                   defaultFilterMethod={(filter, row) =>
                     String(row[filter.id])
                       .toLowerCase()
                       .includes(filter.value.toLowerCase())
                   }
                   onFilteredChange={this.filterData}
-                  className='-striped -highlight'
+                  className="-striped -highlight"
                 />
               </Card>
             </div>
