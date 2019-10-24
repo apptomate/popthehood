@@ -22,6 +22,9 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+const downFileName =
+  'Service Report-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -156,7 +159,7 @@ class ServiceReport extends Component {
       rowPageBreak: 'avoid',
       theme: 'grid'
     });
-    doc.save('Service Report' + '.pdf');
+    doc.save(downFileName + '.pdf');
   }
   onClickFilter(e) {
     console.error(this.state.startDate, this.state.endDate);
@@ -182,10 +185,11 @@ class ServiceReport extends Component {
   }
   render() {
     const { Services = [] } = this.props;
+    let { filter, startDate, endDate, dataToDownload } = this.state;
     const MyLoader = () => <Loader loading={Services.loading} />;
     let data,
       current_date = '';
-    if (this.state.filter) {
+    if (filter) {
       data = Services.services.filter(
         service => service.requestedServiceDate > current_date
       );
@@ -208,14 +212,14 @@ class ServiceReport extends Component {
                     <Col md="4">
                       <Label for="startdate">Start Date</Label>
                       <DatePicker
-                        selected={this.state.startDate}
+                        selected={startDate}
                         onChange={this.sdateChange}
                         dateFormat="yyyy-MM-dd"
                         placeholderText="Select Start Date"
                       />
                       <Label for="endtdate">End Date</Label>
                       <DatePicker
-                        selected={this.state.endDate}
+                        selected={endDate}
                         onChange={this.edateChange}
                         dateFormat="yyyy-MM-dd"
                         placeholderText="Select End Date"
@@ -262,8 +266,8 @@ class ServiceReport extends Component {
                         <i className="fas fa-file-download"></i> CSV
                       </Button>
                       <CSVLink
-                        data={this.state.dataToDownload}
-                        filename={'Service Report' + '.csv'}
+                        data={dataToDownload}
+                        filename={downFileName + '.csv'}
                         className="hidden"
                         ref={r => (this.csvLink = r)}
                         target="_blank"
@@ -286,7 +290,7 @@ class ServiceReport extends Component {
                   </Row>
                 </CardHeader>
                 <ReactTable
-                  id="check_issues"
+                  id="service_report"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={data}
