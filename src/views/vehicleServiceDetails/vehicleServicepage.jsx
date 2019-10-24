@@ -19,7 +19,10 @@ import {
   Modal
 } from 'reactstrap';
 import UserHeader from 'components/Headers/UserHeader.jsx';
-import { vehicleServiceDetails } from '../../redux/actions/Index';
+import {
+  vehicleServiceDetails,
+  updateVehicleService
+} from '../../redux/actions/Index';
 import {
   withScriptjs,
   withGoogleMap,
@@ -30,10 +33,10 @@ import { lat_lng_value } from '../common/helpers/Variables';
 import { preventDefaultFn } from '../common/helpers/functions';
 
 const MapWrapper = withScriptjs(
-  withGoogleMap(() => (
+  withGoogleMap(props => (
     <GoogleMap
       defaultZoom={12}
-      defaultCenter={lat_lng_value}
+      defaultCenter={props.lng_lat_value}
       defaultOptions={{
         scrollwheel: false,
         styles: [
@@ -90,11 +93,50 @@ class vehicleServicepage extends Component {
     super(props);
     this.state = {
       vehicleId: null,
-      editSheduleModal: false,
-      requestedServiceDate: ''
+      editScheduleModal: false,
+      requestedServiceDate: '',
+      status: '',
+      servicePlanID: null,
+      scheduleID: null,
+      actualServiceDate: '',
+      serviceOutDate: ''
     };
     this.editShedule = this.editShedule.bind(this);
     this.formDataChange = this.formDataChange.bind(this);
+    this.updateVehicleServideDetails = this.updateVehicleServideDetails.bind(
+      this
+    );
+  }
+  //Update Schedule
+  updateVehicleServideDetails(e) {
+    const update_type = e.currentTarget.dataset.update_vehi_serv_method;
+    const {
+      scheduleID,
+      servicePlanID,
+      requestedServiceDate,
+      actualServiceDate,
+      serviceOutDate,
+      status,
+      isTeamsandConditionsAccepted,
+      remainderMinutes,
+      serviceAmount,
+      serviceName,
+      servicePriceChartId
+    } = this.state;
+    var data = {
+      scheduleID: parseInt(scheduleID),
+      servicePlanID: parseInt(servicePlanID),
+      requestedServiceDate: requestedServiceDate,
+      actualServiceDate: actualServiceDate,
+      serviceOutDate: serviceOutDate,
+      status: update_type === 'update_status' ? 'Completed' : status,
+      isTeamsandConditionsAccepted: isTeamsandConditionsAccepted,
+      remainderMinutes: parseInt(remainderMinutes),
+      serviceAmount: serviceAmount,
+      serviceName: serviceName,
+      servicePriceChartId: parseFloat(servicePriceChartId)
+    };
+    this.props.updateVehicleService(data);
   }
   //Form Data Change
   formDataChange(e) {
@@ -102,9 +144,33 @@ class vehicleServicepage extends Component {
     this.setState({ [name]: value });
   }
   //Edit Schedule Modal
-  editShedule() {
+  editShedule(e) {
+    var {
+      schedule_id = '',
+      service_plan_id = '',
+      requested_service_date = '',
+      actual_service_date = '',
+      service_out_date = '',
+      status = '',
+      service_price_chartid = '',
+      service_name = '',
+      service_amount = '',
+      remainder_minutes = '',
+      is_teamsand_conditions_accepted = ''
+    } = e.currentTarget.dataset;
     this.setState(prevState => ({
-      editSheduleModal: !prevState.editSheduleModal
+      editScheduleModal: !prevState.editScheduleModal,
+      scheduleID: schedule_id,
+      servicePlanID: service_plan_id,
+      requestedServiceDate: requested_service_date,
+      actualServiceDate: actual_service_date,
+      serviceOutDate: service_out_date,
+      status: status,
+      servicePriceChartId: service_price_chartid,
+      serviceName: service_name,
+      serviceAmount: service_amount,
+      remainderMinutes: remainder_minutes,
+      isTeamsandConditionsAccepted: is_teamsand_conditions_accepted
     }));
   }
   componentDidMount() {
@@ -119,13 +185,22 @@ class vehicleServicepage extends Component {
   }
 
   render() {
+    const { editScheduleModal, requestedServiceDate, status } = this.state;
     const vehicle_ser_data =
       this.props.vehicleServiceDetailsResponse.data || [];
     const vehicleInfo = vehicle_ser_data.vehicleInfo || [];
     const paymentinfo = vehicle_ser_data.paymentinfo || [];
-    const planInfo = vehicle_ser_data.planInfo || [];
+    const planInfoList = vehicle_ser_data.planInfoList || [];
     const serviceList = vehicle_ser_data.serviceList || [];
     const userInfo = vehicle_ser_data.userInfo || [];
+    const lng_lat_value = {
+      lat: userInfo.locationLatitude,
+      lng: userInfo.locationLongitude
+    };
+    const serv_det = serviceList
+      .filter((serv_lst, index) => !index)
+      .map(list => list);
+
     // const {
     //   data: {
     //     paymentinfo: {
@@ -266,21 +341,30 @@ class vehicleServicepage extends Component {
                             <li>
                               <span> Remainder minutes</span>
                               <Button className="float-right btn btn-default btn-sm">
-                                30 minutes
+                                {!serv_det.remainderMinutes
+                                  ? '0'
+                                  : serv_det.remainderMinutes}{' '}
+                                minutes
                               </Button>
                             </li>
                             <li>
                               <span> Tearms & Condition</span>
-                              <Button className="float-right btn btn-success btn-sm">
-                                Accepted
-                              </Button>{' '}
-                              <Button className="float-right btn btn-danger btn-sm">
-                                Not-Accepted
+                              <Button
+                                className={
+                                  serv_det.isTeamsandConditionsAccepted
+                                    ? 'float-right btn btn-success btn-sm'
+                                    : 'float-right btn btn-danger btn-sm'
+                                }
+                              >
+                                {serv_det.isTeamsandConditionsAccepted
+                                  ? 'Accepted'
+                                  : 'Not-Accepted'}
                               </Button>
                             </li>
                             <li className="mb-1">
                               <span>Location</span>
                               <MapWrapper
+                                lng_lat_value={lng_lat_value}
                                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
                                 loadingElement={
                                   <div style={{ height: '100%' }} />
@@ -325,7 +409,11 @@ class vehicleServicepage extends Component {
                             </Button>
                           </Col>
                           <Col sm="10">
-                            <h5>{planInfo.planType}</h5>
+                            <h5>
+                              {planInfoList
+                                .filter((plan_value, index) => !index)
+                                .map(plan => plan.planType)}
+                            </h5>
                           </Col>
                         </Row>
                       </Card>
@@ -355,10 +443,12 @@ class vehicleServicepage extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <th scope="row">Lorem</th>
-                                  <td>{planInfo.serviceDescription}</td>
-                                </tr>
+                                {planInfoList.map((plan_data, index) => (
+                                  <tr key={index}>
+                                    <td>{plan_data.serviceNameList}</td>
+                                    <td>{plan_data.serviceDescription}</td>
+                                  </tr>
+                                ))}
                               </tbody>
                             </Table>
                           </Col>
@@ -389,37 +479,63 @@ class vehicleServicepage extends Component {
                           <td>{data.status}</td>
                           <td>{data.serviceAmount}</td>
                           <td className="text-right">
-                            <UncontrolledDropdown>
-                              <DropdownToggle
-                                className="btn-icon-only text-light"
-                                href="#pablo"
-                                role="button"
-                                size="sm"
-                                color=""
-                                onClick={preventDefaultFn}
-                              >
-                                <i className="fas fa-ellipsis-v" />
-                              </DropdownToggle>
-                              <DropdownMenu
-                                className="dropdown-menu-arrow"
-                                right
-                              >
-                                <DropdownItem
+                            {data.status !== 'Completed' ? (
+                              <UncontrolledDropdown>
+                                <DropdownToggle
+                                  className="btn-icon-only text-light"
                                   href="#pablo"
+                                  role="button"
+                                  size="sm"
+                                  color=""
                                   onClick={preventDefaultFn}
                                 >
-                                  <Button
-                                    color="primary"
-                                    size="sm"
-                                    type="button"
-                                    data-schedule_id={data.scheduleID}
-                                    onClick={this.editShedule}
+                                  <i className="fas fa-ellipsis-v" />
+                                </DropdownToggle>
+                                <DropdownMenu
+                                  className="dropdown-menu-arrow"
+                                  right
+                                >
+                                  <DropdownItem
+                                    href="#pablo"
+                                    onClick={preventDefaultFn}
                                   >
-                                    <i className="fas fa-edit"></i> Edit
-                                  </Button>
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </UncontrolledDropdown>
+                                    <Button
+                                      color="primary"
+                                      size="sm"
+                                      type="button"
+                                      data-service_price_chartid={
+                                        data.servicePriceChartId
+                                      }
+                                      data-service_name={data.serviceName}
+                                      data-service_amount={data.serviceAmount}
+                                      data-remainder_minutes={
+                                        data.remainderMinutes
+                                      }
+                                      data-is_teamsand_conditions_accepted={
+                                        data.isTeamsandConditionsAccepted
+                                      }
+                                      data-schedule_id={data.scheduleID}
+                                      data-service_plan_id={data.servicePlanID}
+                                      data-requested_service_date={
+                                        data.requestedServiceDate
+                                      }
+                                      data-actual_service_date={
+                                        data.actualServiceDate
+                                      }
+                                      data-service_out_date={
+                                        data.serviceOutDate
+                                      }
+                                      data-status={data.status}
+                                      onClick={this.editShedule}
+                                    >
+                                      <i className="fas fa-edit"></i> Edit
+                                    </Button>
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </UncontrolledDropdown>
+                            ) : (
+                              ''
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -462,7 +578,7 @@ class vehicleServicepage extends Component {
           </Row>
           <Modal
             className="modal-dialog-centered"
-            isOpen={this.state.editSheduleModal}
+            isOpen={editScheduleModal}
             toggle={this.editShedule}
           >
             <div className="modal-header">
@@ -480,26 +596,40 @@ class vehicleServicepage extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <AvForm onValidSubmit={this.updateVehicleServideDetails}>
+              <AvForm
+                data-update_vehi_serv_method="update_date"
+                onValidSubmit={this.updateVehicleServideDetails}
+              >
                 <AvField
                   name="requestedServiceDate"
                   label="Requested Service Date"
-                  type="date"
+                  type="dateTime"
+                  validate={{ format: 'DD/MM/YYYY HH:MM:SS' }}
+                  placeholder={'DD/MM/YYYY HH:MM:SS'}
                   required
                   onChange={this.formDataChange}
-                  className="blue_lable"
-                  value={this.state.requestedServiceDate}
-                  selected={this.state.requestedServiceDate}
-                  placeholder="Requested Service Date"
+                  className="blue_label"
+                  value={requestedServiceDate}
+                  selected={requestedServiceDate}
                 />
                 <center>
                   <Button color="success">Update</Button>
                 </center>
               </AvForm>
-              <center>
-                <hr />
-                <Button color="success">Complete Schedule </Button>
-              </center>
+              {status !== 'On Due' ? (
+                <center>
+                  <hr />
+                  <Button
+                    data-update_vehi_serv_method="update_status"
+                    color="success"
+                    onClick={this.updateVehicleServideDetails}
+                  >
+                    Complete Schedule{' '}
+                  </Button>
+                </center>
+              ) : (
+                ''
+              )}
             </div>
             <div className="modal-footer"></div>
           </Modal>
@@ -516,6 +646,7 @@ const getState = state => {
 export default connect(
   getState,
   {
-    vehicleServiceDetails
+    vehicleServiceDetails,
+    updateVehicleService
   }
 )(vehicleServicepage);
