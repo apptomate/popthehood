@@ -28,6 +28,7 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 import moment from 'moment';
+import { leftAllignStyle } from '../common/helpers/Variables.jsx';
 const downFileName =
   'Vehicles List - ' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ListVehicle extends Component {
@@ -52,7 +53,7 @@ class ListVehicle extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <div style={{ textAlign: 'left' }}>
+            <div style={leftAllignStyle}>
               <Link
                 to={{
                   pathname:
@@ -69,26 +70,26 @@ class ListVehicle extends Component {
         Header: 'Make',
         accessor: 'make',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Model',
         accessor: 'model',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'User Name',
         accessor: 'name',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Location',
         accessor: 'address',
         className: 'text-center',
         Cell: ({ row }) => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             <span id={'address_' + row['_original'].vehicleId}>
               {' '}
               {row['_original'].address}
@@ -106,7 +107,11 @@ class ListVehicle extends Component {
         Header: 'Next Service',
         accessor: 'nextService',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{moment(row.value).format('DD/MM/YYYY HH:MM:SS')}</div>
+        Cell: row => (
+          <div style={leftAllignStyle}>
+            {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
+          </div>
+        )
       },
       {
         Header: 'Actions',

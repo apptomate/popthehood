@@ -12,7 +12,7 @@ import {
   Container,
   Media
 } from 'reactstrap';
-import img from '../../assets/img/theme/team-4-800x800.jpg';
+import img from '../../assets/img/icons/common/avatar2.jpg';
 class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);

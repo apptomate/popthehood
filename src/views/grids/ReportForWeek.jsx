@@ -6,6 +6,7 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import moment from 'moment';
+import { leftAllignStyle } from '../common/helpers/Variables';
 const downFileName =
   'Service Report For Week-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ReportForWeek extends Component {
@@ -23,7 +24,7 @@ class ReportForWeek extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <div style={{ textAlign: 'left' }}>
+            <div style={leftAllignStyle}>
               <Link
                 to={{
                   pathname:
@@ -41,7 +42,7 @@ class ReportForWeek extends Component {
         accessor: 'requestServiceDate',
         className: 'text-center',
         Cell: row => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             {moment(row.value).format('DD/MM/YYYY')}
           </div>
         )

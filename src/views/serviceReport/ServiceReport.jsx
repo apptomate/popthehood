@@ -26,6 +26,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { getAlertToast } from '../common/helpers/functions';
 import { FormGroup } from 'reactstrap';
+import { leftAllignStyle } from '../common/helpers/Variables.jsx';
 const downFileName =
   'Service Report -' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ServiceReport extends Component {
@@ -50,7 +51,7 @@ class ServiceReport extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <div style={{ textAlign: 'left' }}>
+            <div style={leftAllignStyle}>
               <Link
                 to={{
                   pathname:
@@ -67,32 +68,32 @@ class ServiceReport extends Component {
         Header: 'Make',
         accessor: 'make',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Model',
         accessor: 'model',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'User Name',
         accessor: 'name',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Status',
         accessor: 'status',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Plan Type',
         accessor: 'planType',
         className: 'text-center',
         Cell: ({ row }) => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             <span id={'planType_' + row['_original'].licensePlate}>
               {' '}
               {row['_original'].planType}
@@ -123,7 +124,7 @@ class ServiceReport extends Component {
         accessor: 'requestedServiceDate',
         className: 'text-center',
         Cell: row => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             {moment(row.value).format('DD/MM/YYYY')}
           </div>
         )
