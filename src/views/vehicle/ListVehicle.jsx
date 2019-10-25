@@ -141,7 +141,7 @@ class ListVehicle extends Component {
       .fire(getConfirm('warning', 'Are you sure you want to delete the issue?'))
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id);
+          this.props.deleteVehicle(vehicle_id, 'vehicle');
         }
       });
   }
@@ -259,7 +259,7 @@ class ListVehicle extends Component {
     let data = {
       ...this.state.user_vehicle_data
     };
-    this.props.updateVehicle(data);
+    this.props.updateVehicle(data, 'vehicle');
     this.setState({
       user_vehicle_data: [],
       editVehicleModal: false

@@ -23,6 +23,8 @@ import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import Swal from 'sweetalert2';
+import { getAlertToast } from '../common/helpers/functions';
 const downFileName =
   'Service Report-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ServiceReport extends Component {
@@ -93,6 +95,16 @@ class ServiceReport extends Component {
         Header: 'Paid Amount',
         accessor: 'paid',
         className: 'text-center'
+      },
+      {
+        Header: 'Service Date',
+        accessor: 'requestedServiceDate',
+        className: 'text-center',
+        Cell: ({ row }) => {
+          return moment(row['_original'].requestedServiceDate).format(
+            'DD/MM/YYYY'
+          );
+        }
       }
     ];
   }
@@ -161,9 +173,31 @@ class ServiceReport extends Component {
     });
     doc.save(downFileName + '.pdf');
   }
-  onClickFilter(e) {
-    console.error(this.state.startDate, this.state.endDate);
-    this.setState({ filter: true });
+  onClickFilter() {
+    let { startDate, endDate } = this.state;
+    let { services } = this.props.Services;
+    let data,
+      filter = true;
+    if (startDate && endDate) {
+      data = services.filter(
+        service =>
+          new Date(service.requestedServiceDate) >= new Date(startDate) &&
+          new Date(service.requestedServiceDate) <= new Date(endDate)
+      );
+    } else if (startDate) {
+      data = services.filter(
+        service => new Date(service.requestedServiceDate) >= new Date(startDate)
+      );
+    } else if (endDate) {
+      data = services.filter(
+        service => new Date(service.requestedServiceDate) <= new Date(endDate)
+      );
+    } else {
+      filter = false;
+      Swal.fire(getAlertToast('warning', 'Please Select One of the Filter!'));
+    }
+
+    this.setState({ filter: filter, filterData: data });
   }
   sdateChange(date) {
     this.setState({
@@ -185,14 +219,11 @@ class ServiceReport extends Component {
   }
   render() {
     const { Services = [] } = this.props;
-    let { filter, startDate, endDate, dataToDownload } = this.state;
+    let { filter, startDate, endDate, dataToDownload, filterData } = this.state;
     const MyLoader = () => <Loader loading={Services.loading} />;
-    let data,
-      current_date = '';
+    let data;
     if (filter) {
-      data = Services.services.filter(
-        service => service.requestedServiceDate > current_date
-      );
+      data = filterData;
     } else {
       data = Services.services;
     }
@@ -209,53 +240,7 @@ class ServiceReport extends Component {
                     <Col md="5">
                       <h3 className="mb-0">Service Report</h3>
                     </Col>
-                    <Col md="4">
-                      <Label for="startdate">Start Date</Label>
-                      <DatePicker
-                        selected={startDate}
-                        onChange={this.sdateChange}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select Start Date"
-                      />
-                      <Label for="endtdate">End Date</Label>
-                      <DatePicker
-                        selected={endDate}
-                        onChange={this.edateChange}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select End Date"
-                      />
-                      <div className="flex" style={{ marginTop: '32px' }}>
-                        <Button
-                          color="primary"
-                          id="FilterTooltip"
-                          onClick={this.onClickFilter}
-                        >
-                          {' '}
-                          <i className="fas fa-filter"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                          placement={'top'}
-                          target={'FilterTooltip'}
-                        >
-                          Filter
-                        </UncontrolledTooltip>
-
-                        <Button
-                          color="primary"
-                          style={{ marginLeft: '10px' }}
-                          onClick={this.resetFilter}
-                          id="reset_tool"
-                        >
-                          <i className="fas fa-history"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                          placement={'top'}
-                          target={'reset_tool'}
-                        >
-                          Reset
-                        </UncontrolledTooltip>
-                      </div>
-                    </Col>
+                    <Col md="4"></Col>
                     <Col md="3">
                       <Button
                         color="primary"
@@ -285,6 +270,54 @@ class ServiceReport extends Component {
                       </Button>
                       <UncontrolledTooltip placement="top" target={'down_pdf'}>
                         Download as PDF
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
+                  <Row style={{ margin: '10px' }}>
+                    <Col md="3"></Col>
+                    <Col md="7">
+                      <Label for="startdate">Start Date</Label>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={this.sdateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select Start Date"
+                      />
+                      <Label for="endtdate">End Date</Label>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={this.edateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select End Date"
+                      />
+                    </Col>
+                    <Col md="2">
+                      <Button
+                        color="primary"
+                        id="FilterTooltip"
+                        onClick={this.onClickFilter}
+                      >
+                        <i className="fas fa-filter"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'FilterTooltip'}
+                      >
+                        Filter
+                      </UncontrolledTooltip>
+
+                      <Button
+                        color="primary"
+                        onClick={this.resetFilter}
+                        id="reset_tool"
+                      >
+                        <i className="fas fa-history"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'reset_tool'}
+                      >
+                        Reset
                       </UncontrolledTooltip>
                     </Col>
                   </Row>
