@@ -36,26 +36,6 @@ class ReportForWeek extends Component {
         }
       },
       {
-        Header: 'Make',
-        accessor: 'make',
-        className: 'text-center'
-      },
-      {
-        Header: 'Name',
-        accessor: 'name',
-        className: 'text-center'
-      },
-      {
-        Header: 'Phone Number',
-        accessor: 'phoneNumber',
-        className: 'text-center'
-      },
-      {
-        Header: 'Location',
-        accessor: 'locationFullAddress',
-        className: 'text-center'
-      },
-      {
         Header: 'Date',
         accessor: 'requestServiceDate',
         className: 'text-center'
@@ -64,7 +44,9 @@ class ReportForWeek extends Component {
   }
   shouldComponentUpdate(nextProps) {
     return (
-      this.props.vehicleScheduledForAWeek !== nextProps.vehicleScheduledForAWeek
+      this.props.vehicleScheduledForAWeek &&
+      this.props.vehicleScheduledForAWeek.length !==
+        nextProps.vehicleScheduledForAWeek.length
     );
   }
   download() {
@@ -101,20 +83,10 @@ class ReportForWeek extends Component {
       body: data_array,
       columns: [
         { header: 'License Plate', dataKey: 'License Plate' },
-        { header: 'Make', dataKey: 'Make' },
-        { header: 'Model', dataKey: 'Model' },
-        { header: 'Name', dataKey: 'Name' },
-        { header: 'Phone No', dataKey: 'Phone No' },
-        { header: 'Location', dataKey: 'Location' },
         { header: 'Date', dataKey: 'Date' }
       ],
       columnStyles: {
-        0: { cellWidth: 60 },
-        1: { cellWidth: 50 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 },
-        4: { cellWidth: 60 },
-        5: { cellWidth: 50 },
+        0: { cellWidth: 100 },
         6: { cellWidth: 100 }
       },
       margin: {
@@ -136,7 +108,7 @@ class ReportForWeek extends Component {
         <CardHeader className="border-0">
           <Row className="align-items-center">
             <div className="col">
-              <h3 className="mb-0">Services Scheduled For a Week</h3>
+              <h3 className="mb-0">Last Week Services</h3>
             </div>
             <div className="col text-right">
               <Button

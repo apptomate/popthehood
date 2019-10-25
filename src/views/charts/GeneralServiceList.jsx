@@ -43,7 +43,11 @@ class GeneralServiceList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return this.props.generalServiceList !== nextProps.generalServiceList;
+    return (
+      this.props.generalServiceList &&
+      this.props.generalServiceList.length !==
+        nextProps.generalServiceList.length
+    );
   }
   render() {
     const { generalServiceList = [] } = this.props;

@@ -65,8 +65,9 @@ class ReportForDay extends Component {
   }
   shouldComponentUpdate(nextProps) {
     return (
-      this.props.vehicleScheduledListForADay !==
-      nextProps.vehicleScheduledListForADay
+      this.props.vehicleScheduledListForADay &&
+      this.props.vehicleScheduledListForADay.length !==
+        nextProps.vehicleScheduledListForADay.length
     );
   }
   download() {
@@ -133,7 +134,6 @@ class ReportForDay extends Component {
   render() {
     const { vehicleScheduledListForADay = [] } = this.props;
     const { dataToDownload } = this.state;
-    console.error(dataToDownload);
     return (
       <Card className="shadow">
         <CardHeader className="border-0">

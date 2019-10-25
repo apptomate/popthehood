@@ -29,6 +29,7 @@ class Dashboard extends Component {
     const {
       dashboard = {
         report: {},
+        generalServiceList: [],
         vehicleScheduledForAWeek: [],
         monthlyreportList: [],
         vehicleScheduledListForADay: []
@@ -86,14 +87,14 @@ class Dashboard extends Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="6">
+            <Col className="mb-5 mb-xl-0" xl="8">
               <ReportForDay
                 vehicleScheduledListForADay={
                   dashboard.vehicleScheduledListForADay
                 }
               />
             </Col>
-            <Col xl="6">
+            <Col xl="4">
               <ReportForWeek
                 vehicleScheduledForAWeek={dashboard.vehicleScheduledForAWeek}
               />

@@ -27,22 +27,14 @@ class MonthlyReportList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return this.props.monthlyReportList !== nextProps.monthlyReportList;
+    return (
+      this.props.monthlyReportList &&
+      this.props.monthlyReportList.length !== nextProps.monthlyReportList.length
+    );
   }
 
   render() {
     const { monthlyReportList } = this.props;
-    const CustomTooltip = ({ active, payload }) => {
-      if (active && payload !== null && payload !== undefined) {
-        return (
-          <div className="custom-tooltip c_t">
-            <p className="label">{`${payload[0].payload.monthList} : ${payload[0].payload.monthwiseCount}`}</p>
-          </div>
-        );
-      }
-
-      return null;
-    };
     return (
       <Fragment key={shortid.generate()}>
         <div className="fstBar" style={{ width: '100%', height: 380 }}>
@@ -66,7 +58,7 @@ class MonthlyReportList extends Component {
                 <CartesianGrid strokeDasharray="5 3" />
                 <XAxis name="Month" dataKey="monthList" height={120} />
                 <YAxis />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip />
                 <Bar dataKey="monthwiseCount" nameKey="monthList">
                   {monthlyReportList.map((entry, index) => (
                     <Cell
