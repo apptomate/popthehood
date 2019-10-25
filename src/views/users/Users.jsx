@@ -33,6 +33,7 @@ import { connect } from 'react-redux';
 import Loader from '../common/Loader';
 import { Label } from 'reactstrap';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
+import { leftAllignStyle } from '../common/helpers/Variables';
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -91,7 +92,7 @@ class Users extends React.Component {
         Header: 'Name',
         accessor: 'name',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Email',
@@ -99,7 +100,7 @@ class Users extends React.Component {
         className: 'text-center',
         width: 250,
         Cell: ({ row }) => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             <span id={'email_' + row['_original'].userId}>
               {' '}
               {row['_original'].email}
@@ -118,7 +119,7 @@ class Users extends React.Component {
         accessor: 'phoneNumber',
         className: 'text-center',
         width: 150,
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Vehicle Count',
@@ -131,7 +132,7 @@ class Users extends React.Component {
         accessor: 'sourceofReg',
         className: 'text-center',
         width: 150,
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Email Verified',
@@ -221,7 +222,7 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <div style={{ textAlign: 'left' }}>
+            <div style={leftAllignStyle}>
               <Link
                 to={{
                   pathname:
@@ -238,25 +239,25 @@ class Users extends React.Component {
         Header: 'Make',
         accessor: 'make',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Model',
         accessor: 'model',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Year',
         accessor: 'year',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Color',
         accessor: 'color',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Actions',

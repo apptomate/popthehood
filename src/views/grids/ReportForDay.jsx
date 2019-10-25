@@ -6,6 +6,7 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import moment from 'moment';
+import { leftAllignStyle } from '../common/helpers/Variables';
 const downFileName =
   'Service Report For Day-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 
@@ -24,7 +25,7 @@ class ReportForDay extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <div style={{ textAlign: 'left' }}>
+            <div style={leftAllignStyle}>
               <Link
                 to={{
                   pathname:
@@ -41,32 +42,32 @@ class ReportForDay extends Component {
         Header: 'Make',
         accessor: 'make',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Name',
         accessor: 'name',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Location',
         accessor: 'locationFullAddress',
         className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Date',
         accessor: 'requestServiceDate',
         className: 'text-center',
         Cell: row => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
           </div>
         )

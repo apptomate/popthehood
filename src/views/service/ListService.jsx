@@ -25,6 +25,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import moment from 'moment';
+import { leftAllignStyle } from '../common/helpers/Variables.jsx';
 const downFileName =
   'Service List - ' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ListService extends Component {
@@ -41,7 +42,7 @@ class ListService extends Component {
         className: 'text-center',
         width: 350,
         Cell: ({ row }) => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             <span id={'serviceName_' + row['_original'].availableServiceID}>
               {' '}
               {row['_original'].serviceName}
@@ -60,7 +61,7 @@ class ListService extends Component {
         accessor: 'description',
         className: 'text-center',
         Cell: ({ row }) => (
-          <div style={{ textAlign: 'left' }}>
+          <div style={leftAllignStyle}>
             <span id={'description_' + row['_original'].availableServiceID}>
               {' '}
               {row['_original'].description}
@@ -79,7 +80,7 @@ class ListService extends Component {
         accessor: 'price',
         className: 'text-center',
         width: 100,
-        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
+        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Is Available',
