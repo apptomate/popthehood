@@ -366,7 +366,7 @@ class Users extends React.Component {
     let data = {
       ...this.state.user_vehicle_data
     };
-    this.props.updateVehicle(data);
+    this.props.updateVehicle(data, 'user');
     this.setState(() => ({
       user_vehicle_data: [],
       editVehicleModal: false
@@ -406,7 +406,7 @@ class Users extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id);
+          this.props.deleteVehicle(vehicle_id, 'user');
         }
       });
   }
