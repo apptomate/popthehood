@@ -498,7 +498,7 @@ class Users extends React.Component {
                           data={vehicle_data}
                           columns={this.vehicle_columns}
                           defaultPageSize={3}
-                          pageSizeOptions={[10, 20]}
+                          pageSizeOptions={[3, 6, 9]}
                           noDataText="No Record Found.."
                           filterable
                           HeaderClassName="text-bold"
@@ -533,7 +533,7 @@ class Users extends React.Component {
                   value={name}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="phoneNumber"
@@ -544,7 +544,7 @@ class Users extends React.Component {
                   value={phoneNumber}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="email"
@@ -555,7 +555,7 @@ class Users extends React.Component {
                   value={email}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                   disabled
                 />
                 <AvField
@@ -564,20 +564,22 @@ class Users extends React.Component {
                   label="Password"
                   placeholder="Password"
                   id="password"
+                  disabled
                   value={password}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <AvField
                   name="sourceofReg"
                   label="Source of Reg"
+                  disabled
                   placeholder="Source of Reg"
                   id="sourceofReg"
                   value={sourceofReg}
                   required
                   onChange={this.onChange}
-                  className="blue_lable"
+                  className="blue_label"
                 />
                 <Label>Email Verified</Label>
                 <br />

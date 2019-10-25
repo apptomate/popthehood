@@ -37,4 +37,4 @@ export function authHeader() {
   return token && { Authorization: 'Bearer ' + token };
 }
 
-export const preventDefaultFn = preventDefaultFn;
+export const preventDefaultFn = e => e.preventDefault();

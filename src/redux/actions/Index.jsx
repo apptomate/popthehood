@@ -11,6 +11,7 @@ import {
   UPDATE_DELETE_USER_URL,
   UPDATEVEHICLE_URL,
   SERVICEREPORT_URL,
+  UPDATEVEHICLESERVICE_URL,
   VEHICLESERVICEDETAILS_URL,
   DASHBOARD_URL
 } from '../../views/common/helpers/constants';
@@ -51,6 +52,8 @@ import {
   GETSERVICEREPORT_ERROR,
   VEHICLESERVICEDETAILS_SUCCESS,
   VEHICLESERVICEDETAILS_ERROR,
+  UPDATEVEHICLESERVICE_SUCCESS,
+  UPDATEVEHICLESERVICE_ERROR,
   DASHBOARD_LOADING,
   DASHBOARD_SUCCESS,
   DASHBOARD_ERROR
@@ -398,6 +401,27 @@ export function dashboard() {
           dispatch({
             type: DASHBOARD_ERROR,
             payload: error.response
+          });
+        }
+      });
+  };
+}
+
+//Update Vehicle Details
+export function updateVehicleService(data) {
+  return dispatch => {
+    API.put(UPDATEVEHICLESERVICE_URL, data, { headers: authHeader() })
+      .then(response => {
+        dispatch({
+          type: UPDATEVEHICLESERVICE_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response) {
+          dispatch({
+            type: UPDATEVEHICLESERVICE_ERROR,
+            payload: error.response.data
           });
         }
       });
