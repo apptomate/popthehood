@@ -26,7 +26,7 @@ class AdminNavbar extends React.Component {
   render() {
     const {
       user: { name = '' }
-    } = this.props.loginData;
+    } = this.props.loginData || [];
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">

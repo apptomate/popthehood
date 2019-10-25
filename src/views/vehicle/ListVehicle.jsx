@@ -197,9 +197,9 @@ class ListVehicle extends Component {
     }
     if (
       prevProps.UpdateData.data !== this.props.UpdateData.data &&
-      this.props.UpdateData.data === 'Updated Successfully'
+      this.props.UpdateData.data.vehicleId > 0
     ) {
-      swal.fire(getAlertToast('success', 'Updated Successfully!'));
+      swal.fire(getAlertToast('success', this.props.UpdateData.data.message));
     }
   }
   download() {
