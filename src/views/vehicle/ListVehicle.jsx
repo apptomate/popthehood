@@ -193,20 +193,6 @@ class ListVehicle extends Component {
   componentDidMount() {
     this.props.getAllVehicles();
   }
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.DeleteData.data !== this.props.DeleteData.data &&
-      this.props.DeleteData.data === 'Deleted Successfully'
-    ) {
-      swal.fire(getAlertToast('success', 'Deleted Successfully!'));
-    }
-    if (
-      prevProps.UpdateData.data !== this.props.UpdateData.data &&
-      this.props.UpdateData.data.vehicleId > 0
-    ) {
-      swal.fire(getAlertToast('success', this.props.UpdateData.data.message));
-    }
-  }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -387,9 +373,7 @@ class ListVehicle extends Component {
 const getState = state => {
   return {
     loginData: state.authLogin,
-    Vehicles: state.getAllVehicles,
-    DeleteData: state.deleteVehicle,
-    UpdateData: state.updateVehicle
+    Vehicles: state.getAllVehicles
   };
 };
 export default connect(

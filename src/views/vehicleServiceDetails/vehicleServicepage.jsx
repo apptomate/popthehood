@@ -185,19 +185,7 @@ class vehicleServicepage extends Component {
       VehicleId: parseInt(params.id)
     };
     this.props.vehicleServiceDetails(data);
-  }
-
-  componentDidUpdate(newProps) {
-    const { updateVehicleServiceResponse } = this.props;
-    if (
-      updateVehicleServiceResponse.data &&
-      newProps.updateVehicleServiceResponse.data !==
-        updateVehicleServiceResponse.data
-    ) {
-      swal.fire(getAlertToast('success', 'Updated Successfully'));
-      this.setState({ editScheduleModal: false });
-    }
-  }
+  }  
 
   exportPDFWithComponent = () => {
     this.pdfExportComponent.save();
