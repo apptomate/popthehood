@@ -13,6 +13,7 @@ import updateVehicle from './vehicleReducers/PutVehicleReducer';
 import getServiceReport from './servicereducers/ServiceReportReducer';
 import vehicleServiceDetails from './vehicleReducers/GetVehicleServiceDetailsReducer';
 import dashboard from './dashboardreducers/DashboardReducer';
+import updateVehicleService from './vehicleReducers/PutVehicleServiceDetailsReducer';
 const RootReducer = combineReducers({
   authLogin: authLogin,
   getAllUsers: getAllUsers,
@@ -27,7 +28,8 @@ const RootReducer = combineReducers({
   getServicePriceByID: getServicePriceByID,
   serviceReport: getServiceReport,
   vehicleServiceDetails: vehicleServiceDetails,
-  dashboard: dashboard
+  dashboard: dashboard,
+  updateVehicleService: updateVehicleService
 });
 
 export default RootReducer;

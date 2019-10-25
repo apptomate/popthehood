@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import swal from 'sweetalert2';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
+import { getAlertToast } from '../common/helpers/functions';
 // reactstrap components
 import {
   Card,
@@ -89,27 +90,48 @@ class Users extends React.Component {
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Email',
         accessor: 'email',
-        className: 'text-center'
+        className: 'text-center',
+        width: 250,
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'email_' + row['_original'].userId}>
+              {' '}
+              {row['_original'].email}
+            </span>
+            <UncontrolledTooltip
+              placement="top"
+              target={'email_' + row['_original'].userId}
+            >
+              {row['_original'].email}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
-        className: 'text-center'
+        className: 'text-center',
+        width: 150,
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Vehicle Count',
         accessor: 'vehicleCount',
-        className: 'text-center'
+        className: 'text-center',
+        width: 180
       },
       {
         Header: 'Source Reg',
         accessor: 'sourceofReg',
-        className: 'text-center'
+        className: 'text-center',
+        width: 150,
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Email Verified',
@@ -147,6 +169,7 @@ class Users extends React.Component {
         Header: 'Actions',
         filterable: false,
         className: 'text-center',
+        width: 130,
         Cell: ({ row }) => (
           <Fragment>
             <Button
@@ -198,21 +221,43 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={{
-                pathname:
-                  'vehicle-service-details/' + row['_original'].vehicleId
-              }}
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
-      { Header: 'Make', accessor: 'make', className: 'text-center' },
-      { Header: 'Model', accessor: 'model', className: 'text-center' },
-      { Header: 'Year', accessor: 'year', className: 'text-center' },
-      { Header: 'Color', accessor: 'color', className: 'text-center' },
+      {
+        Header: 'Make',
+        accessor: 'make',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Model',
+        accessor: 'model',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Year',
+        accessor: 'year',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Color',
+        accessor: 'color',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
       {
         Header: 'Actions',
         filterable: false,
@@ -223,6 +268,7 @@ class Users extends React.Component {
               user_id={row['_original'].vehicleId}
               className="action_btn"
               id="EditTooltip"
+              size="sm"
               onClick={e => this.editUserVehicle(e, row)}
             >
               <i
@@ -240,6 +286,7 @@ class Users extends React.Component {
               data-user_vehicle_id={row['_original'].vehicleId}
               className="action_btn"
               color="danger"
+              size="sm"
               id="DeleteTooltip"
               onClick={this.deleteUserVehicleDetail}
             >
@@ -413,28 +460,14 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.getAllUsers();
   }
-  componentDidUpdate() {
-    //     const {
-    //         updateUserResponse,
-    //         deleteUserResponse
-    //     }
-    // } = this.props;
-    //     let  response = this.props.updateUserResponse;
-    //     if (response.data ) {
-    //         swal.fire(getAlertToast('success', response.data));
-    //     }
-    //const del_data = newProps.deleteUserResponse.data;
-    // const updateUserResponse = newProps.updateUserResponse;
-    // if (
-    //     updateUserResponse &&
-    //     updateUserResponse !== this.props.updateUserResponse
-    // ) {
-    //     let isError = updateUserResponse.error;
-    //     let update_data = updateUserResponse.data;
-    //     let text = isError ? update_data.error.message : update_data;
-    //     let type = isError ? 'error' : 'success';
-    //     swal.fire({ text: text, type: type });
-    // }
+  componentDidUpdate(newProps) {
+    const { updateUserResponse, deleteUserResponse } = this.props;
+    if (newProps.updateUserResponse !== updateUserResponse) {
+      swal.fire(getAlertToast('success', updateUserResponse.data));
+    }
+    if (newProps.deleteUserResponse !== deleteUserResponse) {
+      swal.fire(getAlertToast('success', deleteUserResponse.data));
+    }
   }
   render() {
     const {
@@ -490,7 +523,10 @@ class Users extends React.Component {
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }}>
-                        <br />
+                        <center>
+                          {' '}
+                          <h3>User's Registered Vehicles</h3>{' '}
+                        </center>
                         <ReactTable
                           id="users_vehicle_table"
                           LoadingComponent={MyLoaderVehicle}
@@ -588,6 +624,7 @@ class Users extends React.Component {
                     defaultChecked={isEmailVerified}
                     value={isEmailVerified}
                     type="checkbox"
+                    disabled
                     name="isEmailVerified"
                     onChange={this.onCheck}
                   />
@@ -603,6 +640,7 @@ class Users extends React.Component {
                     type="checkbox"
                     name="isPhoneNumVerified"
                     onChange={this.onCheck}
+                    disabled
                   />
                   <span className="custom-toggle-slider rounded-circle" />
                 </label>

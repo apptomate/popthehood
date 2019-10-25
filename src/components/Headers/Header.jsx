@@ -34,7 +34,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Users
+                            Total Users
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {dashboard.report.users}
@@ -58,7 +58,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            List of vehicle
+                            Total vehicles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {dashboard.report.vehicles}
@@ -82,7 +82,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total Services
+                            Total Due Services
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {' '}
@@ -107,15 +107,13 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Performance
+                            Total Amount Paid
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">
-                            49,65%
-                          </span>
+                          <span className="h2 font-weight-bold mb-0">253</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                            <i className="fas fa-percent" />
+                            <i className="fas fa-dollar-sign" />
                           </div>
                         </Col>
                       </Row>

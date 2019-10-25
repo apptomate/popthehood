@@ -52,6 +52,7 @@ import {
   GETSERVICEREPORT_ERROR,
   VEHICLESERVICEDETAILS_SUCCESS,
   VEHICLESERVICEDETAILS_ERROR,
+  UPDATEVEHICLESERVICE_LOADING,
   UPDATEVEHICLESERVICE_SUCCESS,
   UPDATEVEHICLESERVICE_ERROR,
   DASHBOARD_LOADING,
@@ -417,14 +418,19 @@ export function dashboard() {
 }
 
 //Update Vehicle Details
-export function updateVehicleService(data) {
+export function updateVehicleService(data, reload_date) {
   return dispatch => {
+    dispatch({
+      type: UPDATEVEHICLESERVICE_LOADING,
+      payload: ''
+    });
     API.put(UPDATEVEHICLESERVICE_URL, data, { headers: authHeader() })
       .then(response => {
         dispatch({
           type: UPDATEVEHICLESERVICE_SUCCESS,
           payload: response.data
         });
+        dispatch(vehicleServiceDetails(reload_date));
       })
       .catch(function(error) {
         if (error.response) {

@@ -25,8 +25,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { getAlertToast } from '../common/helpers/functions';
+import { FormGroup } from 'reactstrap';
 const downFileName =
-  'Service Report-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+  'Service Report -' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -49,62 +50,83 @@ class ServiceReport extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={
-                {
-                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
-                }
-              }
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Model',
         accessor: 'model',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'User Name',
         accessor: 'name',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Status',
         accessor: 'status',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Plan Type',
         accessor: 'planType',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'planType_' + row['_original'].licensePlate}>
+              {' '}
+              {row['_original'].planType}
+            </span>
+            <UncontrolledTooltip
+              placement="top"
+              target={'planType_' + row['_original'].licensePlate}
+            >
+              {row['_original'].planType}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Due Amount',
         accessor: 'due',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
       },
       {
         Header: 'Paid Amount',
         accessor: 'paid',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
       },
       {
         Header: 'Service Date',
         accessor: 'requestedServiceDate',
         className: 'text-center',
-        Cell: ({ row }) => {
-          return moment(row['_original'].requestedServiceDate).format(
-            'DD/MM/YYYY'
-          );
-        }
+        Cell: row => (
+          <div style={{ textAlign: 'left' }}>
+            {moment(row.value).format('DD/MM/YYYY')}
+          </div>
+        )
       }
     ];
   }
@@ -237,11 +259,64 @@ class ServiceReport extends Component {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row>
-                    <Col md="5">
+                    <Col md="2">
                       <h3 className="mb-0">Service Report</h3>
                     </Col>
-                    <Col md="4"></Col>
                     <Col md="3">
+                      <FormGroup style={{ float: 'right' }}>
+                        <DatePicker
+                          selected={startDate}
+                          onChange={this.sdateChange}
+                          dateFormat="yyyy-MM-dd"
+                          placeholderText="Select Start Date"
+                          className="form-control"
+                          width="100%"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="3">
+                      <FormGroup>
+                        <DatePicker
+                          selected={endDate}
+                          onChange={this.edateChange}
+                          dateFormat="yyyy-MM-dd"
+                          placeholderText="Select End Date"
+                          className="form-control"
+                          width="100%"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="2" style={{ marginLeft: '-5rem' }}>
+                      <Button
+                        color="primary"
+                        id="FilterTooltip"
+                        onClick={this.onClickFilter}
+                      >
+                        <i className="fas fa-filter"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'FilterTooltip'}
+                      >
+                        Filter
+                      </UncontrolledTooltip>
+
+                      <Button
+                        color="primary"
+                        onClick={this.resetFilter}
+                        id="reset_tool"
+                      >
+                        <i className="fas fa-history"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'reset_tool'}
+                      >
+                        Reset
+                      </UncontrolledTooltip>
+                    </Col>
+
+                    <Col md="2" style={{ marginLeft: '5rem' }}>
                       <Button
                         color="primary"
                         size="sm"
@@ -270,54 +345,6 @@ class ServiceReport extends Component {
                       </Button>
                       <UncontrolledTooltip placement="top" target={'down_pdf'}>
                         Download as PDF
-                      </UncontrolledTooltip>
-                    </Col>
-                  </Row>
-                  <Row style={{ margin: '10px' }}>
-                    <Col md="3"></Col>
-                    <Col md="7">
-                      <Label for="startdate">Start Date</Label>
-                      <DatePicker
-                        selected={startDate}
-                        onChange={this.sdateChange}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select Start Date"
-                      />
-                      <Label for="endtdate">End Date</Label>
-                      <DatePicker
-                        selected={endDate}
-                        onChange={this.edateChange}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select End Date"
-                      />
-                    </Col>
-                    <Col md="2">
-                      <Button
-                        color="primary"
-                        id="FilterTooltip"
-                        onClick={this.onClickFilter}
-                      >
-                        <i className="fas fa-filter"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'FilterTooltip'}
-                      >
-                        Filter
-                      </UncontrolledTooltip>
-
-                      <Button
-                        color="primary"
-                        onClick={this.resetFilter}
-                        id="reset_tool"
-                      >
-                        <i className="fas fa-history"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'reset_tool'}
-                      >
-                        Reset
                       </UncontrolledTooltip>
                     </Col>
                   </Row>
