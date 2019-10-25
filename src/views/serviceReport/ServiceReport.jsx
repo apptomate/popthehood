@@ -48,11 +48,10 @@ class ServiceReport extends Component {
         Cell: ({ row }) => {
           return (
             <Link
-              to={
-                {
-                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
-                }
-              }
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
             >
               {row['_original'].licensePlate}
             </Link>

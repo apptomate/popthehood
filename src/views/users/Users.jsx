@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import swal from 'sweetalert2';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
+import { getAlertToast } from '../common/helpers/functions';
 // reactstrap components
 import {
   Card,
@@ -413,28 +414,14 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.getAllUsers();
   }
-  componentDidUpdate() {
-    //     const {
-    //         updateUserResponse,
-    //         deleteUserResponse
-    //     }
-    // } = this.props;
-    //     let  response = this.props.updateUserResponse;
-    //     if (response.data ) {
-    //         swal.fire(getAlertToast('success', response.data));
-    //     }
-    //const del_data = newProps.deleteUserResponse.data;
-    // const updateUserResponse = newProps.updateUserResponse;
-    // if (
-    //     updateUserResponse &&
-    //     updateUserResponse !== this.props.updateUserResponse
-    // ) {
-    //     let isError = updateUserResponse.error;
-    //     let update_data = updateUserResponse.data;
-    //     let text = isError ? update_data.error.message : update_data;
-    //     let type = isError ? 'error' : 'success';
-    //     swal.fire({ text: text, type: type });
-    // }
+  componentDidUpdate(newProps) {
+    const { updateUserResponse, deleteUserResponse } = this.props;
+    if (newProps.updateUserResponse !== updateUserResponse) {
+      swal.fire(getAlertToast('success', updateUserResponse.data));
+    }
+    if (newProps.deleteUserResponse !== deleteUserResponse) {
+      swal.fire(getAlertToast('success', deleteUserResponse.data));
+    }
   }
   render() {
     const {
@@ -490,7 +477,10 @@ class Users extends React.Component {
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }}>
-                        <br />
+                        <center>
+                          {' '}
+                          <h3>User's Registered Vehicles</h3>{' '}
+                        </center>
                         <ReactTable
                           id="users_vehicle_table"
                           LoadingComponent={MyLoaderVehicle}
