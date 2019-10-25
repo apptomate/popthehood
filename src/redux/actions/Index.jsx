@@ -136,7 +136,7 @@ export function deleteUser(user_id) {
 }
 
 //Update Vehicle
-export function updateVehicle(data) {
+export function updateVehicle(data, from = '') {
   return dispatch => {
     dispatch({
       type: USERVEHICLE_LOADING
@@ -148,8 +148,11 @@ export function updateVehicle(data) {
           payload: response.data
         });
         var get_data = { userId: data.userId };
-        dispatch(getUserVehicleDetails(get_data));
-        dispatch(getAllVehicles());
+        if (from === 'vehicle') {
+          dispatch(getAllVehicles());
+        } else {
+          dispatch(getUserVehicleDetails(get_data));
+        }
       })
       .catch(function(error) {
         if (error.response) {
@@ -235,7 +238,7 @@ export function getAllVehicles() {
   };
 }
 
-export function deleteVehicle(vehicleID) {
+export function deleteVehicle(vehicleID, from = '') {
   return dispatch => {
     dispatch({
       type: DELETEVEHICLE_LOADING
@@ -248,7 +251,13 @@ export function deleteVehicle(vehicleID) {
           type: DELETEVEHICLE_SUCCESS,
           payload: response.data
         });
-        dispatch(getAllVehicles());
+        let userdata = JSON.parse(localStorage.getItem('userData'));
+        var get_data = { userId: userdata.userId };
+        if (from === 'vehicle') {
+          dispatch(getAllVehicles());
+        } else {
+          dispatch(getUserVehicleDetails(get_data));
+        }
       })
       .catch(function(error) {
         if (error.response) {

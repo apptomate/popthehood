@@ -110,7 +110,7 @@ class ListService extends Component {
       columns: [
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
-        { header: 'Prize', dataKey: 'Prize' },
+        { header: 'Price', dataKey: 'Price' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
