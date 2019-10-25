@@ -39,6 +39,7 @@ class Login extends React.Component {
   onClickLogin(e) {
     e.preventDefault();
     const { email, password } = this.state;
+    const Role = 'Admin';
     if (!email || !password) {
       swal.fire(getAlertToast('warning', 'Enter credentials'));
       return;
@@ -47,7 +48,7 @@ class Login extends React.Component {
       swal.fire(getAlertToast('warning', 'Enter valid email'));
       return;
     }
-    this.props.authLogin({ email, password });
+    this.props.authLogin({ email, password, Role });
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -115,7 +116,6 @@ class Login extends React.Component {
                     className="my-4"
                     color="primary"
                     type="submit"
-                    onClick={this.onClickLogin}
                     disabled={loading}
                   >
                     Sign in

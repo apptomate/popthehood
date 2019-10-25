@@ -90,27 +90,48 @@ class Users extends React.Component {
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Email',
         accessor: 'email',
-        className: 'text-center'
+        className: 'text-center',
+        width: 250,
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'email_' + row['_original'].userId}>
+              {' '}
+              {row['_original'].email}
+            </span>
+            <UncontrolledTooltip
+              placement="top"
+              target={'email_' + row['_original'].userId}
+            >
+              {row['_original'].email}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
-        className: 'text-center'
+        className: 'text-center',
+        width: 150,
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Vehicle Count',
         accessor: 'vehicleCount',
-        className: 'text-center'
+        className: 'text-center',
+        width: 180
       },
       {
         Header: 'Source Reg',
         accessor: 'sourceofReg',
-        className: 'text-center'
+        className: 'text-center',
+        width: 150,
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Email Verified',
@@ -148,6 +169,7 @@ class Users extends React.Component {
         Header: 'Actions',
         filterable: false,
         className: 'text-center',
+        width: 130,
         Cell: ({ row }) => (
           <Fragment>
             <Button
@@ -199,21 +221,43 @@ class Users extends React.Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={{
-                pathname:
-                  'vehicle-service-details/' + row['_original'].vehicleId
-              }}
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
-      { Header: 'Make', accessor: 'make', className: 'text-center' },
-      { Header: 'Model', accessor: 'model', className: 'text-center' },
-      { Header: 'Year', accessor: 'year', className: 'text-center' },
-      { Header: 'Color', accessor: 'color', className: 'text-center' },
+      {
+        Header: 'Make',
+        accessor: 'make',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Model',
+        accessor: 'model',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Year',
+        accessor: 'year',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
+      {
+        Header: 'Color',
+        accessor: 'color',
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+      },
       {
         Header: 'Actions',
         filterable: false,
@@ -224,6 +268,7 @@ class Users extends React.Component {
               user_id={row['_original'].vehicleId}
               className="action_btn"
               id="EditTooltip"
+              size="sm"
               onClick={e => this.editUserVehicle(e, row)}
             >
               <i
@@ -241,6 +286,7 @@ class Users extends React.Component {
               data-user_vehicle_id={row['_original'].vehicleId}
               className="action_btn"
               color="danger"
+              size="sm"
               id="DeleteTooltip"
               onClick={this.deleteUserVehicleDetail}
             >
@@ -578,6 +624,7 @@ class Users extends React.Component {
                     defaultChecked={isEmailVerified}
                     value={isEmailVerified}
                     type="checkbox"
+                    disabled
                     name="isEmailVerified"
                     onChange={this.onCheck}
                   />
@@ -593,6 +640,7 @@ class Users extends React.Component {
                     type="checkbox"
                     name="isPhoneNumVerified"
                     onChange={this.onCheck}
+                    disabled
                   />
                   <span className="custom-toggle-slider rounded-circle" />
                 </label>

@@ -27,7 +27,9 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
-
+import moment from 'moment';
+const downFileName =
+  'Vehicles List - ' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
@@ -50,42 +52,61 @@ class ListVehicle extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={
-                {
-                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
-                }
-              }
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Model',
         accessor: 'model',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'User Name',
         accessor: 'name',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Location',
         accessor: 'address',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'address_' + row['_original'].vehicleId}>
+              {' '}
+              {row['_original'].address}
+            </span>
+            <UncontrolledTooltip
+              placement="top"
+              target={'address_' + row['_original'].vehicleId}
+            >
+              {row['_original'].address}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Next Service',
         accessor: 'nextService',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{moment(row.value).format('DD/MM/YYYY HH:MM:SS')}</div>
       },
       {
         Header: 'Actions',
@@ -222,12 +243,12 @@ class ListVehicle extends Component {
         { header: 'Next Service', dataKey: 'Next Service' }
       ],
       columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 30 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 },
-        4: { cellWidth: 60 },
-        5: { cellWidth: 60 }
+        0: { cellWidth: 70 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 70 },
+        3: { cellWidth: 70 },
+        4: { cellWidth: 70 },
+        5: { cellWidth: 70 }
       },
       margin: {
         top: 8,
@@ -238,7 +259,7 @@ class ListVehicle extends Component {
       rowPageBreak: 'avoid',
       theme: 'grid'
     });
-    doc.save('Vehicles List' + '.pdf');
+    doc.save(downFileName + '.pdf');
   }
   onChange(e) {
     let { name, value } = e.target;
@@ -293,7 +314,7 @@ class ListVehicle extends Component {
                         </Button>
                         <CSVLink
                           data={this.state.dataToDownload}
-                          filename={'Vehicles List' + '.csv'}
+                          filename={downFileName + '.csv'}
                           className="hidden"
                           ref={r => (this.csvLink = r)}
                           target="_blank"

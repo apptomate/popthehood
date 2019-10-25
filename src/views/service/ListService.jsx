@@ -24,6 +24,9 @@ import ReactTable from 'react-table';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
+import moment from 'moment';
+const downFileName =
+  'Service List - ' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ListService extends Component {
   constructor(props) {
     super(props);
@@ -35,22 +38,54 @@ class ListService extends Component {
       {
         Header: 'Service Name',
         accessor: 'serviceName',
-        className: 'text-center'
+        className: 'text-center',
+        width: 350,
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'serviceName_' + row['_original'].availableServiceID}>
+              {' '}
+              {row['_original'].serviceName}
+            </span>
+            <UncontrolledTooltip
+              placement="top"
+              target={'serviceName_' + row['_original'].availableServiceID}
+            >
+              {row['_original'].serviceName}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Description',
         accessor: 'description',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: ({ row }) => (
+          <div style={{ textAlign: 'left' }}>
+            <span id={'description_' + row['_original'].availableServiceID}>
+              {' '}
+              {row['_original'].description}
+            </span>
+            <UncontrolledTooltip
+              placement="left"
+              target={'description_' + row['_original'].availableServiceID}
+            >
+              {row['_original'].description}
+            </UncontrolledTooltip>
+          </div>
+        )
       },
       {
         Header: 'Price',
         accessor: 'price',
-        className: 'text-center'
+        className: 'text-center',
+        width: 100,
+        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
       },
       {
         Header: 'Is Available',
         accessor: 'isAvailable',
         className: 'text-center',
+        width: 150,
         Cell: ({ row }) => (
           <Fragment>
             <h3>
@@ -110,12 +145,12 @@ class ListService extends Component {
       columns: [
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
-        { header: 'Prize', dataKey: 'Prize' },
+        { header: 'Price', dataKey: 'Price' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
         0: { cellWidth: 90 },
-        1: { cellWidth: 200 },
+        1: { cellWidth: 220 },
         2: { cellWidth: 50 },
         4: { cellWidth: 50 }
       },
@@ -128,7 +163,7 @@ class ListService extends Component {
       rowPageBreak: 'avoid',
       theme: 'grid'
     });
-    doc.save('Vehicles List' + '.pdf');
+    doc.save(downFileName + '.pdf');
   }
   render() {
     const { servicePlans = [], ServicesByID = [] } = this.props;
@@ -155,7 +190,7 @@ class ListService extends Component {
                       <h3 className="mb-0">List Of Available Services</h3>
                     </Col>
                     <Col sm>
-                      <FormGroup style={{ float: 'right' }}>
+                      <FormGroup style={{ float: 'left', width: '60%' }}>
                         <Input
                           type="select"
                           name="ServicePlan"
@@ -173,8 +208,7 @@ class ListService extends Component {
                       <span
                         style={{
                           float: 'right',
-                          paddingTop: '0.5rem',
-                          marginRight: '1rem'
+                          paddingTop: '0.5rem'
                         }}
                       >
                         <Button
@@ -187,7 +221,7 @@ class ListService extends Component {
                         </Button>
                         <CSVLink
                           data={this.state.dataToDownload}
-                          filename={'Service List' + '.csv'}
+                          filename={downFileName + '.csv'}
                           className="hidden"
                           ref={r => (this.csvLink = r)}
                           target="_blank"

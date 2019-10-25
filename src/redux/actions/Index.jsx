@@ -409,7 +409,7 @@ export function dashboard() {
 }
 
 //Update Vehicle Details
-export function updateVehicleService(data) {
+export function updateVehicleService(data, reload_date) {
   return dispatch => {
     dispatch({
       type: UPDATEVEHICLESERVICE_LOADING,
@@ -421,6 +421,7 @@ export function updateVehicleService(data) {
           type: UPDATEVEHICLESERVICE_SUCCESS,
           payload: response.data
         });
+        dispatch(vehicleServiceDetails(reload_date));
       })
       .catch(function(error) {
         if (error.response) {

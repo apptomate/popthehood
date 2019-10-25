@@ -23,22 +23,28 @@ class ReportForWeek extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={
-                {
-                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
-                }
-              }
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
       {
         Header: 'Date',
         accessor: 'requestServiceDate',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => (
+          <div style={{ textAlign: 'left' }}>
+            {moment(row.value).format('DD/MM/YYYY')}
+          </div>
+        )
       }
     ];
   }
@@ -49,6 +55,7 @@ class ReportForWeek extends Component {
         nextProps.vehicleScheduledForAWeek.length
     );
   }
+
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];

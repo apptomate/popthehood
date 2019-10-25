@@ -24,42 +24,52 @@ class ReportForDay extends Component {
         className: 'text-center',
         Cell: ({ row }) => {
           return (
-            <Link
-              to={
-                {
-                  //   pathname: 'viewvehicle/' + row['_original'].licensePlate
-                }
-              }
-            >
-              {row['_original'].licensePlate}
-            </Link>
+            <div style={{ textAlign: 'left' }}>
+              <Link
+                to={{
+                  pathname:
+                    'vehicle-service-details/' + row['_original'].vehicleId
+                }}
+              >
+                {row['_original'].licensePlate}
+              </Link>
+            </div>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Location',
         accessor: 'locationFullAddress',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
       },
       {
         Header: 'Date',
         accessor: 'requestServiceDate',
-        className: 'text-center'
+        className: 'text-center',
+        Cell: row => (
+          <div style={{ textAlign: 'left' }}>
+            {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
+          </div>
+        )
       }
     ];
   }

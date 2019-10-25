@@ -36,6 +36,8 @@ import {
 } from 'react-google-maps';
 import { lat_lng_value } from '../common/helpers/Variables';
 import { preventDefaultFn } from '../common/helpers/functions';
+import PdfContainer from '../common/pdfContainer/PdfContainer';
+import Doc from '../../assets/js/DocService';
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
@@ -124,8 +126,12 @@ class vehicleServicepage extends Component {
       requestedServiceDate,
       actualServiceDate,
       serviceOutDate,
-      status
+      status,
+      vehicleId
     } = this.state;
+    const reload_data = {
+      VehicleId: parseInt(vehicleId)
+    };
 
     var data = {
       scheduleID: parseInt(scheduleID),
@@ -135,7 +141,7 @@ class vehicleServicepage extends Component {
       serviceOutDate: serviceOutDate,
       status: update_type === 'update_status' ? 'Completed' : status
     };
-    this.props.updateVehicleService(data);
+    this.props.updateVehicleService(data, reload_data);
   }
   //Form Data Change
   formDataChange(e) {
@@ -184,14 +190,20 @@ class vehicleServicepage extends Component {
   componentDidUpdate(newProps) {
     const { updateVehicleServiceResponse } = this.props;
     if (
-      newProps.updateVehicleServiceResponse !== updateVehicleServiceResponse
+      updateVehicleServiceResponse.data &&
+      newProps.updateVehicleServiceResponse.data !==
+        updateVehicleServiceResponse.data
     ) {
-      console.log('Props:/', updateVehicleServiceResponse);
+      swal.fire(getAlertToast('success', 'Updated Successfully'));
       this.setState({ editScheduleModal: false });
-      swal.fire(getAlertToast('success', 'Updated'));
     }
   }
 
+  exportPDFWithComponent = () => {
+    this.pdfExportComponent.save();
+  };
+
+  createPdf = html => Doc.createPdf(html);
   render() {
     const {
       updateVehicleServiceResponse: {
@@ -240,307 +252,311 @@ class vehicleServicepage extends Component {
           <Row>
             <div className="col">
               <Card className="shadow p-4">
-                <Row>
-                  <Col>
-                    <Row>
-                      <Col md="4" className="item-middle">
-                        <div className="ServiceReport-imgcard">
-                          <img src={vehicleInfo.vehicleImageURL} />
-                        </div>
-                      </Col>
-                      <Col md="8" className="">
-                        <div className="licence-plate">
-                          <h4>
-                            LICENCE PLATE NO :{' '}
-                            <span>{vehicleInfo.licensePlate}</span>
-                          </h4>
-                        </div>
-                        <div className="card-profile shadow card mt-4">
-                          <ListGroup flush>
-                            <ListGroupItem>
-                              <span>Model </span>
-                              <h5>{vehicleInfo.model}</h5>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                              <span>Make</span>
-                              <h5>{vehicleInfo.make}</h5>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                              <span>Year </span>
-                              <h5>{vehicleInfo.year}</h5>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                              <span>Color </span>
-                              <h5>
-                                <h5 color="" className="badge-dot mr-4">
-                                  {vehicleInfo.color}
+                <PdfContainer createPdf={this.createPdf}>
+                  <Row>
+                    <Col>
+                      <Row>
+                        <Col md="4" className="item-middle">
+                          <div className="ServiceReport-imgcard">
+                            <img src={vehicleInfo.vehicleImageURL} />
+                          </div>
+                        </Col>
+                        <Col md="8" className="">
+                          <div className="licence-plate">
+                            <h4>
+                              LICENCE PLATE NO :{' '}
+                              <span>{vehicleInfo.licensePlate}</span>
+                            </h4>
+                          </div>
+                          <div className="card-profile shadow card mt-4">
+                            <ListGroup flush>
+                              <ListGroupItem>
+                                <span>Model </span>
+                                <h5>{vehicleInfo.model}</h5>
+                              </ListGroupItem>
+                              <ListGroupItem>
+                                <span>Make</span>
+                                <h5>{vehicleInfo.make}</h5>
+                              </ListGroupItem>
+                              <ListGroupItem>
+                                <span>Year </span>
+                                <h5>{vehicleInfo.year}</h5>
+                              </ListGroupItem>
+                              <ListGroupItem>
+                                <span>Color </span>
+                                <h5>
+                                  <h5 color="" className="badge-dot mr-4">
+                                    {vehicleInfo.color}
+                                  </h5>
                                 </h5>
-                              </h5>
-                            </ListGroupItem>
-                          </ListGroup>
-                        </div>
-                      </Col>
-                    </Row>
+                              </ListGroupItem>
+                            </ListGroup>
+                          </div>
+                        </Col>
+                      </Row>
 
-                    <Row>
-                      <Col md="6">
-                        {/* User Name details */}
-                        <div className="card-profile shadow card mt-4">
-                          <div className="pt-0 pt-md-4 card-body">
+                      <Row>
+                        <Col md="6">
+                          {/* User Name details */}
+                          <div className="card-profile shadow card mt-4">
+                            <div className="pt-0 pt-md-4 card-body">
+                              <ul className="licence-plate-userDetails">
+                                <li>
+                                  <span> User Name</span>{' '}
+                                  <h5>{userInfo.name}</h5>
+                                </li>
+
+                                <li>
+                                  <span> Phone Number</span>{' '}
+                                  <h5>{userInfo.phoneNumber}</h5>
+                                </li>
+                                <li>
+                                  <span> E-mail</span> <h5>{userInfo.email}</h5>
+                                </li>
+                                <li>
+                                  <span> Address</span>{' '}
+                                  <h5>{userInfo.locationFullAddress}</h5>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </Col>
+                        <Col md="6">
+                          <div className="card-profile shadow card mt-4 p-3">
                             <ul className="licence-plate-userDetails">
                               <li>
-                                <span> User Name</span> <h5>{userInfo.name}</h5>
-                              </li>
-
-                              <li>
-                                <span> Phone Number</span>{' '}
-                                <h5>{userInfo.phoneNumber}</h5>
-                              </li>
-                              <li>
-                                <span> E-mail</span> <h5>{userInfo.email}</h5>
+                                <span> Remainder minutes</span>
+                                <Button className="float-right btn btn-default btn-sm">
+                                  {!serv_det.remainderMinutes
+                                    ? '0'
+                                    : serv_det.remainderMinutes}{' '}
+                                  minutes
+                                </Button>
                               </li>
                               <li>
-                                <span> Address</span>{' '}
-                                <h5>{userInfo.locationFullAddress}</h5>
+                                <span> Tearms & Condition</span>
+                                <Button
+                                  className={
+                                    serv_det.isTeamsandConditionsAccepted
+                                      ? 'float-right btn btn-success btn-sm'
+                                      : 'float-right btn btn-danger btn-sm'
+                                  }
+                                >
+                                  {serv_det.isTeamsandConditionsAccepted
+                                    ? 'Accepted'
+                                    : 'Not-Accepted'}
+                                </Button>
+                              </li>
+                              <li className="mb-1">
+                                <span>Location</span>
+                                <MapWrapper
+                                  lng_lat_value={lng_lat_value}
+                                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
+                                  loadingElement={
+                                    <div style={{ height: '100%' }} />
+                                  }
+                                  containerElement={
+                                    <div
+                                      style={{ height: '149px' }}
+                                      className="map-canvas"
+                                      id="map-canvas"
+                                    />
+                                  }
+                                  mapElement={
+                                    <div
+                                      style={{
+                                        height: '100%',
+                                        borderRadius: 'inherit'
+                                      }}
+                                    />
+                                  }
+                                />
                               </li>
                             </ul>
                           </div>
-                        </div>
-                      </Col>
-                      <Col md="6">
-                        <div className="card-profile shadow card mt-4 p-3">
-                          <ul className="licence-plate-userDetails">
-                            <li>
-                              <span> Remainder minutes</span>
-                              <Button className="float-right btn btn-default btn-sm">
-                                {!serv_det.remainderMinutes
-                                  ? '0'
-                                  : serv_det.remainderMinutes}{' '}
-                                minutes
-                              </Button>
-                            </li>
-                            <li>
-                              <span> Tearms & Condition</span>
-                              <Button
-                                className={
-                                  serv_det.isTeamsandConditionsAccepted
-                                    ? 'float-right btn btn-success btn-sm'
-                                    : 'float-right btn btn-danger btn-sm'
-                                }
-                              >
-                                {serv_det.isTeamsandConditionsAccepted
-                                  ? 'Accepted'
-                                  : 'Not-Accepted'}
-                              </Button>
-                            </li>
-                            <li className="mb-1">
-                              <span>Location</span>
-                              <MapWrapper
-                                lng_lat_value={lng_lat_value}
-                                googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
-                                loadingElement={
-                                  <div style={{ height: '100%' }} />
-                                }
-                                containerElement={
-                                  <div
-                                    style={{ height: '149px' }}
-                                    className="map-canvas"
-                                    id="map-canvas"
-                                  />
-                                }
-                                mapElement={
-                                  <div
-                                    style={{
-                                      height: '100%',
-                                      borderRadius: 'inherit'
-                                    }}
-                                  />
-                                }
-                              />
-                            </li>
-                          </ul>
-                        </div>
-                      </Col>
-                    </Row>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col></Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  {/* Service Details */}
+                  <Card className="shadow mt-5" body>
+                    <h3>Service Details</h3>
+
                     <Row>
-                      <Col></Col>
+                      <Col>
+                        <Card className="shadow mt-3" body>
+                          <Row className="Vehicle-Service-plantype">
+                            <Col sm="2">
+                              <Button className="btn btn-default btn-sm">
+                                Plan Type
+                              </Button>
+                            </Col>
+                            <Col sm="10">
+                              <h5>
+                                {planInfoList
+                                  .filter((plan_value, index) => !index)
+                                  .map(plan => plan.planType)}
+                              </h5>
+                            </Col>
+                          </Row>
+                        </Card>
+                      </Col>
                     </Row>
-                  </Col>
-                </Row>
-                {/* Service Details */}
-                <Card className="shadow mt-5" body>
-                  <h3>Service Details</h3>
 
-                  <Row>
-                    <Col>
-                      <Card className="shadow mt-3" body>
-                        <Row className="Vehicle-Service-plantype">
-                          <Col sm="2">
-                            <Button className="btn btn-default btn-sm">
-                              Plan Type
-                            </Button>
-                          </Col>
-                          <Col sm="10">
-                            <h5>
-                              {planInfoList
-                                .filter((plan_value, index) => !index)
-                                .map(plan => plan.planType)}
-                            </h5>
-                          </Col>
-                        </Row>
-                      </Card>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col>
-                      <Card className="shadow mt-3" body>
-                        <Row>
-                          <Col>
-                            <Button className="btn btn-default btn-sm mb-1">
-                              Services
-                            </Button>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <Table
-                              className="align-items-center table-flush"
-                              responsive
-                            >
-                              <thead className="thead-light">
-                                <tr>
-                                  <th scope="col">Serives</th>
-                                  <th scope="col">Description</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {planInfoList.map((plan_data, index) => (
-                                  <tr key={index}>
-                                    <td>{plan_data.serviceNameList}</td>
-                                    <td>{plan_data.serviceDescription}</td>
+                    <Row>
+                      <Col>
+                        <Card className="shadow mt-3" body>
+                          <Row>
+                            <Col>
+                              <Button className="btn btn-default btn-sm mb-1">
+                                Services
+                              </Button>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <Table
+                                className="align-items-center table-flush"
+                                responsive
+                              >
+                                <thead className="thead-light">
+                                  <tr>
+                                    <th scope="col">Serives</th>
+                                    <th scope="col">Description</th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </Table>
-                          </Col>
-                        </Row>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Card>
-                {/* Subscription Schedules */}
-                <Card className="shadow mt-5" body>
-                  <h3 className="mb-3">Subscription Schedules</h3>
-                  <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
-                      <tr>
-                        {serv_list_column.map((column_head, index) => (
-                          <th key={index} scope="col">
-                            {column_head}
-                          </th>
-                        ))}
-                        <th scope="col" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {update_loading ? (
-                        <center>
-                          <Spinner size="sm" color="primary" />
-                        </center>
-                      ) : (
-                        ''
-                      )}
-                      {serviceList.map((data, index) => (
-                        <tr key={index}>
-                          <td scope="row">{data.requestedServiceDate}</td>
-                          <td>{data.serviceName}</td>
-                          <td>{data.status}</td>
-                          <td>{data.serviceAmount}</td>
-                          <td className="text-right">
-                            {data.status !== 'Completed11' ? (
-                              <UncontrolledDropdown>
-                                <DropdownToggle
-                                  className="btn-icon-only text-light"
-                                  href="#pablo"
-                                  role="button"
-                                  size="sm"
-                                  color=""
-                                  onClick={preventDefaultFn}
-                                >
-                                  <i className="fas fa-ellipsis-v" />
-                                </DropdownToggle>
-                                <DropdownMenu
-                                  className="dropdown-menu-arrow"
-                                  right
-                                >
-                                  <DropdownItem
+                                </thead>
+                                <tbody>
+                                  {planInfoList.map((plan_data, index) => (
+                                    <tr key={index}>
+                                      <td>{plan_data.serviceNameList}</td>
+                                      <td>{plan_data.serviceDescription}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </Table>
+                            </Col>
+                          </Row>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Card>
+                  {/* Subscription Schedules */}
+                  <Card className="shadow mt-5" body>
+                    <h3 className="mb-3">Subscription Schedules</h3>
+                    <Table
+                      className="align-items-center table-flush"
+                      responsive
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          {serv_list_column.map((column_head, index) => (
+                            <th key={index} scope="col">
+                              {column_head}
+                            </th>
+                          ))}
+                          <th scope="col" />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {update_loading ? (
+                          <center>
+                            <Spinner size="sm" color="primary" />
+                          </center>
+                        ) : (
+                          ''
+                        )}
+                        {serviceList.map((data, index) => (
+                          <tr key={index}>
+                            <td scope="row">{data.requestedServiceDate}</td>
+                            <td>{data.serviceName}</td>
+                            <td>{data.status}</td>
+                            <td>{data.serviceAmount}</td>
+                            <td className="text-right">
+                              {data.status !== 'Completed11' ? (
+                                <UncontrolledDropdown>
+                                  <DropdownToggle
+                                    className="btn-icon-only text-light"
                                     href="#pablo"
+                                    role="button"
+                                    size="sm"
+                                    color=""
                                     onClick={preventDefaultFn}
                                   >
-                                    <Button
-                                      color="primary"
-                                      size="sm"
-                                      type="button"
-                                      data-service_id={data.serviceID}
-                                      data-schedule_id={data.scheduleID}
-                                      data-requested_service_date={
-                                        data.requestedServiceDate
-                                      }
-                                      data-actual_service_date={
-                                        data.actualServiceDate
-                                      }
-                                      data-service_out_date={
-                                        data.serviceOutDate
-                                      }
-                                      data-status={data.status}
-                                      onClick={this.editShedule}
+                                    <i className="fas fa-ellipsis-v" />
+                                  </DropdownToggle>
+                                  <DropdownMenu
+                                    className="dropdown-menu-arrow"
+                                    right
+                                  >
+                                    <DropdownItem
+                                      href="#pablo"
+                                      onClick={preventDefaultFn}
                                     >
-                                      <i className="fas fa-edit"></i> Edit
-                                    </Button>
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            ) : (
-                              ''
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card>
-                {/* Payment History */}
-                <Card className="shadow mt-5" body>
-                  <h3 className="mb-3">Payment History</h3>
-                  <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
-                      <tr>
-                        {payment_tbl_column.map((column, index) => (
-                          <th key={index} scope="col">
-                            {column}
-                          </th>
+                                      <Button
+                                        color="primary"
+                                        size="sm"
+                                        type="button"
+                                        data-service_id={data.serviceID}
+                                        data-schedule_id={data.scheduleID}
+                                        data-requested_service_date={
+                                          data.requestedServiceDate
+                                        }
+                                        data-actual_service_date={
+                                          data.actualServiceDate
+                                        }
+                                        data-service_out_date={
+                                          data.serviceOutDate
+                                        }
+                                        data-status={data.status}
+                                        onClick={this.editShedule}
+                                      >
+                                        <i className="fas fa-edit"></i> Edit
+                                      </Button>
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>
+                              ) : (
+                                ''
+                              )}
+                            </td>
+                          </tr>
                         ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">{paymentinfo.paymentDate}</th>
-                        <td>{paymentinfo.paymentType}</td>
-                        <td>{paymentinfo.paymentStatus}</td>
-                        <td>{paymentinfo.totalAmount}</td>
-                        <td>{paymentinfo.promocode_ReducedAmount}</td>
-                        <td>{paymentinfo.paid}</td>
-                        <td>{paymentinfo.due}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </Card>
-                <center>
-                  <Button className="mt-4" color="info" type="button">
-                    <i className="fas fa-file-pdf"></i> PDF Download
-                  </Button>
-                </center>
+                      </tbody>
+                    </Table>
+                  </Card>
+                  {/* Payment History */}
+                  <Card className="shadow mt-5" body>
+                    <h3 className="mb-3">Payment History</h3>
+                    <Table
+                      className="align-items-center table-flush"
+                      responsive
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          {payment_tbl_column.map((column, index) => (
+                            <th key={index} scope="col">
+                              {column}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">{paymentinfo.paymentDate}</th>
+                          <td>{paymentinfo.paymentType}</td>
+                          <td>{paymentinfo.paymentStatus}</td>
+                          <td>{paymentinfo.totalAmount}</td>
+                          <td>{paymentinfo.promocode_ReducedAmount}</td>
+                          <td>{paymentinfo.paid}</td>
+                          <td>{paymentinfo.due}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </Card>
+                </PdfContainer>
               </Card>
             </div>
           </Row>
