@@ -37,8 +37,10 @@
         "react-table": "^6.10.3",
         "react-to-pdf": "0.0.8",
         "reactstrap": "7.1.0",
+        "recharts": "^1.8.5",
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
+        "shortid": "^2.2.15",
         "sweetalert2": "^8.18.4",
         "validator": "^11.1.0"
     },
