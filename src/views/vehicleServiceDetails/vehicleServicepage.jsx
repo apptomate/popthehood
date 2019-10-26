@@ -38,6 +38,7 @@ import { lat_lng_value } from '../common/helpers/Variables';
 import { preventDefaultFn } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
+import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
@@ -162,17 +163,21 @@ class vehicleServicepage extends Component {
       editScheduleModal: !prevState.editScheduleModal,
       scheduleID: schedule_id,
       serviceID: service_id,
-      requestedServiceDate: moment(
-        requested_service_date,
-        'DD/MM/YYYY HH:MM:SS'
-      ).format('YYYY/MM/DD HH:MM:SS '),
-      actualServiceDate: moment(
-        actual_service_date,
-        'DD/MM/YYYY HH:MM:SS'
-      ).format('YYYY/MM/DD HH:MM:SS '),
-      serviceOutDate: moment(service_out_date, 'DD/MM/YYYY HH:MM:SS').format(
-        'YYYY/MM/DD HH:MM:SS '
-      ),
+      requestedServiceDate: moment(requested_service_date).isValid()
+        ? moment(requested_service_date, 'DD/MM/YYYY HH:MM:SS').format(
+          'YYYY/MM/DD HH:MM:SS '
+        )
+        : null,
+      actualServiceDate: moment(actual_service_date).isValid()
+        ? moment(actual_service_date, 'DD/MM/YYYY HH:MM:SS').format(
+          'YYYY/MM/DD HH:MM:SS '
+        )
+        : null,
+      serviceOutDate: moment(service_out_date).isValid()
+        ? moment(service_out_date, 'DD/MM/YYYY HH:MM:SS').format(
+          'YYYY/MM/DD HH:MM:SS '
+        )
+        : null,
       status: status
     }));
   }
@@ -185,7 +190,7 @@ class vehicleServicepage extends Component {
       VehicleId: parseInt(params.id)
     };
     this.props.vehicleServiceDetails(data);
-  }  
+  }
 
   exportPDFWithComponent = () => {
     this.pdfExportComponent.save();
@@ -246,7 +251,11 @@ class vehicleServicepage extends Component {
                       <Row>
                         <Col md="4" className="item-middle">
                           <div className="ServiceReport-imgcard">
-                            <img src={vehicleInfo.vehicleImageURL} />
+                            <img
+                              src={
+                                vehicleInfo.vehicleImageURL || imageNotAvailable
+                              }
+                            />
                           </div>
                         </Col>
                         <Col md="8" className="">
