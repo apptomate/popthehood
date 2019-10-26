@@ -68,7 +68,9 @@ class ReportForDay extends Component {
         className: 'text-center',
         Cell: row => (
           <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
+            {moment(row.value).isValid()
+              ? moment(row.value).format('DD/MM/YYYY HH:MM:SS')
+              : ''}
           </div>
         )
       }
@@ -153,7 +155,7 @@ class ReportForDay extends Component {
               <h3 className="mb-0">Services Scheduled For Today</h3>
             </div>
             <div className="col text-right">
-              <Button
+              {/* <Button
                 color="primary"
                 size="sm"
                 onClick={this.download}
@@ -170,7 +172,7 @@ class ReportForDay extends Component {
               />
               <UncontrolledTooltip placement="top" target={'down_csv'}>
                 Download as CSV
-              </UncontrolledTooltip>
+              </UncontrolledTooltip> */}
               <Button
                 color="info"
                 size="sm"

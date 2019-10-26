@@ -78,9 +78,9 @@ class ListService extends Component {
       {
         Header: 'Price',
         accessor: 'price',
-        className: 'text-center',
-        width: 100,
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-right',
+        width: 100
+        // Cell: row => <div style={leftAllignStyle}>{row.value}</div>
       },
       {
         Header: 'Is Available',

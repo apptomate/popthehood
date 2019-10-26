@@ -35,7 +35,6 @@ class ViewVehicle extends Component {
       vehicleImageURL = 'N/A',
       year = 'N/A'
     } = this.props.VehicleData || [];
-    console.error('Props:/', this.props.VehicleData);
     return (
       <Fragment>
         <UserHeader />
