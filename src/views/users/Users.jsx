@@ -461,15 +461,7 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.getAllUsers();
   }
-  componentDidUpdate(newProps) {
-    const { updateUserResponse, deleteUserResponse } = this.props;
-    if (newProps.updateUserResponse !== updateUserResponse) {
-      swal.fire(getAlertToast('success', updateUserResponse.data));
-    }
-    if (newProps.deleteUserResponse !== deleteUserResponse) {
-      swal.fire(getAlertToast('success', deleteUserResponse.data));
-    }
-  }
+  
   render() {
     const {
       user_data: {
@@ -673,8 +665,6 @@ const getState = state => {
   return {
     getAllUsersResponse: state.getAllUsers,
     getUserVehicleDetailsResponse: state.getUserVehicleDetails,
-    updateUserResponse: state.updateUser,
-    deleteUserResponse: state.deleteUser,
     updateVehicleResponse: state.updateVehicle,
     deleteVehicleResponse: state.deleteVehicle
   };

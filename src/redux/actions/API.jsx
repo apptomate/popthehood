@@ -10,6 +10,9 @@ API.interceptors.response.use(
   error => {
     if (error.response && error.response.status === 401) {
       localStorage.clear();
+      if (!window.location.href.includes('login')) {
+        window.location.replace('/login');
+      }
     }
     if (
       error.response &&
@@ -17,9 +20,6 @@ API.interceptors.response.use(
       error.response.data.success === false
     ) {
       localStorage.clear();
-    }
-    if (!window.location.href.includes('login')) {
-      window.location.replace('/login');
     }
     return Promise.reject(error);
   }

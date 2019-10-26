@@ -32,7 +32,6 @@ class Login extends React.Component {
   }
   componentDidUpdate() {
     if (this.props.loginData.isLogin) {
-      swal.fire(getAlertToast('success', 'Login Success'));
       this.props.history.push('/admin/index');
     }
   }
