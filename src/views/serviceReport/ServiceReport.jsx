@@ -6,7 +6,6 @@ import {
   Row,
   Button,
   UncontrolledTooltip,
-  Label,
   Col
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -125,7 +124,9 @@ class ServiceReport extends Component {
         className: 'text-center',
         Cell: row => (
           <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY')}
+            {moment(row.value).isValid()
+              ? moment(row.value).format('DD/MM/YYYY')
+              : ''}
           </div>
         )
       }
@@ -260,11 +261,58 @@ class ServiceReport extends Component {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row>
-                    <Col md="2">
+                    <Col>
                       <h3 className="mb-0">Service Report</h3>
                     </Col>
-                    <Col md="3">
-                      <FormGroup style={{ float: 'right' }}>
+                    <Col>
+                      <span
+                        style={{
+                          float: 'right',
+                          paddingTop: '0.5rem'
+                        }}
+                      >
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={this.download}
+                          id="down_csv"
+                        >
+                          <i className="fas fa-file-download"></i> CSV
+                        </Button>
+                        <CSVLink
+                          data={dataToDownload}
+                          filename={downFileName + '.csv'}
+                          className="hidden"
+                          ref={r => (this.csvLink = r)}
+                          target="_blank"
+                        />
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_csv'}
+                        >
+                          Download as CSV
+                        </UncontrolledTooltip>
+                        <Button
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
+                          onClick={this.downloadPdf}
+                        >
+                          <i className="fas fa-file-download"></i> PDF
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_pdf'}
+                        >
+                          Download as PDF
+                        </UncontrolledTooltip>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="2"></Col>
+                    <Col sm="3">
+                      <FormGroup>
                         <DatePicker
                           selected={startDate}
                           onChange={this.sdateChange}
@@ -275,7 +323,7 @@ class ServiceReport extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col md="3">
+                    <Col sm="3">
                       <FormGroup>
                         <DatePicker
                           selected={endDate}
@@ -287,10 +335,11 @@ class ServiceReport extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col md="2" style={{ marginLeft: '-5rem' }}>
+                    <Col sm="4" style={{ marginTop: '10px' }}>
                       <Button
                         color="primary"
                         id="FilterTooltip"
+                        size="sm"
                         onClick={this.onClickFilter}
                       >
                         <i className="fas fa-filter"></i>
@@ -304,6 +353,7 @@ class ServiceReport extends Component {
 
                       <Button
                         color="primary"
+                        size="sm"
                         onClick={this.resetFilter}
                         id="reset_tool"
                       >
@@ -314,38 +364,6 @@ class ServiceReport extends Component {
                         target={'reset_tool'}
                       >
                         Reset
-                      </UncontrolledTooltip>
-                    </Col>
-
-                    <Col md="2" style={{ marginLeft: '5rem' }}>
-                      <Button
-                        color="primary"
-                        size="sm"
-                        onClick={this.download}
-                        id="down_csv"
-                      >
-                        <i className="fas fa-file-download"></i> CSV
-                      </Button>
-                      <CSVLink
-                        data={dataToDownload}
-                        filename={downFileName + '.csv'}
-                        className="hidden"
-                        ref={r => (this.csvLink = r)}
-                        target="_blank"
-                      />
-                      <UncontrolledTooltip placement="top" target={'down_csv'}>
-                        Download as CSV
-                      </UncontrolledTooltip>
-                      <Button
-                        color="info"
-                        size="sm"
-                        id="down_pdf"
-                        onClick={this.downloadPdf}
-                      >
-                        <i className="fas fa-file-download"></i> PDF
-                      </Button>
-                      <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                        Download as PDF
                       </UncontrolledTooltip>
                     </Col>
                   </Row>

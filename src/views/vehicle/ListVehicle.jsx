@@ -109,7 +109,9 @@ class ListVehicle extends Component {
         className: 'text-center',
         Cell: row => (
           <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
+            {moment(row.value).isValid()
+              ? moment(row.value).format('DD/MM/YYYY HH:MM:SS')
+              : ''}
           </div>
         )
       },

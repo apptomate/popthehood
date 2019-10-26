@@ -8,7 +8,7 @@ import 'jspdf-autotable';
 import moment from 'moment';
 import { leftAllignStyle } from '../common/helpers/Variables';
 const downFileName =
-  'Service Report For Week-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+  'ServiceReportForWeek-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +43,9 @@ class ReportForWeek extends Component {
         className: 'text-center',
         Cell: row => (
           <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY')}
+            {moment(row.value).isValid()
+              ? moment(row.value).format('DD/MM/YYYY')
+              : ''}
           </div>
         )
       }
@@ -119,7 +121,7 @@ class ReportForWeek extends Component {
               <h3 className="mb-0">Last Week Services</h3>
             </div>
             <div className="col text-right">
-              <Button
+              {/* <Button
                 color="primary"
                 size="sm"
                 onClick={this.download}
@@ -136,7 +138,7 @@ class ReportForWeek extends Component {
               />
               <UncontrolledTooltip placement="top" target={'down_csv'}>
                 Download as CSV
-              </UncontrolledTooltip>
+              </UncontrolledTooltip> */}
               <Button
                 color="info"
                 size="sm"
