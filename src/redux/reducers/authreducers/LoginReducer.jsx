@@ -1,7 +1,7 @@
 import * as types from '../../actions/ActionTypes.jsx';
 import { objectInitial } from '../../InitialState.jsx';
 import swal from 'sweetalert2';
-import { getAlertToast } from '../../../views/common/helpers/functions.js';
+import { getAlertToast } from '../../../views/common/helpers/functions.jsx';
 
 export default function authLogin(state = objectInitial, action) {
   const { type, payload } = action;

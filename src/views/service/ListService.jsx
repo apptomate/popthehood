@@ -24,10 +24,8 @@ import ReactTable from 'react-table';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
-import moment from 'moment';
-import { leftAllignStyle } from '../common/helpers/Variables.jsx';
-const downFileName =
-  'Service List - ' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+import { dateTimeFormat } from '../common/helpers/functions.jsx';
+const downFileName = 'Service List - ' + dateTimeFormat(new Date());
 class ListService extends Component {
   constructor(props) {
     super(props);
@@ -39,10 +37,10 @@ class ListService extends Component {
       {
         Header: 'Service Name',
         accessor: 'serviceName',
-        className: 'text-center',
+        className: 'text-left',
         width: 350,
         Cell: ({ row }) => (
-          <div style={leftAllignStyle}>
+          <Fragment>
             <span id={'serviceName_' + row['_original'].availableServiceID}>
               {' '}
               {row['_original'].serviceName}
@@ -53,17 +51,16 @@ class ListService extends Component {
             >
               {row['_original'].serviceName}
             </UncontrolledTooltip>
-          </div>
+          </Fragment>
         )
       },
       {
         Header: 'Description',
         accessor: 'description',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => (
-          <div style={leftAllignStyle}>
+          <Fragment>
             <span id={'description_' + row['_original'].availableServiceID}>
-              {' '}
               {row['_original'].description}
             </span>
             <UncontrolledTooltip
@@ -72,15 +69,14 @@ class ListService extends Component {
             >
               {row['_original'].description}
             </UncontrolledTooltip>
-          </div>
+          </Fragment>
         )
       },
       {
         Header: 'Price',
         accessor: 'price',
-        className: 'text-center',
-        width: 100,
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-right',
+        width: 100
       },
       {
         Header: 'Is Available',
@@ -172,7 +168,7 @@ class ListService extends Component {
     const MyLoader = () => <Loader loading={ServicesByID.loading} />;
     const Plans =
       servicePlans.allServicePlans &&
-      servicePlans.allServicePlans.map((type, key) => (
+      servicePlans.allServicePlans.map(type => (
         <option value={type.servicePlanID} key={type.servicePlanID}>
           {type.planType}
         </option>

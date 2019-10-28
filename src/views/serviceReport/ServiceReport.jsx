@@ -6,7 +6,6 @@ import {
   Row,
   Button,
   UncontrolledTooltip,
-  Label,
   Col
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -22,13 +21,14 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import Swal from 'sweetalert2';
-import { getAlertToast } from '../common/helpers/functions';
+import {
+  getAlertToast,
+  dateFormat,
+  dateTimeFormat
+} from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-import { leftAllignStyle } from '../common/helpers/Variables.jsx';
-const downFileName =
-  'Service Report -' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+const downFileName = 'Service Report -' + dateTimeFormat(new Date());
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -48,52 +48,46 @@ class ServiceReport extends Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => {
           return (
-            <div style={leftAllignStyle}>
-              <Link
-                to={{
-                  pathname:
-                    'vehicle-service-details/' + row['_original'].vehicleId
-                }}
-              >
-                {row['_original'].licensePlate}
-              </Link>
-            </div>
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Model',
         accessor: 'model',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'User Name',
         accessor: 'name',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Status',
         accessor: 'status',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Plan Type',
         accessor: 'planType',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => (
-          <div style={leftAllignStyle}>
+          <Fragment>
             <span id={'planType_' + row['_original'].licensePlate}>
               {' '}
               {row['_original'].planType}
@@ -104,7 +98,7 @@ class ServiceReport extends Component {
             >
               {row['_original'].planType}
             </UncontrolledTooltip>
-          </div>
+          </Fragment>
         )
       },
       {
@@ -122,12 +116,10 @@ class ServiceReport extends Component {
       {
         Header: 'Service Date',
         accessor: 'requestedServiceDate',
-        className: 'text-center',
-        Cell: row => (
-          <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY')}
-          </div>
-        )
+        className: 'text-left',
+        Cell: row => {
+          return dateFormat(row.value);
+        }
       }
     ];
   }
@@ -260,11 +252,58 @@ class ServiceReport extends Component {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row>
-                    <Col md="2">
+                    <Col>
                       <h3 className="mb-0">Service Report</h3>
                     </Col>
-                    <Col md="3">
-                      <FormGroup style={{ float: 'right' }}>
+                    <Col>
+                      <span
+                        style={{
+                          float: 'right',
+                          paddingTop: '0.5rem'
+                        }}
+                      >
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={this.download}
+                          id="down_csv"
+                        >
+                          <i className="fas fa-file-download"></i> CSV
+                        </Button>
+                        <CSVLink
+                          data={dataToDownload}
+                          filename={downFileName + '.csv'}
+                          className="hidden"
+                          ref={r => (this.csvLink = r)}
+                          target="_blank"
+                        />
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_csv'}
+                        >
+                          Download as CSV
+                        </UncontrolledTooltip>
+                        <Button
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
+                          onClick={this.downloadPdf}
+                        >
+                          <i className="fas fa-file-download"></i> PDF
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_pdf'}
+                        >
+                          Download as PDF
+                        </UncontrolledTooltip>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="2"></Col>
+                    <Col sm="3">
+                      <FormGroup>
                         <DatePicker
                           selected={startDate}
                           onChange={this.sdateChange}
@@ -275,7 +314,7 @@ class ServiceReport extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col md="3">
+                    <Col sm="3">
                       <FormGroup>
                         <DatePicker
                           selected={endDate}
@@ -287,10 +326,11 @@ class ServiceReport extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col md="2" style={{ marginLeft: '-5rem' }}>
+                    <Col sm="4" style={{ marginTop: '10px' }}>
                       <Button
                         color="primary"
                         id="FilterTooltip"
+                        size="sm"
                         onClick={this.onClickFilter}
                       >
                         <i className="fas fa-filter"></i>
@@ -304,6 +344,7 @@ class ServiceReport extends Component {
 
                       <Button
                         color="primary"
+                        size="sm"
                         onClick={this.resetFilter}
                         id="reset_tool"
                       >
@@ -314,38 +355,6 @@ class ServiceReport extends Component {
                         target={'reset_tool'}
                       >
                         Reset
-                      </UncontrolledTooltip>
-                    </Col>
-
-                    <Col md="2" style={{ marginLeft: '5rem' }}>
-                      <Button
-                        color="primary"
-                        size="sm"
-                        onClick={this.download}
-                        id="down_csv"
-                      >
-                        <i className="fas fa-file-download"></i> CSV
-                      </Button>
-                      <CSVLink
-                        data={dataToDownload}
-                        filename={downFileName + '.csv'}
-                        className="hidden"
-                        ref={r => (this.csvLink = r)}
-                        target="_blank"
-                      />
-                      <UncontrolledTooltip placement="top" target={'down_csv'}>
-                        Download as CSV
-                      </UncontrolledTooltip>
-                      <Button
-                        color="info"
-                        size="sm"
-                        id="down_pdf"
-                        onClick={this.downloadPdf}
-                      >
-                        <i className="fas fa-file-download"></i> PDF
-                      </Button>
-                      <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                        Download as PDF
                       </UncontrolledTooltip>
                     </Col>
                   </Row>

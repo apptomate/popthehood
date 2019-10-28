@@ -32,7 +32,6 @@ import { connect } from 'react-redux';
 import Loader from '../common/Loader';
 import { Label } from 'reactstrap';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
-import { leftAllignStyle } from '../common/helpers/Variables';
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -90,16 +89,15 @@ class Users extends React.Component {
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Email',
         accessor: 'email',
-        className: 'text-center',
+        className: 'text-left',
         width: 250,
         Cell: ({ row }) => (
-          <div style={leftAllignStyle}>
+          <Fragment>
             <span id={'email_' + row['_original'].userId}>
               {' '}
               {row['_original'].email}
@@ -110,15 +108,14 @@ class Users extends React.Component {
             >
               {row['_original'].email}
             </UncontrolledTooltip>
-          </div>
+          </Fragment>
         )
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
-        className: 'text-center',
-        width: 150,
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left',
+        width: 150
       },
       {
         Header: 'Vehicle Count',
@@ -129,9 +126,8 @@ class Users extends React.Component {
       {
         Header: 'Source Reg',
         accessor: 'sourceofReg',
-        className: 'text-center',
-        width: 150,
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left',
+        width: 150
       },
       {
         Header: 'Email Verified',
@@ -218,45 +214,39 @@ class Users extends React.Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => {
           return (
-            <div style={leftAllignStyle}>
-              <Link
-                to={{
-                  pathname:
-                    'vehicle-service-details/' + row['_original'].vehicleId
-                }}
-              >
-                {row['_original'].licensePlate}
-              </Link>
-            </div>
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Model',
         accessor: 'model',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Year',
         accessor: 'year',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Color',
         accessor: 'color',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Actions',
@@ -325,7 +315,7 @@ class Users extends React.Component {
       expanded: expanded
     }));
   }
-  
+
   //Edit User
   editUser = (e, row) => {
     this.setState(prevState => ({
@@ -507,9 +497,9 @@ class Users extends React.Component {
                 </CardHeader>
                 <ReactTable
                   expanded={this.state.expanded}
-                  getTdProps={(state, rowInfo, column, instance) => {
+                  getTdProps={(state, rowInfo) => {
                     return {
-                      onClick: e => {
+                      onClick: () => {
                         this.expand_row(rowInfo);
                       }
                     };

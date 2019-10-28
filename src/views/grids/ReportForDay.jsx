@@ -5,10 +5,8 @@ import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import moment from 'moment';
-import { leftAllignStyle } from '../common/helpers/Variables';
-const downFileName =
-  'Service Report For Day-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
+const downFileName = 'Service Report For Day-' + dateTimeFormat(new Date());
 
 class ReportForDay extends Component {
   constructor(props) {
@@ -22,55 +20,47 @@ class ReportForDay extends Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => {
           return (
-            <div style={leftAllignStyle}>
-              <Link
-                to={{
-                  pathname:
-                    'vehicle-service-details/' + row['_original'].vehicleId
-                }}
-              >
-                {row['_original'].licensePlate}
-              </Link>
-            </div>
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Phone Number',
         accessor: 'phoneNumber',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Location',
         accessor: 'locationFullAddress',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Date',
         accessor: 'requestServiceDate',
-        className: 'text-center',
-        Cell: row => (
-          <div style={leftAllignStyle}>
-            {moment(row.value).format('DD/MM/YYYY HH:MM:SS')}
-          </div>
-        )
+        className: 'text-left',
+        Cell: row => {
+          return dateFormat(row.value);
+        }
       }
     ];
   }

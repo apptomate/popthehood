@@ -15,7 +15,7 @@ import {
   VEHICLESERVICEDETAILS_URL,
   DASHBOARD_URL
 } from '../../views/common/helpers/constants';
-import { authHeader } from '../../views/common/helpers/functions.js';
+import { authHeader } from '../../views/common/helpers/functions.jsx';
 import {
   ALLUSERS_SUCCESS,
   ALLUSERS_ERROR,
