@@ -64,13 +64,6 @@ class ReportForDay extends Component {
       }
     ];
   }
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.vehicleScheduledListForADay &&
-      this.props.vehicleScheduledListForADay.length !==
-        nextProps.vehicleScheduledListForADay.length
-    );
-  }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -143,7 +136,7 @@ class ReportForDay extends Component {
               <h3 className="mb-0">Services Scheduled For Today</h3>
             </div>
             <div className="col text-right">
-              {/* <Button
+              <Button
                 color="primary"
                 size="sm"
                 onClick={this.download}
@@ -160,7 +153,7 @@ class ReportForDay extends Component {
               />
               <UncontrolledTooltip placement="top" target={'down_csv'}>
                 Download as CSV
-              </UncontrolledTooltip> */}
+              </UncontrolledTooltip>
               <Button
                 color="info"
                 size="sm"

@@ -4,7 +4,6 @@ import ReactTable from 'react-table';
 import swal from 'sweetalert2';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
-
 // reactstrap components
 import {
   Card,
@@ -40,10 +39,10 @@ class Users extends React.Component {
       editModal: false,
       editVehicleModal: false,
       user_data: {},
-      user_vehicle_data: {}
+      user_vehicle_data: {},
+      expanded: {}
     };
     this.reactTable = React.createRef();
-    this.userVechileFun = this.userVechileFun.bind(this);
     this.editUser = this.editUser.bind(this);
     this.onChange = this.onChange.bind(this);
     this.editToggle = this.editToggle.bind(this);
@@ -56,37 +55,37 @@ class Users extends React.Component {
     this.deleteUserVehicleDetail = this.deleteUserVehicleDetail.bind(this);
     this.onChangeVehicleEdit = this.onChangeVehicleEdit.bind(this);
     this.columns = [
-      {
-        expander: true,
-        width: 65,
-        Expander: ({ isExpanded, row }) => (
-          <Fragment>
-            {row['_original'].role !== 'Admin' &&
-            row['_original'].vehicleCount ? (
-                <Fragment>
-                  {isExpanded ? (
-                    <i className="fas fa-caret-down" />
-                  ) : (
-                    <i
-                      className="fas fa-caret-right"
-                      data-user_id={row['_original'].userId}
-                      onClick={this.userVechileFun}
-                    />
-                  )}
-                </Fragment>
-              ) : (
-                ''
-              )}
-          </Fragment>
-        ),
-        style: {
-          cursor: 'pointer',
-          fontSize: 25,
-          padding: '0',
-          textAlign: 'center',
-          userSelect: 'none'
-        }
-      },
+      // {
+      //   expander: true,
+      //   width: 65,
+      //   Expander: ({ isExpanded, row }) => (
+      //     <Fragment>
+      //       {row['_original'].role !== 'Admin' &&
+      //       row['_original'].vehicleCount ? (
+      //           <Fragment>
+      //             {isExpanded ? (
+      //               <i className="fas fa-caret-down" />
+      //             ) : (
+      //               <i
+      //                 className="fas fa-caret-right"
+      //                 data-user_id={row['_original'].userId}
+      //                 onClick={this.userVechileFun}
+      //               />
+      //             )}
+      //           </Fragment>
+      //         ) : (
+      //           ''
+      //         )}
+      //     </Fragment>
+      //   ),
+      //   style: {
+      //     cursor: 'pointer',
+      //     fontSize: 25,
+      //     padding: '0',
+      //     textAlign: 'center',
+      //     userSelect: 'none'
+      //   }
+      // },
       {
         Header: 'Name',
         accessor: 'name',
@@ -297,15 +296,27 @@ class Users extends React.Component {
       }
     ];
   }
+
   //User's Vehicle List
-  userVechileFun(e) {
-    var user_id = parseInt(e.currentTarget.dataset.user_id);
-    var data = { UserId: user_id };
-    this.props.getUserVehicleDetails(data);
+  expand_row(row) {
+    const {expanded,user_data} = this.state;
+    var expanded_row = { ...expanded };
+    if (expanded_row[row.index]) {
+      expanded_row[row.index] = !expanded_row[row.index];
+    } else {
+      expanded_row[row.index] = true;
+    }
+    var user_id = parseInt(row['original'].userId);
+    if (expanded_row[row.index]) {
+      var data = { UserId: user_id };
+      this.props.getUserVehicleDetails(data);
+    }
     this.setState(() => ({
-      user_data: { ...this.state.user_data, userId: user_id }
+      user_data: { ...user_data, userId: user_id },
+      expanded: expanded_row
     }));
   }
+
   //Edit User
   editUser = (e, row) => {
     this.setState(prevState => ({
@@ -462,7 +473,11 @@ class Users extends React.Component {
         sourceofReg = '',
         isEmailVerified = '',
         isPhoneNumVerified = ''
-      }
+      },
+      expanded,
+      editModal,
+      editVehicleModal
+
     } = this.state;
     const {
       getAllUsersResponse: { data = [], loading = '' },
@@ -486,6 +501,14 @@ class Users extends React.Component {
                   <h3 className="mb-0">Users List</h3>
                 </CardHeader>
                 <ReactTable
+                  expanded={expanded}
+                  getTdProps={(state, rowInfo) => {
+                    return {
+                      onClick: () => {
+                        this.expand_row(rowInfo);
+                      }
+                    };
+                  }}
                   id="users_table"
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
@@ -508,7 +531,7 @@ class Users extends React.Component {
                       <div style={{ padding: '20px' }}>
                         <center>
                           {' '}
-                          <h3> User's Registered Vehicles</h3>{' '}
+                          <h3>User&apos;s Registered Vehicles</h3>{' '}
                         </center>
                         <ReactTable
                           id="users_vehicle_table"
@@ -536,7 +559,7 @@ class Users extends React.Component {
           </Row>
           {/* //Edit Model */}
           <Modal
-            isOpen={this.state.editModal}
+            isOpen={editModal}
             toggle={this.editToggle}
             className={this.props.className}
             centered={true}
@@ -639,7 +662,7 @@ class Users extends React.Component {
           </Modal>
           {/* Update Vehicle Modal */}
           <VehicleUpdateModal
-            modal_toggle={this.state.editVehicleModal}
+            modal_toggle={editVehicleModal}
             modal_toggle_func={this.editVehicleToggle}
             updateUserVehicleDetails={this.updateUserVehicleDetails}
             state_data={this.state}
