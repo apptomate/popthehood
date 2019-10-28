@@ -194,6 +194,7 @@ class ListVehicle extends Component {
     this.props.getAllVehicles();
   }
   download() {
+    console.log('Inside 1');
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
     for (var index = 0; index < currentRecords.length; index++) {
@@ -208,6 +209,7 @@ class ListVehicle extends Component {
     this.setState({ dataToDownload: data_to_download }, () => {
       this.csvLink.link.click();
     });
+    console.log('Inside 2');
   }
 
   downloadPdf() {
@@ -278,6 +280,7 @@ class ListVehicle extends Component {
     });
   }
   render() {
+    console.log('LV Data:/', this.state);
     const { Vehicles = [] } = this.props;
     const MyLoader = () => <Loader loading={Vehicles.loading} />;
     return (

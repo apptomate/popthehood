@@ -49,14 +49,6 @@ class ReportForWeek extends Component {
       }
     ];
   }
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.vehicleScheduledForAWeek &&
-      this.props.vehicleScheduledForAWeek.length !==
-        nextProps.vehicleScheduledForAWeek.length
-    );
-  }
-
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];

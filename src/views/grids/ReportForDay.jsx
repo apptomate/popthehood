@@ -74,13 +74,6 @@ class ReportForDay extends Component {
       }
     ];
   }
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.vehicleScheduledListForADay &&
-      this.props.vehicleScheduledListForADay.length !==
-        nextProps.vehicleScheduledListForADay.length
-    );
-  }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
