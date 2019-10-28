@@ -1,7 +1,7 @@
 import * as types from '../../actions/ActionTypes.jsx';
 import { arrayInitial } from '../../InitialState.jsx';
 import swal from 'sweetalert2';
-import { getAlertToast } from '../../../views/common/helpers/functions.js';
+import { getAlertToast } from '../../../views/common/helpers/functions.jsx';
 
 export default function updateUser(state = arrayInitial, action) {
   const { type, payload } = action;

@@ -5,7 +5,6 @@ import { Container, Row, Col } from 'reactstrap';
 
 // core components
 import AuthNavbar from 'components/Navbars/AuthNavbar.jsx';
-import AuthFooter from 'components/Footers/AuthFooter.jsx';
 import { connect } from 'react-redux';
 import routes from 'routes.js';
 import logo from '../assets/img/brand/popthehood-logo.png';

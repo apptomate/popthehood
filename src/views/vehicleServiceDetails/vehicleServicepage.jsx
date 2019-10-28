@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import 'react-table/react-table.css';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { AvForm } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 import * as Datetime from 'react-datetime';
-import moment from 'moment';
-import { getAlertToast } from '../common/helpers/functions';
-import swal from 'sweetalert2';
 // reactstrap components
 import {
   Card,
@@ -35,7 +32,7 @@ import {
   Marker
 } from 'react-google-maps';
 import { lat_lng_value } from '../common/helpers/Variables';
-import { preventDefaultFn } from '../common/helpers/functions';
+import { preventDefaultFn, dateTimeFormat } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
@@ -116,7 +113,7 @@ class vehicleServicepage extends Component {
     this.handleInput = this.handleInput.bind(this);
   }
   handleInput = event => {
-    const formattedDate = moment(event._d).format('YYYY/MM/DD HH:MM:SS');
+    const formattedDate = dateTimeFormat(event._d);
     this.setState({ requestedServiceDate: formattedDate });
   };
   //Update Schedule
@@ -153,31 +150,13 @@ class vehicleServicepage extends Component {
   editShedule(e) {
     var {
       schedule_id = '',
-      service_id = '',
       requested_service_date = '',
-      actual_service_date = '',
-      service_out_date = '',
       status = ''
     } = e.currentTarget.dataset;
     this.setState(prevState => ({
       editScheduleModal: !prevState.editScheduleModal,
       scheduleID: schedule_id,
-      serviceID: service_id,
-      requestedServiceDate: moment(requested_service_date).isValid()
-        ? moment(requested_service_date, 'DD/MM/YYYY HH:MM:SS').format(
-          'YYYY/MM/DD HH:MM:SS '
-        )
-        : null,
-      actualServiceDate: moment(actual_service_date).isValid()
-        ? moment(actual_service_date, 'DD/MM/YYYY HH:MM:SS').format(
-          'YYYY/MM/DD HH:MM:SS '
-        )
-        : null,
-      serviceOutDate: moment(service_out_date).isValid()
-        ? moment(service_out_date, 'DD/MM/YYYY HH:MM:SS').format(
-          'YYYY/MM/DD HH:MM:SS '
-        )
-        : null,
+      requestedServiceDate: dateTimeFormat(requested_service_date),
       status: status
     }));
   }
