@@ -40,7 +40,7 @@ class Users extends React.Component {
       editVehicleModal: false,
       user_data: {},
       user_vehicle_data: {},
-      expanded: null
+      expanded: {}
     };
     this.reactTable = React.createRef();
     this.editUser = this.editUser.bind(this);
@@ -299,20 +299,21 @@ class Users extends React.Component {
 
   //User's Vehicle List
   expand_row(row) {
-    var expanded = { ...this.state.expanded };
-    if (expanded[row.index]) {
-      expanded[row.index] = !expanded[row.index];
+    const {expanded,user_data} = this.state;
+    var expanded_row = { ...expanded };
+    if (expanded_row[row.index]) {
+      expanded_row[row.index] = !expanded_row[row.index];
     } else {
-      expanded[row.index] = true;
+      expanded_row[row.index] = true;
     }
     var user_id = parseInt(row['original'].userId);
-    if (expanded[row.index]) {
+    if (expanded_row[row.index]) {
       var data = { UserId: user_id };
       this.props.getUserVehicleDetails(data);
     }
     this.setState(() => ({
-      user_data: { ...this.state.user_data, userId: user_id },
-      expanded: expanded
+      user_data: { ...user_data, userId: user_id },
+      expanded: expanded_row
     }));
   }
 
@@ -472,7 +473,11 @@ class Users extends React.Component {
         sourceofReg = '',
         isEmailVerified = '',
         isPhoneNumVerified = ''
-      }
+      },
+      expanded,
+      editModal,
+      editVehicleModal
+
     } = this.state;
     const {
       getAllUsersResponse: { data = [], loading = '' },
@@ -496,7 +501,7 @@ class Users extends React.Component {
                   <h3 className="mb-0">Users List</h3>
                 </CardHeader>
                 <ReactTable
-                  expanded={this.state.expanded}
+                  expanded={expanded}
                   getTdProps={(state, rowInfo) => {
                     return {
                       onClick: () => {
@@ -554,7 +559,7 @@ class Users extends React.Component {
           </Row>
           {/* //Edit Model */}
           <Modal
-            isOpen={this.state.editModal}
+            isOpen={editModal}
             toggle={this.editToggle}
             className={this.props.className}
             centered={true}
@@ -657,7 +662,7 @@ class Users extends React.Component {
           </Modal>
           {/* Update Vehicle Modal */}
           <VehicleUpdateModal
-            modal_toggle={this.state.editVehicleModal}
+            modal_toggle={editVehicleModal}
             modal_toggle_func={this.editVehicleToggle}
             updateUserVehicleDetails={this.updateUserVehicleDetails}
             state_data={this.state}
