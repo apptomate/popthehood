@@ -10,11 +10,6 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Media,
   NavbarBrand,
   Navbar,
@@ -196,49 +191,9 @@ class Sidebar extends React.Component {
                 </Col>
               </Row>
             </div>
-            {/* Form */}
-            {/* <Form className="mt-4 mb-3 d-md-none">
-              <InputGroup className="input-group-rounded input-group-merge">
-                <Input
-                  aria-label="Search"
-                  className="form-control-rounded form-control-prepended"
-                  placeholder="Search"
-                  type="search"
-                />
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <span className="fa fa-search" />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </Form> */}
-            {/* Navigation */}
             <Nav navbar>{this.createLinks(routes)}</Nav>
             {/* Divider */}
             <hr className="my-3" />
-            {/* Heading */}
-            {/* <h6 className='navbar-heading text-muted'>Documentation</h6> */}
-            {/* Navigation */}
-            {/* <Nav className='mb-md-3' navbar>
-              <NavItem>
-                <NavLink href=''>
-                  <i className='ni ni-spaceship' />
-                  Getting started
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href=''>
-                  <i className='ni ni-palette' />
-                  Foundation
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href=''>
-                  <i className='ni ni-ui-04' />
-                  Components
-                </NavLink>
-              </NavItem>
-            </Nav> */}
           </Collapse>
         </Container>
       </Navbar>

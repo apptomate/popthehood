@@ -1,4 +1,3 @@
-import Index from 'views/Index.jsx';
 import Users from 'views/users/Users';
 import paymentReport from 'views/paymentReport.jsx';
 import Register from 'views/examples/Register.jsx';

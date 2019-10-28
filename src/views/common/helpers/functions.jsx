@@ -1,3 +1,4 @@
+import moment from 'moment';
 export const getAlertToast = (type = 'success', text = '', timer = 5000) => ({
   toast: true,
   position: 'bottom',
@@ -38,3 +39,19 @@ export function authHeader() {
 }
 
 export const preventDefaultFn = e => e.preventDefault();
+
+export function dateFormat(date) {
+  if (moment(date).isValid()) {
+    return moment(date).format('DD/MM/YYYY');
+  } else {
+    return '';
+  }
+}
+
+export function dateTimeFormat(date) {
+  if (moment(date).isValid()) {
+    return moment(date).format('DD/MM/YYYY HH:MM:SS');
+  } else {
+    return '';
+  }
+}

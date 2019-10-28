@@ -1,6 +1,6 @@
 import * as types from '../../actions/ActionTypes.jsx';
 import { arrayInitial } from '../../InitialState.jsx';
-import { getAlertToast } from '../../../views/common/helpers/functions.js';
+import { getAlertToast } from '../../../views/common/helpers/functions.jsx';
 import swal from 'sweetalert2';
 export default function deleteUser(state = arrayInitial, action) {
   const { type, payload } = action;

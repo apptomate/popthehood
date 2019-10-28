@@ -5,10 +5,8 @@ import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import moment from 'moment';
-import { leftAllignStyle } from '../common/helpers/Variables';
-const downFileName =
-  'ServiceReportForWeek-' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
+const downFileName = 'ServiceReportForWeek-' + dateTimeFormat(new Date());
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -21,19 +19,17 @@ class ReportForWeek extends Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => {
           return (
-            <div style={leftAllignStyle}>
-              <Link
-                to={{
-                  pathname:
-                    'vehicle-service-details/' + row['_original'].vehicleId
-                }}
-              >
-                {row['_original'].licensePlate}
-              </Link>
-            </div>
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
           );
         }
       },
@@ -41,13 +37,9 @@ class ReportForWeek extends Component {
         Header: 'Date',
         accessor: 'requestServiceDate',
         className: 'text-center',
-        Cell: row => (
-          <div style={leftAllignStyle}>
-            {moment(row.value).isValid()
-              ? moment(row.value).format('DD/MM/YYYY')
-              : ''}
-          </div>
-        )
+        Cell: row => {
+          return dateFormat(row.value);
+        }
       }
     ];
   }

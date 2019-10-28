@@ -21,13 +21,14 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import Swal from 'sweetalert2';
-import { getAlertToast } from '../common/helpers/functions';
+import {
+  getAlertToast,
+  dateFormat,
+  dateTimeFormat
+} from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-import { leftAllignStyle } from '../common/helpers/Variables.jsx';
-const downFileName =
-  'Service Report -' + moment(new Date()).format('MM-DD-YYYY HH:mm:ss');
+const downFileName = 'Service Report -' + dateTimeFormat(new Date());
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -47,52 +48,46 @@ class ServiceReport extends Component {
       {
         Header: 'License Plate',
         accessor: 'licensePlate',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => {
           return (
-            <div style={leftAllignStyle}>
-              <Link
-                to={{
-                  pathname:
-                    'vehicle-service-details/' + row['_original'].vehicleId
-                }}
-              >
-                {row['_original'].licensePlate}
-              </Link>
-            </div>
+            <Link
+              to={{
+                pathname:
+                  'vehicle-service-details/' + row['_original'].vehicleId
+              }}
+            >
+              {row['_original'].licensePlate}
+            </Link>
           );
         }
       },
       {
         Header: 'Make',
         accessor: 'make',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Model',
         accessor: 'model',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'User Name',
         accessor: 'name',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Status',
         accessor: 'status',
-        className: 'text-center',
-        Cell: row => <div style={leftAllignStyle}>{row.value}</div>
+        className: 'text-left'
       },
       {
         Header: 'Plan Type',
         accessor: 'planType',
-        className: 'text-center',
+        className: 'text-left',
         Cell: ({ row }) => (
-          <div style={leftAllignStyle}>
+          <Fragment>
             <span id={'planType_' + row['_original'].licensePlate}>
               {' '}
               {row['_original'].planType}
@@ -103,7 +98,7 @@ class ServiceReport extends Component {
             >
               {row['_original'].planType}
             </UncontrolledTooltip>
-          </div>
+          </Fragment>
         )
       },
       {
@@ -121,14 +116,10 @@ class ServiceReport extends Component {
       {
         Header: 'Service Date',
         accessor: 'requestedServiceDate',
-        className: 'text-center',
-        Cell: row => (
-          <div style={leftAllignStyle}>
-            {moment(row.value).isValid()
-              ? moment(row.value).format('DD/MM/YYYY')
-              : ''}
-          </div>
-        )
+        className: 'text-left',
+        Cell: row => {
+          return dateFormat(row.value);
+        }
       }
     ];
   }
