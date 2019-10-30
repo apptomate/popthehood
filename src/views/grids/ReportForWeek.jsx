@@ -43,14 +43,6 @@ class ReportForWeek extends Component {
       }
     ];
   }
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.vehicleScheduledForAWeek &&
-      this.props.vehicleScheduledForAWeek.length !==
-        nextProps.vehicleScheduledForAWeek.length
-    );
-  }
-
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -113,7 +105,7 @@ class ReportForWeek extends Component {
               <h3 className="mb-0">Due Services</h3>
             </div>
             <div className="col text-right">
-              {/* <Button
+              <Button
                 color="primary"
                 size="sm"
                 onClick={this.download}
@@ -130,7 +122,7 @@ class ReportForWeek extends Component {
               />
               <UncontrolledTooltip placement="top" target={'down_csv'}>
                 Download as CSV
-              </UncontrolledTooltip> */}
+              </UncontrolledTooltip>
               <Button
                 color="info"
                 size="sm"
