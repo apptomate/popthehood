@@ -36,6 +36,7 @@ import { preventDefaultFn, dateTimeFormat } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
+const pointerStyle = { cursor: 'text' };
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
@@ -211,9 +212,9 @@ class vehicleServicepage extends Component {
     ];
     const serv_list_column = [
       'SERVICE DATE',
-      'SERVICE NAME',
+      'SERVICE ITEMS',
       'STATUS',
-      'AMOUNT'
+      'COMMENTS'
     ];
 
     return (
@@ -310,7 +311,7 @@ class vehicleServicepage extends Component {
                                 </Button>
                               </li>
                               <li>
-                                <span> Tearms & Condition</span>
+                                <span> Terms & Conditions</span>
                                 <Button
                                   className={
                                     serv_det.isTeamsandConditionsAccepted
@@ -366,7 +367,10 @@ class vehicleServicepage extends Component {
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
                             <Col sm="2">
-                              <Button className="btn btn-default btn-sm">
+                              <Button
+                                className="btn btn-default btn-sm "
+                                style={pointerStyle}
+                              >
                                 Plan Type
                               </Button>
                             </Col>
@@ -387,7 +391,10 @@ class vehicleServicepage extends Component {
                         <Card className="shadow mt-3" body>
                           <Row>
                             <Col>
-                              <Button className="btn btn-default btn-sm mb-1">
+                              <Button
+                                className="btn btn-default btn-sm mb-1"
+                                style={pointerStyle}
+                              >
                                 Services
                               </Button>
                             </Col>
@@ -451,7 +458,7 @@ class vehicleServicepage extends Component {
                             <td>{data.status}</td>
                             <td>{data.serviceAmount}</td>
                             <td className="text-right">
-                              {data.status !== 'Completed11' ? (
+                              {data.status !== 'Completed' ? (
                                 <UncontrolledDropdown>
                                   <DropdownToggle
                                     className="btn-icon-only text-light"
