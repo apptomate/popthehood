@@ -319,14 +319,11 @@ class Users extends React.Component {
   //User's Vehicle List
   expand_row(row) {
     const { expanded, user_data } = this.state;
-    console.log(row.index, expanded, user_data);
-
     var expanded_row = { ...expanded };
     Object.keys(expanded_row).map(key => {
       expanded_row[key] = row.index === key ? true : false;
     });
     expanded_row[row.index] = !expanded_row[row.index];
-
     var user_id = parseInt(row['original'].userId);
     if (expanded_row[row.index]) {
       var data = { UserId: user_id };
