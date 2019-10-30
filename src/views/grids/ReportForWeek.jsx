@@ -34,7 +34,7 @@ class ReportForWeek extends Component {
         }
       },
       {
-        Header: 'Date',
+        Header: 'Due Date',
         accessor: 'requestServiceDate',
         className: 'text-center',
         Cell: row => {
@@ -110,7 +110,7 @@ class ReportForWeek extends Component {
         <CardHeader className="border-0">
           <Row className="align-items-center">
             <div className="col">
-              <h3 className="mb-0">Last Week Services</h3>
+              <h3 className="mb-0">Due Services</h3>
             </div>
             <div className="col text-right">
               {/* <Button
@@ -162,6 +162,22 @@ class ReportForWeek extends Component {
           className="-striped -highlight"
           showPagination={false}
         />
+        <div className="col text-right">
+          <Link
+            color="info"
+            className="button"
+            size="sm"
+            to={{
+              pathname: '/services-report',
+              state: {
+                filter: 'ON_DUE'
+              }
+            }}
+          >
+            <i className="fas fa-arrow-right"></i>
+            View All Dues{' '}
+          </Link>
+        </div>
       </Card>
     );
   }
