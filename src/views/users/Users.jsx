@@ -299,7 +299,7 @@ class Users extends React.Component {
 
   //User's Vehicle List
   expand_row(row) {
-    const {expanded,user_data} = this.state;
+    const { expanded, user_data } = this.state;
     var expanded_row = { ...expanded };
     if (expanded_row[row.index]) {
       expanded_row[row.index] = !expanded_row[row.index];
@@ -477,7 +477,6 @@ class Users extends React.Component {
       expanded,
       editModal,
       editVehicleModal
-
     } = this.state;
     const {
       getAllUsersResponse: { data = [], loading = '' },
@@ -503,7 +502,13 @@ class Users extends React.Component {
                 <ReactTable
                   expanded={expanded}
                   getTdProps={(state, rowInfo) => {
+                    if (rowInfo === undefined) {
+                      return {};
+                    }
                     return {
+                      'data-qnt':
+                        rowInfo.original
+                          .vehicleCount,
                       onClick: () => {
                         this.expand_row(rowInfo);
                       }
