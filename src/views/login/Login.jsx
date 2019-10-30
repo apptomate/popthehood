@@ -119,7 +119,6 @@ class Login extends React.Component {
                   >
                     Sign in
                   </Button>
-                  <button onClick={methodDoesNotExist}>Break the world</button>;
                 </div>
               </Form>
             </CardBody>
