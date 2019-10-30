@@ -28,7 +28,7 @@ import {
   dateTimeFormat
 } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-const downFileName = 'Service Report -' + dateTimeFormat(new Date());
+const downFileName = 'ServiceReport-' + dateTimeFormat(new Date());
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -104,14 +104,12 @@ class ServiceReport extends Component {
       {
         Header: 'Due Amount',
         accessor: 'due',
-        className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
+        className: 'text-center'
       },
       {
         Header: 'Paid Amount',
         accessor: 'paid',
-        className: 'text-center',
-        Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
+        className: 'text-center'
       },
       {
         Header: 'Service Date',

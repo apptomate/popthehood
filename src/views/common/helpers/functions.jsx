@@ -55,3 +55,12 @@ export function dateTimeFormat(date) {
     return '';
   }
 }
+
+export const staticYearArray = () => {
+  const yearArray = [];
+  const currentYear = new Date().getFullYear();
+  for (var s_year = 1950; s_year <= currentYear; s_year++) {
+    yearArray.push(s_year);
+  }
+  return yearArray;
+};

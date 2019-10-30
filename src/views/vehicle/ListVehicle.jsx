@@ -28,7 +28,7 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
-const downFileName = 'Vehicles List - ' + dateTimeFormat(new Date());
+const downFileName = 'VehiclesList-' + dateTimeFormat(new Date());
 class ListVehicle extends Component {
   constructor(props) {
     super(props);

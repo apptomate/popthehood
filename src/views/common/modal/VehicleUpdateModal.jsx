@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  FormGroup  
+  FormGroup
 } from 'reactstrap';
 export function VehicleUpdateModal(props) {
   const {
@@ -97,7 +97,6 @@ export function VehicleUpdateModal(props) {
           <AvField
             type="textarea"
             name="specialNotes"
-            required
             onChange={props.onChange_func}
             className="blue_label"
             value={specialNotes}

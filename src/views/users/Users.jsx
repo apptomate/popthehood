@@ -32,6 +32,7 @@ import { connect } from 'react-redux';
 import Loader from '../common/Loader';
 import { Label } from 'reactstrap';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
+import { staticYearArray } from '../common/helpers/functions.jsx';
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -169,7 +170,7 @@ class Users extends React.Component {
         Cell: ({ row }) => (
           <Fragment>
             <Button
-              user_id={row['_original'].userId}
+              data-user_id={row['_original'].userId}
               className="action_btn"
               id="EditTooltip"
               onClick={e => this.editUser(e, row)}
@@ -241,7 +242,25 @@ class Users extends React.Component {
       {
         Header: 'Year',
         accessor: 'year',
-        className: 'text-left'
+        className: 'text-left',
+        filterMethod: (filter, row) =>
+          parseInt(filter.value) !== 0
+            ? row[filter.id] === parseInt(filter.value)
+            : true,
+        Filter: ({ filter, onChange }) => (
+          <select
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : 0}
+          >
+            <option value="0">All Years</option>
+            {staticYearArray().map((array_value, key) => (
+              <option value={array_value} key={key}>
+                {array_value}
+              </option>
+            ))}
+          </select>
+        )
       },
       {
         Header: 'Color',
@@ -300,16 +319,21 @@ class Users extends React.Component {
   //User's Vehicle List
   expand_row(row) {
     const { expanded, user_data } = this.state;
+    console.log(row.index, expanded, user_data);
+
     var expanded_row = { ...expanded };
-    if (expanded_row[row.index]) {
-      expanded_row[row.index] = !expanded_row[row.index];
-    } else {
-      expanded_row[row.index] = true;
-    }
+    Object.keys(expanded_row).map(key => {
+      expanded_row[key] = row.index === key ? true : false;
+    });
+    expanded_row[row.index] = !expanded_row[row.index];
+
     var user_id = parseInt(row['original'].userId);
     if (expanded_row[row.index]) {
       var data = { UserId: user_id };
       this.props.getUserVehicleDetails(data);
+    }
+    if (expanded[row.index]) {
+      expanded_row[row.index] = false;
     }
     this.setState(() => ({
       user_data: { ...user_data, userId: user_id },
@@ -319,6 +343,7 @@ class Users extends React.Component {
 
   //Edit User
   editUser = (e, row) => {
+    e.stopPropagation();
     this.setState(prevState => ({
       editModal: !prevState.editModal,
       user_data: {
@@ -423,6 +448,7 @@ class Users extends React.Component {
   }
   //Delete User
   deleteUserDetail(e) {
+    e.stopPropagation();
     let user_id = parseInt(e.currentTarget.dataset.user_id);
     swal
       .fire({
@@ -506,9 +532,7 @@ class Users extends React.Component {
                       return {};
                     }
                     return {
-                      'data-qnt':
-                        rowInfo.original
-                          .vehicleCount,
+                      'data-qnt': rowInfo.original.vehicleCount,
                       onClick: () => {
                         this.expand_row(rowInfo);
                       }
@@ -544,8 +568,8 @@ class Users extends React.Component {
                           ref={r => (this.reactTableVehicle = r)}
                           data={vehicle_data}
                           columns={this.vehicle_columns}
-                          defaultPageSize={3}
-                          pageSizeOptions={[3, 6, 9]}
+                          pageSize={vehicle_data.length}
+                          showPagination={false}
                           noDataText="No Record Found.."
                           filterable
                           HeaderClassName="text-bold"

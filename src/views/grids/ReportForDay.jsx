@@ -6,7 +6,7 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
-const downFileName = 'Service Report For Day-' + dateTimeFormat(new Date());
+const downFileName = 'ServiceReportForDay-' + dateTimeFormat(new Date());
 
 class ReportForDay extends Component {
   constructor(props) {
