@@ -434,15 +434,6 @@ label {
   white-space: nowrap;
 }
 
-.ReactTable {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 0rem 1.5rem 1rem !important;
-  box-shadow: 0px 0 13px #cccccc !important;
-}
-
 .myform .form-group {
   margin-bottom: 0rem !important;
   margin-right: 1rem;
@@ -451,7 +442,7 @@ label {
 
 #notfound {
   position: relative;
-  height: 88vh;
+  height: 62vh;
 }
 
 #notfound .notfound {
@@ -464,72 +455,80 @@ label {
 }
 
 .notfound {
-  max-width: 410px;
+  max-width: 520px;
   width: 100%;
+  line-height: 1.4;
   text-align: center;
 }
 
 .notfound .notfound-404 {
-  height: 200px;
   position: relative;
-  z-index: -1;
+  height: 240px;
 }
 
 .notfound .notfound-404 h1 {
   font-family: "Montserrat", sans-serif;
-  font-size: 154px;
-  margin: 0px;
-  font-weight: 900;
   position: absolute;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  // background: url("../img/bg.jpg");
-  color: #5e72e4;
-  background-size: cover;
-  background-position: center;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 252px;
+  font-weight: 900;
+  margin: 0px;
+  color: #262626;
+  text-transform: uppercase;
+  letter-spacing: -40px;
+  margin-left: -20px;
+}
+
+.notfound .notfound-404 h1 > span {
+  text-shadow: -8px 0px 0px #fff;
+}
+
+.notfound .notfound-404 h3 {
+  font-family: "Cabin", sans-serif;
+  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #262626;
+  margin: 0px;
+  letter-spacing: 3px;
+  padding-left: 6px;
 }
 
 .notfound h2 {
-  font-family: "Montserrat", sans-serif;
-  color: #000;
-  font-size: 24px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-top: 0px;
-}
-
-.notfound p {
-  font-family: "Montserrat", sans-serif;
-  color: #000;
-  font-size: 14px;
+  font-family: "Cabin", sans-serif;
+  font-size: 20px;
   font-weight: 400;
-  margin-bottom: 20px;
-  margin-top: 0px;
-}
-
-.notfound a {
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
-  text-decoration: none;
   text-transform: uppercase;
-  background: #0046d5;
-  display: inline-block;
-  padding: 15px 30px;
-  border-radius: 40px;
-  color: #fff;
-  font-weight: 700;
-  -webkit-box-shadow: 0px 4px 15px -5px #0046d5;
-  box-shadow: 0px 4px 15px -5px #0046d5;
+  color: #000;
+  margin-top: 0px;
+  margin-bottom: 25px;
 }
 
 @media only screen and (max-width: 767px) {
   .notfound .notfound-404 {
-    height: 142px;
+    height: 200px;
   }
   .notfound .notfound-404 h1 {
-    font-size: 112px;
+    font-size: 200px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .notfound .notfound-404 {
+    height: 162px;
+  }
+  .notfound .notfound-404 h1 {
+    font-size: 162px;
+    height: 150px;
+    line-height: 162px;
+  }
+  .notfound h2 {
+    font-size: 16px;
   }
 }
 
@@ -559,4 +558,13 @@ label {
 
 .list-group-item {
   display: block !important;
+}
+.footer {
+  background: #c6ceff !important;
+  padding: 1rem 0 !important;
+  margin-top: 2rem;
+}
+.footer .copyright {
+  font-size: 0.875rem;
+  text-align: center !important;
 }

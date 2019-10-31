@@ -134,14 +134,6 @@ class ReportForWeek extends Component {
               <UncontrolledTooltip placement="top" target={'down_pdf'}>
                 Download as PDF
               </UncontrolledTooltip>
-              <Button
-                color="info"
-                size="sm"
-                id="down_pdf"
-                onClick={this.redirectService}
-              >
-                <i className="fas fa-arrow-right"></i> View All Dues
-              </Button>
             </div>
           </Row>
         </CardHeader>
@@ -161,6 +153,16 @@ class ReportForWeek extends Component {
           }
           className="-striped -highlight"
         />
+        <Button
+          color="info"
+          style={{ float: 'right' }}
+          size="sm"
+          id="down_pdf"
+          className="m-3"
+          onClick={this.redirectService}
+        >
+          <i className="fas fa-arrow-right"></i> View All Dues
+        </Button>
       </Card>
     );
   }

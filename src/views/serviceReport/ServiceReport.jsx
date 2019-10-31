@@ -299,53 +299,52 @@ class ServiceReport extends Component {
                   <Row>
                     <Col>
                       <h3 className="mb-0">Service Report</h3>
-
-                      <div>
-                        <span
-                          style={{
-                            float: 'right',
-                            paddingTop: '0.5rem',
-                            marginLeft: '1rem',
-                            marginBottom: '1rem'
-                          }}
+                    </Col>
+                    <Col>
+                      <span
+                        style={{
+                          float: 'right',
+                          paddingTop: '0.5rem',
+                          marginLeft: '1rem',
+                          marginBottom: '1rem'
+                        }}
+                      >
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={this.download}
+                          id="down_csv"
                         >
-                          <Button
-                            color="primary"
-                            size="sm"
-                            onClick={this.download}
-                            id="down_csv"
-                          >
-                            <i className="fas fa-file-download"></i> CSV
-                          </Button>
-                          <CSVLink
-                            data={dataToDownload}
-                            filename={downFileName + '.csv'}
-                            className="hidden"
-                            ref={r => (this.csvLink = r)}
-                            target="_blank"
-                          />
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_csv'}
-                          >
-                            Download as CSV
-                          </UncontrolledTooltip>
-                          <Button
-                            color="info"
-                            size="sm"
-                            id="down_pdf"
-                            onClick={this.downloadPdf}
-                          >
-                            <i className="fas fa-file-download"></i> PDF
-                          </Button>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_pdf'}
-                          >
-                            Download as PDF
-                          </UncontrolledTooltip>
-                        </span>
-                      </div>
+                          <i className="fas fa-file-download"></i> CSV
+                        </Button>
+                        <CSVLink
+                          data={dataToDownload}
+                          filename={downFileName + '.csv'}
+                          className="hidden"
+                          ref={r => (this.csvLink = r)}
+                          target="_blank"
+                        />
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_csv'}
+                        >
+                          Download as CSV
+                        </UncontrolledTooltip>
+                        <Button
+                          color="info"
+                          size="sm"
+                          id="down_pdf"
+                          onClick={this.downloadPdf}
+                        >
+                          <i className="fas fa-file-download"></i> PDF
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={'down_pdf'}
+                        >
+                          Download as PDF
+                        </UncontrolledTooltip>
+                      </span>
                     </Col>
                   </Row>
                   <div>
