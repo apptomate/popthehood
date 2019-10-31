@@ -24,75 +24,22 @@ import {
   vehicleServiceDetails,
   updateVehicleService
 } from '../../redux/actions/Index';
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker
-} from 'react-google-maps';
-import { lat_lng_value } from '../common/helpers/Variables';
 import { preventDefaultFn, dateTimeFormat } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
+import GoogleMapReact from 'google-map-react';
+import MyGreatPlace from '../map/place';
+import PropTypes from 'prop-types';
 const pointerStyle = { cursor: 'text' };
-const MapWrapper = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={props.lng_lat_value}
-      defaultOptions={{
-        scrollwheel: false,
-        styles: [
-          {
-            featureType: 'administrative',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#444444' }]
-          },
-          {
-            featureType: 'landscape',
-            elementType: 'all',
-            stylers: [{ color: '#f2f2f2' }]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'all',
-            stylers: [{ visibility: 'off' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'all',
-            stylers: [{ saturation: -100 }, { lightness: 45 }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'all',
-            stylers: [{ visibility: 'simplified' }]
-          },
-          {
-            featureType: 'road.arterial',
-            elementType: 'labels.icon',
-            stylers: [{ visibility: 'off' }]
-          },
-          {
-            featureType: 'transit',
-            elementType: 'all',
-            stylers: [{ visibility: 'off' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'all',
-            stylers: [{ color: '#5e72e4' }, { visibility: 'on' }]
-          }
-        ]
-      }}
-    >
-      <Marker position={lat_lng_value} />
-    </GoogleMap>
-  ))
-);
 
 class vehicleServicepage extends Component {
+  static propTypes = {
+    center: PropTypes.array,
+    zoom: PropTypes.number,
+    greatPlaceCoords: PropTypes.any
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -192,10 +139,8 @@ class vehicleServicepage extends Component {
     const planInfoList = vehicle_ser_data.planInfoList || [];
     const serviceList = vehicle_ser_data.serviceList || [];
     const userInfo = vehicle_ser_data.userInfo || [];
-    const lng_lat_value = {
-      lat: userInfo.locationLatitude,
-      lng: userInfo.locationLongitude
-    };
+    const lat = parseFloat(userInfo.locationLatitude) || '';
+    const lng = parseFloat(userInfo.locationLongitude) || '';
     const serv_det = serviceList
       .filter((serv_lst, index) => !index)
       .map(list => list);
@@ -234,6 +179,7 @@ class vehicleServicepage extends Component {
                               src={
                                 vehicleInfo.vehicleImageURL || imageNotAvailable
                               }
+                              // crossOrigin="anonymous"
                             />
                           </div>
                         </Col>
@@ -335,6 +281,22 @@ class vehicleServicepage extends Component {
                                   <span> Address</span>{' '}
                                   <h5>{userInfo.locationFullAddress}</h5>
                                 </li>
+                                <li>
+                                  <span> IsEmailVerified</span>{' '}
+                                  <h5>
+                                    {userInfo.isEmailVerified === true
+                                      ? 'true'
+                                      : 'false'}
+                                  </h5>
+                                </li>
+                                <li>
+                                  <span> IsPhoneNumVerified</span>{' '}
+                                  <h5>
+                                    {userInfo.isPhoneNumVerified === true
+                                      ? 'true'
+                                      : 'false'}
+                                  </h5>
+                                </li>
                               </ul>
                             </div>
                           </div>
@@ -367,28 +329,36 @@ class vehicleServicepage extends Component {
                               </li>
                               <li className="mb-1">
                                 <span>Location</span>
-                                <MapWrapper
-                                  lng_lat_value={lng_lat_value}
-                                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
-                                  loadingElement={
-                                    <div style={{ height: '100%' }} />
-                                  }
-                                  containerElement={
-                                    <div
-                                      style={{ height: '149px' }}
-                                      className="map-canvas"
-                                      id="map-canvas"
-                                    />
-                                  }
-                                  mapElement={
-                                    <div
-                                      style={{
-                                        height: '100%',
-                                        borderRadius: 'inherit'
+                                <div
+                                  style={{
+                                    minHeight: '227px',
+                                    maxHeight: '227px',
+                                    height: '227px',
+                                    width: '100%'
+                                  }}
+                                >
+                                  {lat && lng ? (
+                                    <GoogleMapReact
+                                      bootstrapURLKeys={{
+                                        key:
+                                          'AIzaSyCJiuQH8jfY9rJ_HVvXBnQfhIvQe3N9KpY'
                                       }}
-                                    />
-                                  }
-                                />
+                                      center={{
+                                        lat: lat,
+                                        lng: lng
+                                      }}
+                                      zoom={10}
+                                    >
+                                      <MyGreatPlace
+                                        lat={lat}
+                                        lng={lng}
+                                        text={'A'}
+                                      />
+                                    </GoogleMapReact>
+                                  ) : (
+                                    <div>No location Found!</div>
+                                  )}
+                                </div>
                               </li>
                             </ul>
                           </div>
