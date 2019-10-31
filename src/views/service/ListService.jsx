@@ -25,15 +25,27 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { dateTimeFormat } from '../common/helpers/functions.jsx';
-const downFileName = 'Service List - ' + dateTimeFormat(new Date());
+const downFileName = 'ServiceList - ';
 class ListService extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataToDownload: [], initialFilter: true };
+    this.state = {
+      dataToDownload: [],
+      initialFilter: true,
+      planName: 'Once a Month',
+      ServicePlan: 2
+    };
     this.onChange = this.onChange.bind(this);
     this.download = this.download.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
     this.columns = [
+      {
+        Header: 'Serial No',
+        className: 'text-center',
+        Cell: row => {
+          return <div>{row.index + 1}</div>;
+        }
+      },
       {
         Header: 'Service Name',
         accessor: 'serviceName',
@@ -41,13 +53,13 @@ class ListService extends Component {
         width: 350,
         Cell: ({ row }) => (
           <Fragment>
-            <span id={'serviceName_' + row['_original'].availableServiceID}>
+            <span id={'serviceName_' + row['_index']}>
               {' '}
               {row['_original'].serviceName}
             </span>
             <UncontrolledTooltip
               placement="top"
-              target={'serviceName_' + row['_original'].availableServiceID}
+              target={'serviceName_' + row['_index']}
             >
               {row['_original'].serviceName}
             </UncontrolledTooltip>
@@ -60,12 +72,12 @@ class ListService extends Component {
         className: 'text-left',
         Cell: ({ row }) => (
           <Fragment>
-            <span id={'description_' + row['_original'].availableServiceID}>
+            <span id={'description_' + row['_index']}>
               {row['_original'].description}
             </span>
             <UncontrolledTooltip
               placement="left"
-              target={'description_' + row['_original'].availableServiceID}
+              target={'description_' + row['_index']}
             >
               {row['_original'].description}
             </UncontrolledTooltip>
@@ -73,7 +85,7 @@ class ListService extends Component {
         )
       },
       {
-        Header: 'Price',
+        Header: 'Price ($)',
         accessor: 'price',
         className: 'text-right',
         width: 100
@@ -105,8 +117,12 @@ class ListService extends Component {
   }
   onChange(e) {
     let { name, value } = e.target;
+    var index = e.nativeEvent.target.selectedIndex;
     this.props.getServicePriceByID(parseInt(value));
-    this.setState({ [name]: value });
+    this.setState({
+      [name]: value,
+      planName: e.nativeEvent.target[index].text
+    });
   }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
@@ -125,6 +141,7 @@ class ListService extends Component {
     });
   }
   downloadPdf() {
+    let { planName } = this.state;
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
     for (var index = 0; index < currentRecords.length; index++) {
@@ -140,15 +157,17 @@ class ListService extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
+        { header: 'Serial No', dataKey: 'Serial No' },
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
         { header: 'Price', dataKey: 'Price' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
-        0: { cellWidth: 90 },
-        1: { cellWidth: 220 },
-        2: { cellWidth: 50 },
+        0: { cellWidth: 70 },
+        1: { cellWidth: 90 },
+        2: { cellWidth: 220 },
+        3: { cellWidth: 50 },
         4: { cellWidth: 50 }
       },
       margin: {
@@ -160,11 +179,14 @@ class ListService extends Component {
       rowPageBreak: 'avoid',
       theme: 'grid'
     });
-    doc.save(downFileName + '.pdf');
+    doc.save(
+      downFileName + planName + '-' + dateTimeFormat(new Date()) + '.pdf'
+    );
   }
   render() {
     const { servicePlans = [], ServicesByID = [] } = this.props;
-    const { ServicePlan = 2 } = this.state;
+    const { allServices = [] } = ServicesByID;
+    const { ServicePlan, planName } = this.state;
     const MyLoader = () => <Loader loading={ServicesByID.loading} />;
     const Plans =
       servicePlans.allServicePlans &&
@@ -173,6 +195,7 @@ class ListService extends Component {
           {type.planType}
         </option>
       ));
+
     return (
       <Fragment>
         <UserHeader />
@@ -187,27 +210,24 @@ class ListService extends Component {
                       <h3 className="mb-0">List Of Available Services</h3>
                     </Col>
                     <Col sm>
-                      <FormGroup style={{ float: 'left', width: '60%' }}>
-                        <Input
-                          type="select"
-                          name="ServicePlan"
-                          id="exampleSelect"
-                          value={ServicePlan}
-                          onChange={this.onChange}
-                        >
-                          <option disabled value="">
-                            Select an Service Plan
-                          </option>
-                          {Plans}
-                        </Input>
-                      </FormGroup>
-
                       <span
                         style={{
                           float: 'right',
                           paddingTop: '0.5rem'
                         }}
                       >
+                        <FormGroup style={{ float: 'left', width: '48%' }}>
+                          <label>Select a Service Plan</label>
+                          <Input
+                            type="select"
+                            name="ServicePlan"
+                            id="exampleSelect"
+                            value={ServicePlan}
+                            onChange={this.onChange}
+                          >
+                            {Plans}
+                          </Input>
+                        </FormGroup>
                         <Button
                           color="primary"
                           size="sm"
@@ -218,7 +238,13 @@ class ListService extends Component {
                         </Button>
                         <CSVLink
                           data={this.state.dataToDownload}
-                          filename={downFileName + '.csv'}
+                          filename={
+                            downFileName +
+                            planName +
+                            '-' +
+                            dateTimeFormat(new Date()) +
+                            '.csv'
+                          }
                           className="hidden"
                           ref={r => (this.csvLink = r)}
                           target="_blank"
@@ -248,13 +274,18 @@ class ListService extends Component {
                   </Row>
                 </CardHeader>
                 <ReactTable
-                  id="check_issues"
+                  id="available_services"
+                  key={allServices.length}
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
-                  data={ServicesByID.allServices}
+                  data={allServices}
                   columns={this.columns}
-                  defaultPageSize={25}
-                  pageSizeOptions={[5, 10, 15, 20, 25]}
+                  defaultPageSize={
+                    allServices.length > 25 ? 25 : parseInt(allServices.length)
+                  }
+                  pageSizeOptions={[
+                    ...new Set([allServices.length, 5, 10, 15, 20, 25])
+                  ]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"
@@ -278,7 +309,6 @@ class ListService extends Component {
 const getState = state => {
   return {
     loginData: state.authLogin,
-    // Services: state.getAllServices,
     servicePlans: state.getAllServicePlans,
     ServicesByID: state.getServicePriceByID
   };
@@ -286,7 +316,6 @@ const getState = state => {
 export default connect(
   getState,
   {
-    //  getAllServices,
     getAllServicePlans,
     getServicePriceByID
   }

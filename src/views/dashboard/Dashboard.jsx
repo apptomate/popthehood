@@ -98,6 +98,7 @@ class Dashboard extends Component {
             </Col>
             <Col xl="4">
               <ReportForWeek
+                defProps={this.props}
                 vehicleScheduledForAWeek={dashboard.vehicleScheduledForAWeek}
               />
             </Col>

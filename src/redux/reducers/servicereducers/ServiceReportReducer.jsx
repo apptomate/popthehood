@@ -1,7 +1,7 @@
 import * as types from '../../actions/ActionTypes.jsx';
-import { singleObjectInitial } from '../../InitialState.jsx';
+import { arrayInitial } from '../../InitialState.jsx';
 
-export default function getServiceReport(state = singleObjectInitial, action) {
+export default function getServiceReport(state = arrayInitial, action) {
   const { type, payload } = action;
   switch (type) {
   case types.GETSERVICEREPORT_SUCCESS:

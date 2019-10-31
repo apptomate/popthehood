@@ -15,6 +15,7 @@ class ReportForWeek extends Component {
     };
     this.download = this.download.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
+    this.redirectService = this.redirectService.bind(this);
     this.columns = [
       {
         Header: 'License Plate',
@@ -43,6 +44,14 @@ class ReportForWeek extends Component {
       }
     ];
   }
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.vehicleScheduledForAWeek &&
+      this.props.vehicleScheduledForAWeek.length !==
+        nextProps.vehicleScheduledForAWeek.length
+    );
+  }
+
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -57,6 +66,15 @@ class ReportForWeek extends Component {
     }
     this.setState({ dataToDownload: data_to_download }, () => {
       this.csvLink.link.click();
+    });
+  }
+  redirectService() {
+    this.props.defProps.history.push({
+      pathname: '/admin/services-report',
+      state: {
+        isFilter: true,
+        filterBy: 'ON_DUE'
+      }
     });
   }
 
@@ -105,7 +123,7 @@ class ReportForWeek extends Component {
               <h3 className="mb-0">Due Services</h3>
             </div>
             <div className="col text-right">
-              <Button
+              {/* <Button
                 color="primary"
                 size="sm"
                 onClick={this.download}
@@ -122,7 +140,7 @@ class ReportForWeek extends Component {
               />
               <UncontrolledTooltip placement="top" target={'down_csv'}>
                 Download as CSV
-              </UncontrolledTooltip>
+              </UncontrolledTooltip> */}
               <Button
                 color="info"
                 size="sm"
@@ -152,23 +170,16 @@ class ReportForWeek extends Component {
               .includes(filter.value.toLowerCase())
           }
           className="-striped -highlight"
-          showPagination={false}
         />
         <div className="col text-right">
-          <Link
+          <Button
             color="info"
-            className="button"
             size="sm"
-            to={{
-              pathname: '/services-report',
-              state: {
-                filter: 'ON_DUE'
-              }
-            }}
+            id="down_pdf"
+            onClick={this.redirectService}
           >
-            <i className="fas fa-arrow-right"></i>
-            View All Dues{' '}
-          </Link>
+            <i className="fas fa-arrow-right"></i> View All Dues
+          </Button>
         </div>
       </Card>
     );

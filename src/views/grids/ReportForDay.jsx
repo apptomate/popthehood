@@ -5,7 +5,7 @@ import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
+import { dateTimeFormat } from '../common/helpers/functions';
 const downFileName = 'Service Report For Day-' + dateTimeFormat(new Date());
 
 class ReportForDay extends Component {
@@ -53,14 +53,6 @@ class ReportForDay extends Component {
         Header: 'Location',
         accessor: 'locationFullAddress',
         className: 'text-left'
-      },
-      {
-        Header: 'Date',
-        accessor: 'requestServiceDate',
-        className: 'text-left',
-        Cell: row => {
-          return dateFormat(row.value);
-        }
       }
     ];
   }
@@ -102,8 +94,7 @@ class ReportForDay extends Component {
         { header: 'Model', dataKey: 'Model' },
         { header: 'Name', dataKey: 'Name' },
         { header: 'Phone No', dataKey: 'Phone No' },
-        { header: 'Location', dataKey: 'Location' },
-        { header: 'Date', dataKey: 'Date' }
+        { header: 'Location', dataKey: 'Location' }
       ],
       columnStyles: {
         0: { cellWidth: 80 },
@@ -111,8 +102,7 @@ class ReportForDay extends Component {
         2: { cellWidth: 50 },
         3: { cellWidth: 50 },
         4: { cellWidth: 60 },
-        5: { cellWidth: 50 },
-        6: { cellWidth: 100 }
+        5: { cellWidth: 50 }
       },
       margin: {
         top: 8,
@@ -183,7 +173,6 @@ class ReportForDay extends Component {
               .includes(filter.value.toLowerCase())
           }
           className="-striped -highlight"
-          showPagination={false}
         />
       </Card>
     );

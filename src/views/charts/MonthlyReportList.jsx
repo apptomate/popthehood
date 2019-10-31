@@ -59,7 +59,7 @@ class MonthlyReportList extends Component {
                 <XAxis name="Month" dataKey="monthList" height={120} />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="monthwiseCount" nameKey="monthList">
+                <Bar dataKey="monthwiseCount" name="Count">
                   {monthlyReportList.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}

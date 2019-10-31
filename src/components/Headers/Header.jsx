@@ -34,7 +34,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total Users
+                            Reg Users
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {dashboard.report.users}
@@ -58,7 +58,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total vehicles
+                            Reg vehicles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {dashboard.report.vehicles}
@@ -82,7 +82,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total Due Services
+                            Due Services
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {' '}
@@ -107,7 +107,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total Amount Paid
+                            Amount Received
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">253</span>
                         </div>
