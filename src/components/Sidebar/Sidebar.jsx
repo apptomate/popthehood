@@ -155,7 +155,7 @@ class Sidebar extends React.Component {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={preventDefaultFn}>
-                  <i className="ni ni-user-run" />
+                  <i className="ni ni-button-power" />
                   <span>Logout</span>
                 </DropdownItem>
               </DropdownMenu>

@@ -249,23 +249,27 @@ class vehicleServicepage extends Component {
                             <ListGroup flush>
                               <ListGroupItem>
                                 <span>Model </span>
-                                <h5>{vehicleInfo.model}</h5>
+                                <span className="licenceplate-pdf-right-value">
+                                  {vehicleInfo.model}
+                                </span>
                               </ListGroupItem>
                               <ListGroupItem>
                                 <span>Make</span>
-                                <h5>{vehicleInfo.make}</h5>
+                                <span className="licenceplate-pdf-right-value">
+                                  {vehicleInfo.make}
+                                </span>
                               </ListGroupItem>
                               <ListGroupItem>
                                 <span>Year </span>
-                                <h5>{vehicleInfo.year}</h5>
+                                <span className="licenceplate-pdf-right-value">
+                                  {vehicleInfo.year}
+                                </span>
                               </ListGroupItem>
                               <ListGroupItem>
                                 <span>Color </span>
-                                <h5>
-                                  <h5 color="" className="badge-dot mr-4">
-                                    {vehicleInfo.color}
-                                  </h5>
-                                </h5>
+                                <span className="licenceplate-pdf-right-value">
+                                  {vehicleInfo.color}
+                                </span>
                               </ListGroupItem>
                             </ListGroup>
                           </div>
