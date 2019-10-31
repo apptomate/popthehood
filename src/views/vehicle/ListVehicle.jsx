@@ -28,7 +28,8 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
-const downFileName = 'Vehicles List - ' + dateTimeFormat(new Date());
+const downFileName =
+  'VehiclesList-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
@@ -53,8 +54,8 @@ class ListVehicle extends Component {
         }
       },
       {
-        Header: 'License Plate',
-        accessor: 'licensePlate',
+        Header: 'Licence Plate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -107,7 +108,7 @@ class ListVehicle extends Component {
         accessor: 'nextService',
         className: 'text-left',
         Cell: row => {
-          return dateTimeFormat(row.value);
+          return dateTimeFormat(row.value, 'DD/MM/YYYY HH:MM:SS');
         }
       },
       {
@@ -160,11 +161,14 @@ class ListVehicle extends Component {
   deleteVehicle(e, row) {
     e.preventDefault();
     let vehicle_id = row['_original'].vehicleId;
+    let user_id = row['_original'].userId;
     swal
-      .fire(getConfirm('warning', 'Are you sure you want to delete the issue?'))
+      .fire(
+        getConfirm('warning', 'Are you sure you want to delete this vehicle?')
+      )
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id, 'vehicle');
+          this.props.deleteVehicle(vehicle_id, 'vehicle', user_id);
         }
       });
   }
@@ -224,7 +228,7 @@ class ListVehicle extends Component {
       body: data_array,
       columns: [
         { header: 'Serial No', dataKey: 'Serial No' },
-        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
         { header: 'User Name', dataKey: 'User Name' },
@@ -290,7 +294,7 @@ class ListVehicle extends Component {
                 <CardHeader className="border-0">
                   <Row>
                     <Col>
-                      <h3 className="mb-0">List Of Vehicle</h3>
+                      <h3 className="mb-0">List Of Vehicles</h3>
                     </Col>
                     <Col>
                       <span style={{ float: 'right' }}>
