@@ -245,12 +245,20 @@ class vehicleServicepage extends Component {
                                   <h5>{userInfo.locationFullAddress}</h5>
                                 </li>
                                 <li>
-                                  <span> Address</span>{' '}
-                                  <h5>{userInfo.locationFullAddress}</h5>
+                                  <span> IsEmailVerified</span>{' '}
+                                  <h5>
+                                    {userInfo.isEmailVerified === true
+                                      ? 'true'
+                                      : 'false'}
+                                  </h5>
                                 </li>
                                 <li>
-                                  <span> Address</span>{' '}
-                                  <h5>{userInfo.locationFullAddress}</h5>
+                                  <span> IsPhoneNumVerified</span>{' '}
+                                  <h5>
+                                    {userInfo.isPhoneNumVerified === true
+                                      ? 'true'
+                                      : 'false'}
+                                  </h5>
                                 </li>
                               </ul>
                             </div>
@@ -284,29 +292,35 @@ class vehicleServicepage extends Component {
                               </li>
                               <li className="mb-1">
                                 <span>Location</span>
-                                <div style={{ height: '44vh', width: '100%' }}>
-                                  <GoogleMapReact
-                                    bootstrapURLKeys={{
-                                      key:
-                                        'AIzaSyCJiuQH8jfY9rJ_HVvXBnQfhIvQe3N9KpY'
-                                    }}
-                                    center={{
-                                      lat: lat,
-                                      lng: lng
-                                    }}
-                                    zoom={10}
-                                  >
-                                    <MyGreatPlace
-                                      lat={lat}
-                                      lng={lng}
-                                      text={'A'}
-                                    />
-                                    {/* <MyGreatPlace
-                                      lat={59.955413}
-                                      lng={30.337844}
-                                      text={'A'} 
-                                    /> */}
-                                  </GoogleMapReact>
+                                <div
+                                  style={{
+                                    minHeight: '227px',
+                                    maxHeight: '227px',
+                                    height: '227px',
+                                    width: '100%'
+                                  }}
+                                >
+                                  {lat && lng ? (
+                                    <GoogleMapReact
+                                      bootstrapURLKeys={{
+                                        key:
+                                          'AIzaSyCJiuQH8jfY9rJ_HVvXBnQfhIvQe3N9KpY'
+                                      }}
+                                      center={{
+                                        lat: lat,
+                                        lng: lng
+                                      }}
+                                      zoom={10}
+                                    >
+                                      <MyGreatPlace
+                                        lat={lat}
+                                        lng={lng}
+                                        text={'A'}
+                                      />
+                                    </GoogleMapReact>
+                                  ) : (
+                                    <div>No location Found!</div>
+                                  )}
                                 </div>
                               </li>
                             </ul>
