@@ -49,7 +49,9 @@ class Dashboard extends Component {
                       <h6 className="text-uppercase text-light ls-1 mb-1">
                         Overview
                       </h6>
-                      <h2 className=" mb-0">Monthly Report</h2>
+                      <h2 className=" mb-0">
+                        Monthly Report - Completed Services
+                      </h2>
                     </div>
                   </Row>
                 </CardHeader>
@@ -96,6 +98,7 @@ class Dashboard extends Component {
             </Col>
             <Col xl="4">
               <ReportForWeek
+                defProps={this.props}
                 vehicleScheduledForAWeek={dashboard.vehicleScheduledForAWeek}
               />
             </Col>

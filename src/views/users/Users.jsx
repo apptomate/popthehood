@@ -98,13 +98,10 @@ class Users extends React.Component {
         width: 250,
         Cell: ({ row }) => (
           <Fragment>
-            <span id={'email_' + row['_original'].userId}>
-              {' '}
-              {row['_original'].email}
-            </span>
+            <span id={'email_' + row['_index']}> {row['_original'].email}</span>
             <UncontrolledTooltip
               placement="top"
-              target={'email_' + row['_original'].userId}
+              target={'email_' + row['_index']}
             >
               {row['_original'].email}
             </UncontrolledTooltip>
@@ -124,7 +121,7 @@ class Users extends React.Component {
         width: 180
       },
       {
-        Header: 'Source Reg',
+        Header: 'Source',
         accessor: 'sourceofReg',
         className: 'text-left',
         width: 150
@@ -177,12 +174,12 @@ class Users extends React.Component {
             >
               <i
                 className="fas fa-pencil-alt edit_i"
-                id={'edit-user-id-' + row['_original'].userId}
+                id={'edit-user-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
               placement="bottom"
-              target={'edit-user-id-' + row['_original'].userId}
+              target={'edit-user-id-' + row['_index']}
             >
               Edit User
             </UncontrolledTooltip>
@@ -196,12 +193,12 @@ class Users extends React.Component {
             >
               <i
                 className="fas fas fa-trash edit_i"
-                id={'delete-user-id-' + row['_original'].userId}
+                id={'delete-user-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
               placement="bottom"
-              target={'delete-user-id-' + row['_original'].userId}
+              target={'delete-user-id-' + row['_index']}
             >
               Delete User
             </UncontrolledTooltip>
@@ -262,13 +259,13 @@ class Users extends React.Component {
               onClick={e => this.editUserVehicle(e, row)}
             >
               <i
-                className="fas fa-pencil-alt edit_i"
-                id={'edit-user_vehicle-id-' + row['_original'].vehicleId}
+                className="fas fa-pencil-alt"
+                id={'edit-user_vehicle-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
               placement="bottom"
-              target={'edit-user_vehicle-id-' + row['_original'].vehicleId}
+              target={'edit-user_vehicle-id-' + row['_index']}
             >
               Edit Vehicle
             </UncontrolledTooltip>
@@ -281,13 +278,13 @@ class Users extends React.Component {
               onClick={this.deleteUserVehicleDetail}
             >
               <i
-                className="fas fas fa-trash edit_i"
-                id={'delete-user_vehicle-id-' + row['_original'].vehicleId}
+                className="fas fas fa-trash"
+                id={'delete-user_vehicle-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
               placement="bottom"
-              target={'delete-user_vehicle-id-' + row['_original'].vehicleId}
+              target={'delete-user_vehicle-id-' + row['_index']}
             >
               Delete Vehicle
             </UncontrolledTooltip>
@@ -506,9 +503,7 @@ class Users extends React.Component {
                       return {};
                     }
                     return {
-                      'data-qnt':
-                        rowInfo.original
-                          .vehicleCount,
+                      'data-qnt': rowInfo.original.vehicleCount,
                       onClick: () => {
                         this.expand_row(rowInfo);
                       }

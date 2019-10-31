@@ -7,10 +7,10 @@ const token = localStorage.getItem('token');
 const isLogin = localStorage.getItem('isLogin');
 
 export const objectInitial = {
-    loading: false,
-    token,
-    user: JSON.parse(userData),
-    isLogin: isLogin === 'true' ? true : false
+  loading: false,
+  token,
+  user: JSON.parse(userData),
+  isLogin: isLogin === 'true' ? true : false
 };
 
 export const singleObjectInitial = {};

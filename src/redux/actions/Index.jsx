@@ -78,7 +78,7 @@ export function authLogin(formData) {
         if (error.response) {
           dispatch({
             type: LOGIN_ERROR,
-            payload: error.response
+            payload: error.response.data
           });
         }
       });

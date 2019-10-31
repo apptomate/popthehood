@@ -7,6 +7,8 @@ import ListService from './views/service/ListService';
 import ServiceReport from './views/serviceReport/ServiceReport';
 import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
 import Dashboard from './views/dashboard/Dashboard';
+import PageNotFound from './views/common/PageNotFound';
+import AuthPageNotFound from './views/common/AuthPageNotFound';
 var routes = [
   {
     path: '/index',
@@ -82,6 +84,20 @@ var routes = [
     icon: 'ni ni-circle-08 text-primary',
     component: vehicleServicepage,
     layout: '/admin',
+    showNavbar: false
+  },
+  {
+    path: '',
+    name: '404 page',
+    component: PageNotFound,
+    layout: '/admin',
+    showNavbar: false
+  },
+  {
+    path: '',
+    name: '404 page',
+    component: AuthPageNotFound,
+    layout: '/auth',
     showNavbar: false
   }
 ];
