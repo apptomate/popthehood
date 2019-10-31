@@ -47,8 +47,8 @@ class ListVehicle extends Component {
     this.onChange = this.onChange.bind(this);
     this.columns = [
       {
-        Header: 'License Plate',
-        accessor: 'licensePlate',
+        Header: 'Licence Plate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -154,11 +154,14 @@ class ListVehicle extends Component {
   deleteVehicle(e, row) {
     e.preventDefault();
     let vehicle_id = row['_original'].vehicleId;
+    let user_id = row['_original'].userId;
     swal
-      .fire(getConfirm('warning', 'Are you sure you want to delete the issue?'))
+      .fire(
+        getConfirm('warning', 'Are you sure you want to delete this vehicle?')
+      )
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id, 'vehicle');
+          this.props.deleteVehicle(vehicle_id, 'vehicle', user_id);
         }
       });
   }
@@ -217,7 +220,7 @@ class ListVehicle extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
         { header: 'User Name', dataKey: 'User Name' },
@@ -282,7 +285,7 @@ class ListVehicle extends Component {
                 <CardHeader className="border-0">
                   <Row>
                     <Col>
-                      <h3 className="mb-0">List Of Vehicle</h3>
+                      <h3 className="mb-0">List Of Vehicles</h3>
                     </Col>
                     <Col>
                       <span style={{ float: 'right', paddingTop: '0.5rem' }}>

@@ -35,7 +35,7 @@ import {
   Marker
 } from 'react-google-maps';
 import { lat_lng_value } from '../common/helpers/Variables';
-import { preventDefaultFn, dateTimeFormat } from '../common/helpers/functions';
+import { preventDefaultFn } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
@@ -237,16 +237,12 @@ class vehicleServicepage extends Component {
   createPdf = html => Doc.createPdf(html);
   render() {
     const {
-      updateVehicleServiceResponse: {
-        data: update_response = [],
-        loading: update_loading = ''
-      }
+      updateVehicleServiceResponse: { loading: update_loading = '' }
     } = this.props;
 
     const {
       editScheduleModal,
       requestedServiceDate,
-      status,
       serviceOutDate,
       collapse
     } = this.state;
@@ -366,7 +362,7 @@ class vehicleServicepage extends Component {
                           <div className="card-profile shadow card mt-4 p-3">
                             <ul className="licence-plate-userDetails">
                               <li>
-                                <span> Remainder minutes</span>
+                                <span> Remainder Minutes</span>
                                 <Button className="float-right btn btn-default btn-sm">
                                   {!serv_det.remainderMinutes
                                     ? '0'
@@ -474,18 +470,17 @@ class vehicleServicepage extends Component {
                                     <tr key={index}>
                                       <td>{plan_data.serviceNameList}</td>
                                       <td>
-                                      <Fragment>
-                                  <span id={'desc_' + index}>
-                                    {plan_data.serviceDescription}
-                                  </span>
-                                  <UncontrolledTooltip
-                                    placement="left"
-                                    target={'desc_' + index}
-                                  >
-                                    {plan_data.serviceDescription}
-                                  </UncontrolledTooltip>
-                                </Fragment>
-                              
+                                        <Fragment>
+                                          <span id={'desc_' + index}>
+                                            {plan_data.serviceDescription}
+                                          </span>
+                                          <UncontrolledTooltip
+                                            placement="left"
+                                            target={'desc_' + index}
+                                          >
+                                            {plan_data.serviceDescription}
+                                          </UncontrolledTooltip>
+                                        </Fragment>
                                       </td>
                                     </tr>
                                   ))}

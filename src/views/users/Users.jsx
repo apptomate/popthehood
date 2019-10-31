@@ -182,7 +182,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'edit-user-id-' + row['_original'].userId}
             >
               Edit User
@@ -201,7 +201,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'delete-user-id-' + row['_original'].userId}
             >
               Delete User
@@ -213,7 +213,7 @@ class Users extends React.Component {
 
     this.vehicle_columns = [
       {
-        Header: 'License Plate',
+        Header: 'Licence Plate',
         accessor: 'licensePlate',
         className: 'text-left',
         Cell: ({ row }) => {
@@ -286,13 +286,14 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'edit-user_vehicle-id-' + row['_original'].vehicleId}
             >
               Edit Vehicle
             </UncontrolledTooltip>
             <Button
               data-user_vehicle_id={row['_original'].vehicleId}
+              data-user_id={row['_original'].userId}
               className="action_btn"
               color="danger"
               size="sm"
@@ -305,7 +306,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'delete-user_vehicle-id-' + row['_original'].vehicleId}
             >
               Delete Vehicle
@@ -466,6 +467,7 @@ class Users extends React.Component {
   //Delete User Vehicle
   deleteUserVehicleDetail(e) {
     let vehicle_id = parseInt(e.currentTarget.dataset.user_vehicle_id);
+    let user_id = parseInt(e.currentTarget.dataset.user_id);
     swal
       .fire({
         title: 'Are you sure?',
@@ -478,7 +480,7 @@ class Users extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id, 'user');
+          this.props.deleteVehicle(vehicle_id, 'user', user_id);
         }
       });
   }

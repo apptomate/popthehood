@@ -239,7 +239,7 @@ export function getAllVehicles() {
   };
 }
 
-export function deleteVehicle(vehicleID, from = '') {
+export function deleteVehicle(vehicleID, from = '', user_id) {
   return dispatch => {
     dispatch({
       type: DELETEVEHICLE_LOADING
@@ -252,11 +252,11 @@ export function deleteVehicle(vehicleID, from = '') {
           type: DELETEVEHICLE_SUCCESS,
           payload: response.data
         });
-        let userdata = JSON.parse(localStorage.getItem('userData'));
-        var get_data = { userId: userdata.userId };
+        var get_data = { userId: user_id };
         if (from === 'vehicle') {
           dispatch(getAllVehicles());
         } else {
+          dispatch(getAllUsers());
           dispatch(getUserVehicleDetails(get_data));
         }
       })

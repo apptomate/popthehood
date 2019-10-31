@@ -18,7 +18,7 @@ class ReportForWeek extends Component {
     this.downloadPdf = this.downloadPdf.bind(this);
     this.columns = [
       {
-        Header: 'License Plate',
+        Header: 'Licence Plate',
         accessor: 'licensePlate',
         className: 'text-left',
         Cell: ({ row }) => {
@@ -77,7 +77,7 @@ class ReportForWeek extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Date', dataKey: 'Date' }
       ],
       columnStyles: {

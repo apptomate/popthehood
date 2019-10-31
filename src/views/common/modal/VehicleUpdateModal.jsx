@@ -49,7 +49,7 @@ export function VehicleUpdateModal(props) {
 
           <FormGroup>
             <center>
-              <span>License Plate</span>
+              <span>Licence Plate</span>
               <h1>{licensePlate}</h1>
             </center>
           </FormGroup>
