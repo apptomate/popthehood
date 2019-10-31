@@ -72,17 +72,16 @@ class GeneralServiceList extends Component {
                   dataKey="servicesCount"
                   nameKey="serviceStatus"
                 >
-                  {generalServiceList &&
-                    generalServiceList.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={
-                          entry.serviceStatus === 'Completed'
-                            ? '#03C03C'
-                            : '#E30022'
-                        }
-                      />
-                    ))}
+                  {generalServiceList.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.serviceStatus === 'Completed'
+                          ? '#03C03C'
+                          : '#E30022'
+                      }
+                    />
+                  ))}
                 </Pie>
                 <Tooltip />
                 <Legend />
