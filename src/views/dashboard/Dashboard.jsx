@@ -41,7 +41,7 @@ class Dashboard extends Component {
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="7">
               <Card className="bg-white shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
@@ -49,7 +49,9 @@ class Dashboard extends Component {
                       <h6 className="text-uppercase text-light ls-1 mb-1">
                         Overview
                       </h6>
-                      <h2 className=" mb-0">Monthly Report</h2>
+                      <h2 className=" mb-0">
+                        Monthly Report - Completed Services
+                      </h2>
                     </div>
                   </Row>
                 </CardHeader>
@@ -63,7 +65,7 @@ class Dashboard extends Component {
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="4">
+            <Col xl="5">
               <Card className="shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
@@ -87,15 +89,16 @@ class Dashboard extends Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col xl="6">
               <ReportForDay
                 vehicleScheduledListForADay={
                   dashboard.vehicleScheduledListForADay
                 }
               />
             </Col>
-            <Col xl="4">
+            <Col xl="6">
               <ReportForWeek
+                defProps={this.props}
                 vehicleScheduledForAWeek={dashboard.vehicleScheduledForAWeek}
               />
             </Col>

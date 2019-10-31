@@ -16,6 +16,7 @@ class ReportForWeek extends Component {
     };
     this.download = this.download.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
+    this.redirectService = this.redirectService.bind(this);
     this.columns = [
       {
         Header: 'Licence Plate',
@@ -44,6 +45,14 @@ class ReportForWeek extends Component {
       }
     ];
   }
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.vehicleScheduledForAWeek &&
+      this.props.vehicleScheduledForAWeek.length !==
+        nextProps.vehicleScheduledForAWeek.length
+    );
+  }
+
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -58,6 +67,15 @@ class ReportForWeek extends Component {
     }
     this.setState({ dataToDownload: data_to_download }, () => {
       this.csvLink.link.click();
+    });
+  }
+  redirectService() {
+    this.props.defProps.history.push({
+      pathname: '/admin/services-report',
+      state: {
+        isFilter: true,
+        filterBy: 'ON_DUE'
+      }
     });
   }
 
@@ -107,25 +125,7 @@ class ReportForWeek extends Component {
             </div>
             <div className="col text-right">
               <Button
-                color="primary"
-                size="sm"
-                onClick={this.download}
-                id="down_csv"
-              >
-                <i className="fas fa-file-download"></i> CSV
-              </Button>
-              <CSVLink
-                data={dataToDownload}
-                filename={downFileName + '.csv'}
-                className="hidden"
-                ref={r => (this.csvLink = r)}
-                target="_blank"
-              />
-              <UncontrolledTooltip placement="top" target={'down_csv'}>
-                Download as CSV
-              </UncontrolledTooltip>
-              <Button
-                color="info"
+                color="danger"
                 size="sm"
                 id="down_pdf"
                 onClick={this.downloadPdf}
@@ -153,8 +153,17 @@ class ReportForWeek extends Component {
               .includes(filter.value.toLowerCase())
           }
           className="-striped -highlight"
-          showPagination={false}
         />
+        <Button
+          color="info"
+          style={{ float: 'right' }}
+          size="sm"
+          id="down_pdf"
+          className="m-3"
+          onClick={this.redirectService}
+        >
+          <i className="fas fa-arrow-right"></i> View All Dues
+        </Button>
       </Card>
     );
   }

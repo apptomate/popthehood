@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+
 import { Link } from 'react-router-dom';
-import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Row,
+  UncontrolledTooltip,
+  Col
+} from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
+import { dateTimeFormat } from '../common/helpers/functions';
 const downFileName =
   'ServiceReportForDay-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ReportForDay extends Component {
@@ -53,14 +61,6 @@ class ReportForDay extends Component {
         Header: 'Location',
         accessor: 'locationFullAddress',
         className: 'text-left'
-      },
-      {
-        Header: 'Date',
-        accessor: 'requestServiceDate',
-        className: 'text-left',
-        Cell: row => {
-          return dateFormat(row.value);
-        }
       }
     ];
   }
@@ -102,8 +102,7 @@ class ReportForDay extends Component {
         { header: 'Model', dataKey: 'Model' },
         { header: 'Name', dataKey: 'Name' },
         { header: 'Phone No', dataKey: 'Phone No' },
-        { header: 'Location', dataKey: 'Location' },
-        { header: 'Date', dataKey: 'Date' }
+        { header: 'Location', dataKey: 'Location' }
       ],
       columnStyles: {
         0: { cellWidth: 80 },
@@ -111,8 +110,7 @@ class ReportForDay extends Component {
         2: { cellWidth: 50 },
         3: { cellWidth: 50 },
         4: { cellWidth: 60 },
-        5: { cellWidth: 50 },
-        6: { cellWidth: 100 }
+        5: { cellWidth: 50 }
       },
       margin: {
         top: 8,
@@ -132,10 +130,10 @@ class ReportForDay extends Component {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <div className="col">
-              <h3 className="mb-0">Services Scheduled For Today</h3>
-            </div>
-            <div className="col text-right">
+            <Col sm>
+              <h3 className="mb-0 nowrap">Services Scheduled For Today</h3>
+            </Col>
+            <Col className="text-right">
               <Button
                 color="primary"
                 size="sm"
@@ -155,7 +153,7 @@ class ReportForDay extends Component {
                 Download as CSV
               </UncontrolledTooltip>
               <Button
-                color="info"
+                color="danger"
                 size="sm"
                 id="down_pdf"
                 onClick={this.downloadPdf}
@@ -165,7 +163,7 @@ class ReportForDay extends Component {
               <UncontrolledTooltip placement="top" target={'down_pdf'}>
                 Download as PDF
               </UncontrolledTooltip>
-            </div>
+            </Col>
           </Row>
         </CardHeader>
         <ReactTable
@@ -183,7 +181,6 @@ class ReportForDay extends Component {
               .includes(filter.value.toLowerCase())
           }
           className="-striped -highlight"
-          showPagination={false}
         />
       </Card>
     );

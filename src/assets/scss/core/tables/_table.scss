@@ -333,35 +333,23 @@ form .form-group {
   color: #fff;
 }
 
-.ReactTable .rt-thead.-filters input,
-.ReactTable .rt-thead.-filters select {
-  border: 1px solid rgb(228, 228, 228) !important;
-  background: #fff !important;
-  padding: 11px 7px !important;
-  font-size: inherit;
-  border-radius: 1px !important;
-  font-weight: normal;
-  outline-width: 0;
-  box-shadow: 0 0 1px black !important;
-}
-
-.form-control {
-  display: block;
-  width: 100%;
-  height: calc(2.75rem + 2px);
-  padding: 0.625rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #8898aa !important;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #e1e2e2;
-  border-radius: 2.375rem;
-  box-shadow: none;
-  height: 47px !important;
-  -webkit-transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+// .form-control {
+//   display: block;
+//   width: 100%;
+//   height: calc(2.75rem + 2px);
+//   padding: 0.625rem 0.75rem;
+//   font-size: 1rem;
+//   line-height: 1.5;
+//   color: #8898aa !important;
+//   background-color: #fff;
+//   background-clip: padding-box;
+//   border: 1px solid #e1e2e2;
+//   border-radius: 2.375rem;
+//   box-shadow: none;
+//   height: 47px !important;
+//   -webkit-transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+//   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+// }
 
 label {
   display: inline-block;
@@ -424,4 +412,159 @@ label {
 
 .color-success {
   color: #2dce89 !important;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.ReactTable .-pagination .-center {
+  flex: auto !important;
+  text-align: center;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.nowrap {
+  white-space: nowrap;
+}
+
+.myform .form-group {
+  margin-bottom: 0rem !important;
+  margin-right: 1rem;
+}
+// 404
+
+#notfound {
+  position: relative;
+  height: 62vh;
+}
+
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.notfound {
+  max-width: 520px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.notfound .notfound-404 {
+  position: relative;
+  height: 240px;
+}
+
+.notfound .notfound-404 h1 {
+  font-family: "Montserrat", sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 252px;
+  font-weight: 900;
+  margin: 0px;
+  color: #262626;
+  text-transform: uppercase;
+  letter-spacing: -40px;
+  margin-left: -20px;
+}
+
+.notfound .notfound-404 h1 > span {
+  text-shadow: -8px 0px 0px #fff;
+}
+
+.notfound .notfound-404 h3 {
+  font-family: "Cabin", sans-serif;
+  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #262626;
+  margin: 0px;
+  letter-spacing: 3px;
+  padding-left: 6px;
+}
+
+.notfound h2 {
+  font-family: "Cabin", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #000;
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
+@media only screen and (max-width: 767px) {
+  .notfound .notfound-404 {
+    height: 200px;
+  }
+  .notfound .notfound-404 h1 {
+    font-size: 200px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .notfound .notfound-404 {
+    height: 162px;
+  }
+  .notfound .notfound-404 h1 {
+    font-size: 162px;
+    height: 150px;
+    line-height: 162px;
+  }
+  .notfound h2 {
+    font-size: 16px;
+  }
+}
+
+.l {
+  width: 75%;
+  float: left;
+}
+.r {
+  width: 20%;
+  float: left;
+}
+.login-title {
+  color: #5e72e4;
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.licenceplate-pdf-right-value {
+  float: right;
+  margin: auto;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #32325d !important;
+}
+
+.list-group-item {
+  display: block !important;
+}
+.footer {
+  background: #c6ceff !important;
+  padding: 1rem 0 !important;
+  margin-top: 2rem;
+}
+.footer .copyright {
+  font-size: 0.875rem;
+  text-align: center !important;
 }

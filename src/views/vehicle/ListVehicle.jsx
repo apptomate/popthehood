@@ -47,6 +47,13 @@ class ListVehicle extends Component {
     this.onChange = this.onChange.bind(this);
     this.columns = [
       {
+        Header: 'Serial No',
+        className: 'text-center',
+        Cell: row => {
+          return <div>{row.index + 1}</div>;
+        }
+      },
+      {
         Header: 'Licence Plate',
         accessor: 'licencePlate',
         className: 'text-left',
@@ -84,12 +91,12 @@ class ListVehicle extends Component {
         className: 'text-left',
         Cell: ({ row }) => (
           <Fragment>
-            <span id={'address_' + row['_original'].vehicleId}>
+            <span id={'address_' + row['_index']}>
               {row['_original'].address}
             </span>
             <UncontrolledTooltip
               placement="top"
-              target={'address_' + row['_original'].vehicleId}
+              target={'address_' + row['_index']}
             >
               {row['_original'].address}
             </UncontrolledTooltip>
@@ -220,6 +227,7 @@ class ListVehicle extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
+        { header: 'Serial No', dataKey: 'Serial No' },
         { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
@@ -233,7 +241,8 @@ class ListVehicle extends Component {
         2: { cellWidth: 70 },
         3: { cellWidth: 70 },
         4: { cellWidth: 70 },
-        5: { cellWidth: 70 }
+        5: { cellWidth: 70 },
+        6: { cellWidth: 70 }
       },
       margin: {
         top: 8,

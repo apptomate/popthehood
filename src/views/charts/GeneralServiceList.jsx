@@ -9,8 +9,6 @@ import {
 } from 'recharts';
 import shortid from 'shortid';
 
-const COLORS = ['#F2B400', '#03C03C', '#1F75FE', '#431C53'];
-
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx,
@@ -51,10 +49,13 @@ class GeneralServiceList extends Component {
   }
   render() {
     const { generalServiceList = [] } = this.props;
+    const filterData = generalServiceList.filter(
+      item => item.servicesCount > 0
+    );
     return (
       <Fragment key={shortid.generate()}>
-        <div className="FirstPie" style={{ width: '100%', height: 380 }}>
-          {generalServiceList.length === 0 ? (
+        <div className="FirstPie" style={{ width: '100%', height: 335 }}>
+          {filterData.length === 0 ? (
             <center>
               <p style={{ paddingTop: '45%' }}>No Data found !</p>
             </center>
@@ -74,7 +75,11 @@ class GeneralServiceList extends Component {
                   {generalServiceList.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={
+                        entry.serviceStatus === 'Completed'
+                          ? '#03C03C'
+                          : '#E30022'
+                      }
                     />
                   ))}
                 </Pie>
