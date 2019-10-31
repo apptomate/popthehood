@@ -48,9 +48,9 @@ export function dateFormat(date) {
   }
 }
 
-export function dateTimeFormat(date) {
+export function dateTimeFormat(date, format) {
   if (moment(date).isValid()) {
-    return moment(date).format('DD/MM/YYYY HH:MM:SS');
+    return moment(date).format(format);
   } else {
     return '';
   }

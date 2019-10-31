@@ -28,7 +28,8 @@ import {
   dateTimeFormat
 } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-const downFileName = 'ServiceReport-' + dateTimeFormat(new Date());
+const downFileName =
+  'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ServiceReport extends Component {
   constructor(props) {
     super(props);

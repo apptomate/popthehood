@@ -25,7 +25,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { dateTimeFormat } from '../common/helpers/functions.jsx';
-const downFileName = 'ServiceList-' + dateTimeFormat(new Date());
+const downFileName =
+  'ServiceList-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ListService extends Component {
   constructor(props) {
     super(props);
@@ -169,7 +170,11 @@ class ListService extends Component {
     const Plans =
       servicePlans.allServicePlans &&
       servicePlans.allServicePlans.map(type => (
-        <option value={type.servicePlanID} key={type.servicePlanID} data-dropText={type.planType}>
+        <option
+          value={type.servicePlanID}
+          key={type.servicePlanID}
+          data-dropText={type.planType}
+        >
           {type.planType}
         </option>
       ));

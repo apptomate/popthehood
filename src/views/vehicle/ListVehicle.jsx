@@ -28,7 +28,8 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
-const downFileName = 'VehiclesList-' + dateTimeFormat(new Date());
+const downFileName =
+  'VehiclesList-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +101,7 @@ class ListVehicle extends Component {
         accessor: 'nextService',
         className: 'text-left',
         Cell: row => {
-          return dateTimeFormat(row.value);
+          return dateTimeFormat(row.value, 'DD/MM/YYYY HH:MM:SS');
         }
       },
       {
@@ -117,7 +118,7 @@ class ListVehicle extends Component {
               onClick={e => this.editVehicle(e, row)}
             >
               <i
-                className="fas fa-user-edit"
+                className="fas fa-pencil-alt"
                 id={'edit-vehicle-id-' + row['_original'].vehicleId}
               />
             </Button>
