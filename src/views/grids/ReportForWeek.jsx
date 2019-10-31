@@ -7,7 +7,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
 const downFileName =
-  'ServiceReportForWeek-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+  'DueServices-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -44,13 +44,6 @@ class ReportForWeek extends Component {
         }
       }
     ];
-  }
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.vehicleScheduledForAWeek &&
-      this.props.vehicleScheduledForAWeek.length !==
-        nextProps.vehicleScheduledForAWeek.length
-    );
   }
 
   download() {
@@ -96,7 +89,7 @@ class ReportForWeek extends Component {
       body: data_array,
       columns: [
         { header: 'Licence Plate', dataKey: 'Licence Plate' },
-        { header: 'Date', dataKey: 'Date' }
+        { header: 'Due Date', dataKey: 'Due Date' }
       ],
       columnStyles: {
         0: { cellWidth: 100 },
@@ -124,6 +117,24 @@ class ReportForWeek extends Component {
               <h3 className="mb-0">Due Services</h3>
             </div>
             <div className="col text-right">
+              <Button
+                color="primary"
+                size="sm"
+                onClick={this.download}
+                id="down_csv"
+              >
+                <i className="fas fa-file-download"></i> CSV
+              </Button>
+              <CSVLink
+                data={dataToDownload}
+                filename={downFileName + '.csv'}
+                className="hidden"
+                ref={r => (this.csvLink = r)}
+                target="_blank"
+              />
+              <UncontrolledTooltip placement="top" target={'down_csv'}>
+                Download as CSV
+              </UncontrolledTooltip>
               <Button
                 color="danger"
                 size="sm"
