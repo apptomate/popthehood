@@ -9,8 +9,6 @@ import {
   Container,
   Row,
   Col,
-  ListGroup,
-  ListGroupItem,
   Button,
   DropdownMenu,
   DropdownItem,
@@ -18,7 +16,8 @@ import {
   DropdownToggle,
   Table,
   Modal,
-  Spinner
+  Spinner,
+  Badge
 } from 'reactstrap';
 import UserHeader from 'components/Headers/UserHeader.jsx';
 import {
@@ -245,33 +244,71 @@ class vehicleServicepage extends Component {
                               <span>{vehicleInfo.licensePlate}</span>
                             </h4>
                           </div>
-                          <div className="card-profile shadow card mt-4">
-                            <ListGroup flush>
-                              <ListGroupItem>
-                                <span>Model </span>
-                                <span className="licenceplate-pdf-right-value">
-                                  {vehicleInfo.model}
-                                </span>
-                              </ListGroupItem>
-                              <ListGroupItem>
-                                <span>Make</span>
-                                <span className="licenceplate-pdf-right-value">
-                                  {vehicleInfo.make}
-                                </span>
-                              </ListGroupItem>
-                              <ListGroupItem>
-                                <span>Year </span>
-                                <span className="licenceplate-pdf-right-value">
-                                  {vehicleInfo.year}
-                                </span>
-                              </ListGroupItem>
-                              <ListGroupItem>
-                                <span>Color </span>
-                                <span className="licenceplate-pdf-right-value">
-                                  {vehicleInfo.color}
-                                </span>
-                              </ListGroupItem>
-                            </ListGroup>
+                          <div className="card-profile shadow card mt-4 p-3">
+                            <Row>
+                              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                                <Table hover>
+                                  <thead>
+                                    <tr>
+                                      <th>
+                                        <Badge className="badge-default licence-list-badge">
+                                          Model
+                                        </Badge>
+                                      </th>
+                                      <th>
+                                        {' '}
+                                        <span className="licenceplate-pdf-right-value">
+                                          {vehicleInfo.model}
+                                        </span>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <th scope="row">
+                                        {' '}
+                                        <Badge className="badge-default licence-list-badge">
+                                          Make
+                                        </Badge>
+                                      </th>
+                                      <td>
+                                        {' '}
+                                        <span className="licenceplate-pdf-right-value">
+                                          {vehicleInfo.make}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row">
+                                        {' '}
+                                        <Badge className="badge-default licence-list-badge">
+                                          Year
+                                        </Badge>
+                                      </th>
+                                      <td>
+                                        {' '}
+                                        <span className="licenceplate-pdf-right-value">
+                                          {vehicleInfo.year}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row">
+                                        <Badge className="badge-default licence-list-badge">
+                                          Color
+                                        </Badge>
+                                      </th>
+                                      <td>
+                                        {' '}
+                                        <span className="licenceplate-pdf-right-value">
+                                          {vehicleInfo.color}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </Table>
+                              </Col>
+                            </Row>
                           </div>
                         </Col>
                       </Row>
@@ -370,20 +407,18 @@ class vehicleServicepage extends Component {
                       <Col>
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
-                            <Col sm="2">
+                            <Col>
                               <Button
                                 className="btn btn-default btn-sm "
                                 style={pointerStyle}
                               >
                                 Plan Type
                               </Button>
-                            </Col>
-                            <Col sm="10">
-                              <h5>
+                              <span>
                                 {planInfoList
                                   .filter((plan_value, index) => !index)
                                   .map(plan => plan.planType)}
-                              </h5>
+                              </span>
                             </Col>
                           </Row>
                         </Card>

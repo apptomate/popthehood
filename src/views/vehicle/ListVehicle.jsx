@@ -293,7 +293,7 @@ class ListVehicle extends Component {
                       <h3 className="mb-0">List Of Vehicle</h3>
                     </Col>
                     <Col>
-                      <span style={{ float: 'right', paddingTop: '0.5rem' }}>
+                      <span style={{ float: 'right' }}>
                         <Button
                           color="primary"
                           size="sm"

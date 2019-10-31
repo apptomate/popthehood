@@ -163,9 +163,9 @@
 .ServiceReport-imgcard {
   width: 270px;
   height: 250px;
-  border-radius: 10%;
+  border-radius: 3%;
   overflow: hidden;
-  box-shadow: 0 1px 6px #9e9e9e;
+  box-shadow: 2px 2px 7px #dedede;
   margin-left: auto;
   margin-right: auto;
   display: block;
@@ -259,7 +259,7 @@
   margin-bottom: 0.7rem;
 }
 
-.Vehicle-Service-plantype h5 {
+.Vehicle-Service-plantype span {
   font-size: 16px;
   font-weight: 600;
   color: #172b4d;
@@ -547,9 +547,8 @@ label {
 }
 
 .licenceplate-pdf-right-value {
-  float: right;
   margin: auto;
-  padding: 0;
+  padding: 0 2rem;
   font-size: 15px;
   font-weight: 700;
   line-height: 1.5;
@@ -567,4 +566,24 @@ label {
 .footer .copyright {
   font-size: 0.875rem;
   text-align: center !important;
+}
+
+.card-header {
+  padding: 0.7rem 0.5rem !important;
+}
+
+.ReactTable .rt-th,
+.ReactTable .rt-td {
+  padding: 7px 10px !important;
+}
+
+.style {
+  padding: 1rem;
+  box-shadow: 0 0 10px #c3c3c3;
+  margin-bottom: 1rem;
+}
+
+.licence-list-badge {
+  width: 65px;
+  font-size: 14px;
 }
