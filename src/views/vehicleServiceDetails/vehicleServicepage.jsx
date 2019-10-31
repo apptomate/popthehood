@@ -40,11 +40,7 @@ class vehicleServicepage extends Component {
     zoom: PropTypes.number,
     greatPlaceCoords: PropTypes.any
   };
-  static defaultProps = {
-    center: [59.938043, 30.337157],
-    zoom: 9,
-    greatPlaceCoords: { lat: 59.724465, lng: 30.080121 }
-  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -248,6 +244,14 @@ class vehicleServicepage extends Component {
                                   <span> Address</span>{' '}
                                   <h5>{userInfo.locationFullAddress}</h5>
                                 </li>
+                                <li>
+                                  <span> Address</span>{' '}
+                                  <h5>{userInfo.locationFullAddress}</h5>
+                                </li>
+                                <li>
+                                  <span> Address</span>{' '}
+                                  <h5>{userInfo.locationFullAddress}</h5>
+                                </li>
                               </ul>
                             </div>
                           </div>
@@ -280,25 +284,28 @@ class vehicleServicepage extends Component {
                               </li>
                               <li className="mb-1">
                                 <span>Location</span>
-                                <div style={{ height: '100vh', width: '100%' }}>
+                                <div style={{ height: '44vh', width: '100%' }}>
                                   <GoogleMapReact
                                     bootstrapURLKeys={{
                                       key:
                                         'AIzaSyCJiuQH8jfY9rJ_HVvXBnQfhIvQe3N9KpY'
                                     }}
-                                    // defaultCenter={this.props.center}
-                                    defaultZoom={this.props.zoom}
+                                    center={{
+                                      lat: lat,
+                                      lng: lng
+                                    }}
+                                    zoom={10}
                                   >
-                                    {/* <MyGreatPlace
+                                    <MyGreatPlace
                                       lat={lat}
                                       lng={lng}
                                       text={'A'}
-                                    /> */}
-                                    <MyGreatPlace
+                                    />
+                                    {/* <MyGreatPlace
                                       lat={59.955413}
                                       lng={30.337844}
-                                      text={'A'} /* Kreyser Avrora */
-                                    />
+                                      text={'A'} 
+                                    /> */}
                                   </GoogleMapReact>
                                 </div>
                               </li>
