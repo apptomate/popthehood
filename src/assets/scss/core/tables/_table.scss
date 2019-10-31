@@ -587,3 +587,35 @@ label {
   width: 65px;
   font-size: 14px;
 }
+
+.badge-success {
+  color: #1aae6f !important;
+  background-color: rgba(147, 231, 195, 0.5);
+}
+
+.badge-warning {
+  color: #ff3709 !important;
+  background-color: rgba(254, 201, 189, 0.5);
+}
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.375rem;
+  font-size: 66% !important;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.375rem;
+}
+
+.map-view {
+  min-height: 200px !important;
+  max-height: 200px !important;
+  height: 200px !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}

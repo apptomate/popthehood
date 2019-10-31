@@ -283,19 +283,25 @@ class vehicleServicepage extends Component {
                                 </li>
                                 <li>
                                   <span> IsEmailVerified</span>{' '}
-                                  <h5>
+                                  <Badge
+                                    color="success"
+                                    style={{ float: 'right' }}
+                                  >
                                     {userInfo.isEmailVerified === true
                                       ? 'true'
                                       : 'false'}
-                                  </h5>
+                                  </Badge>
                                 </li>
                                 <li>
                                   <span> IsPhoneNumVerified</span>{' '}
-                                  <h5>
+                                  <Badge
+                                    color="warning"
+                                    style={{ float: 'right' }}
+                                  >
                                     {userInfo.isPhoneNumVerified === true
                                       ? 'true'
                                       : 'false'}
-                                  </h5>
+                                  </Badge>
                                 </li>
                               </ul>
                             </div>
@@ -329,14 +335,7 @@ class vehicleServicepage extends Component {
                               </li>
                               <li className="mb-1">
                                 <span>Location</span>
-                                <div
-                                  style={{
-                                    minHeight: '227px',
-                                    maxHeight: '227px',
-                                    height: '227px',
-                                    width: '100%'
-                                  }}
-                                >
+                                <div className="map-view">
                                   {lat && lng ? (
                                     <GoogleMapReact
                                       bootstrapURLKeys={{
@@ -356,7 +355,7 @@ class vehicleServicepage extends Component {
                                       />
                                     </GoogleMapReact>
                                   ) : (
-                                    <div>No location Found!</div>
+                                    <h4>No location Found!</h4>
                                   )}
                                 </div>
                               </li>
