@@ -6,7 +6,8 @@ import {
   Row,
   Button,
   UncontrolledTooltip,
-  Col
+  Col,
+  Form
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { getServiceReport } from '../../redux/actions/Index.jsx';
@@ -298,83 +299,83 @@ class ServiceReport extends Component {
                   <Row>
                     <Col>
                       <h3 className="mb-0">Service Report</h3>
-                    </Col>
-                    <Col>
-                      <span
-                        style={{
-                          float: 'right',
-                          paddingTop: '0.5rem'
-                        }}
-                      >
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={this.download}
-                          id="down_csv"
+
+                      <div>
+                        <span
+                          style={{
+                            float: 'right',
+                            paddingTop: '0.5rem',
+                            marginLeft: '1rem',
+                            marginBottom: '1rem'
+                          }}
                         >
-                          <i className="fas fa-file-download"></i> CSV
-                        </Button>
-                        <CSVLink
-                          data={dataToDownload}
-                          filename={downFileName + '.csv'}
-                          className="hidden"
-                          ref={r => (this.csvLink = r)}
-                          target="_blank"
-                        />
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_csv'}
-                        >
-                          Download as CSV
-                        </UncontrolledTooltip>
-                        <Button
-                          color="info"
-                          size="sm"
-                          id="down_pdf"
-                          onClick={this.downloadPdf}
-                        >
-                          <i className="fas fa-file-download"></i> PDF
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_pdf'}
-                        >
-                          Download as PDF
-                        </UncontrolledTooltip>
-                      </span>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={this.download}
+                            id="down_csv"
+                          >
+                            <i className="fas fa-file-download"></i> CSV
+                          </Button>
+                          <CSVLink
+                            data={dataToDownload}
+                            filename={downFileName + '.csv'}
+                            className="hidden"
+                            ref={r => (this.csvLink = r)}
+                            target="_blank"
+                          />
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_csv'}
+                          >
+                            Download as CSV
+                          </UncontrolledTooltip>
+                          <Button
+                            color="info"
+                            size="sm"
+                            id="down_pdf"
+                            onClick={this.downloadPdf}
+                          >
+                            <i className="fas fa-file-download"></i> PDF
+                          </Button>
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_pdf'}
+                          >
+                            Download as PDF
+                          </UncontrolledTooltip>
+                        </span>
+                      </div>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col sm="2"></Col>
-                    <Col sm="3">
+                  <div>
+                    <Form className="myform" inline>
                       <FormGroup>
                         <DatePicker
                           selected={startDate}
                           onChange={this.sdateChange}
                           dateFormat="yyyy-MM-dd"
                           placeholderText="Select Start Date"
-                          className="form-control"
+                          className="form-control mb-2"
                           width="100%"
                         />
                       </FormGroup>
-                    </Col>
-                    <Col sm="3">
+
                       <FormGroup>
                         <DatePicker
                           selected={endDate}
                           onChange={this.edateChange}
                           dateFormat="yyyy-MM-dd"
                           placeholderText="Select End Date"
-                          className="form-control"
+                          className="form-control mb-2"
                           width="100%"
                         />
                       </FormGroup>
-                    </Col>
-                    <Col sm="4" style={{ marginTop: '10px' }}>
+
                       <Button
-                        color="primary"
+                        color="info"
                         id="FilterTooltip"
-                        size="sm"
+                        className="mb-2"
                         onClick={this.onClickFilter}
                       >
                         <i className="fas fa-filter"></i>
@@ -387,9 +388,9 @@ class ServiceReport extends Component {
                       </UncontrolledTooltip>
 
                       <Button
-                        color="primary"
-                        size="sm"
+                        color="warning"
                         onClick={this.resetFilter}
+                        className="mb-2"
                         id="reset_tool"
                       >
                         <i className="fas fa-history"></i>
@@ -400,9 +401,10 @@ class ServiceReport extends Component {
                       >
                         Reset
                       </UncontrolledTooltip>
-                    </Col>
-                  </Row>
+                    </Form>
+                  </div>
                 </CardHeader>
+
                 <ReactTable
                   id="service_report"
                   LoadingComponent={MyLoader}

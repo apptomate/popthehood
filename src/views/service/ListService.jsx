@@ -8,7 +8,9 @@ import {
   UncontrolledTooltip,
   FormGroup,
   Input,
-  Col
+  Col,
+  Form,
+  Label
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import {
@@ -210,68 +212,68 @@ class ListService extends Component {
                       <h3 className="mb-0">List Of Available Services</h3>
                     </Col>
                     <Col sm>
-                      <span
-                        style={{
-                          float: 'right',
-                          paddingTop: '0.5rem'
-                        }}
-                      >
-                        <FormGroup style={{ float: 'left', width: '48%' }}>
-                          <label>Select a Service Plan</label>
-                          <Input
-                            type="select"
-                            name="ServicePlan"
-                            id="exampleSelect"
-                            value={ServicePlan}
-                            onChange={this.onChange}
+                      <div className="flex-center" style={{ float: 'right' }}>
+                        <span style={{ float: 'right' }}>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={this.download}
+                            id="down_csv"
                           >
-                            {Plans}
-                          </Input>
-                        </FormGroup>
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={this.download}
-                          id="down_csv"
-                        >
-                          <i className="fas fa-file-download"></i> CSV
-                        </Button>
-                        <CSVLink
-                          data={this.state.dataToDownload}
-                          filename={
-                            downFileName +
-                            planName +
-                            '-' +
-                            dateTimeFormat(new Date()) +
-                            '.csv'
-                          }
-                          className="hidden"
-                          ref={r => (this.csvLink = r)}
-                          target="_blank"
-                        />
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_csv'}
-                        >
-                          Download as CSV
-                        </UncontrolledTooltip>
-                        <Button
-                          color="info"
-                          size="sm"
-                          id="down_pdf"
-                          onClick={this.downloadPdf}
-                        >
-                          <i className="fas fa-file-download"></i> PDF
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_pdf'}
-                        >
-                          Download as PDF
-                        </UncontrolledTooltip>
-                      </span>
+                            <i className="fas fa-file-download"></i> CSV
+                          </Button>
+                          <CSVLink
+                            data={this.state.dataToDownload}
+                            filename={
+                              downFileName +
+                              planName +
+                              '-' +
+                              dateTimeFormat(new Date()) +
+                              '.csv'
+                            }
+                            className="hidden"
+                            ref={r => (this.csvLink = r)}
+                            target="_blank"
+                          />
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_csv'}
+                          >
+                            Download as CSV
+                          </UncontrolledTooltip>
+                          <Button
+                            color="info"
+                            size="sm"
+                            id="down_pdf"
+                            onClick={this.downloadPdf}
+                          >
+                            <i className="fas fa-file-download"></i> PDF
+                          </Button>
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_pdf'}
+                          >
+                            Download as PDF
+                          </UncontrolledTooltip>
+                        </span>
+                      </div>
                     </Col>
                   </Row>
+
+                  <Form className="myform" inline>
+                    <FormGroup className="mt-3">
+                      <Label className="mr-3">Select a Service Plan</Label>
+                      <Input
+                        type="select"
+                        name="ServicePlan"
+                        id="exampleSelect"
+                        value={ServicePlan}
+                        onChange={this.onChange}
+                      >
+                        {Plans}
+                      </Input>
+                    </FormGroup>
+                  </Form>
                 </CardHeader>
                 <ReactTable
                   id="available_services"

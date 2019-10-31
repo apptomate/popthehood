@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+
 import { Link } from 'react-router-dom';
-import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Row,
+  UncontrolledTooltip,
+  Col
+} from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -122,10 +130,10 @@ class ReportForDay extends Component {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <div className="col">
-              <h3 className="mb-0">Services Scheduled For Today</h3>
-            </div>
-            <div className="col text-right">
+            <Col sm>
+              <h3 className="mb-0 nowrap">Services Scheduled For Today</h3>
+            </Col>
+            <Col className="text-right">
               <Button
                 color="primary"
                 size="sm"
@@ -145,7 +153,7 @@ class ReportForDay extends Component {
                 Download as CSV
               </UncontrolledTooltip>
               <Button
-                color="info"
+                color="danger"
                 size="sm"
                 id="down_pdf"
                 onClick={this.downloadPdf}
@@ -155,7 +163,7 @@ class ReportForDay extends Component {
               <UncontrolledTooltip placement="top" target={'down_pdf'}>
                 Download as PDF
               </UncontrolledTooltip>
-            </div>
+            </Col>
           </Row>
         </CardHeader>
         <ReactTable

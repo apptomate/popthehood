@@ -86,6 +86,7 @@ class Users extends React.Component {
       //     userSelect: 'none'
       //   }
       // },
+
       {
         Header: 'Name',
         accessor: 'name',
