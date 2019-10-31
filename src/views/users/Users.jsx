@@ -32,6 +32,7 @@ import { connect } from 'react-redux';
 import Loader from '../common/Loader';
 import { Label } from 'reactstrap';
 import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
+import { staticYearArray } from '../common/helpers/functions.jsx';
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -55,38 +56,6 @@ class Users extends React.Component {
     this.deleteUserVehicleDetail = this.deleteUserVehicleDetail.bind(this);
     this.onChangeVehicleEdit = this.onChangeVehicleEdit.bind(this);
     this.columns = [
-      // {
-      //   expander: true,
-      //   width: 65,
-      //   Expander: ({ isExpanded, row }) => (
-      //     <Fragment>
-      //       {row['_original'].role !== 'Admin' &&
-      //       row['_original'].vehicleCount ? (
-      //           <Fragment>
-      //             {isExpanded ? (
-      //               <i className="fas fa-caret-down" />
-      //             ) : (
-      //               <i
-      //                 className="fas fa-caret-right"
-      //                 data-user_id={row['_original'].userId}
-      //                 onClick={this.userVechileFun}
-      //               />
-      //             )}
-      //           </Fragment>
-      //         ) : (
-      //           ''
-      //         )}
-      //     </Fragment>
-      //   ),
-      //   style: {
-      //     cursor: 'pointer',
-      //     fontSize: 25,
-      //     padding: '0',
-      //     textAlign: 'center',
-      //     userSelect: 'none'
-      //   }
-      // },
-
       {
         Header: 'Name',
         accessor: 'name',
@@ -167,7 +136,7 @@ class Users extends React.Component {
         Cell: ({ row }) => (
           <Fragment>
             <Button
-              user_id={row['_original'].userId}
+              data-user_id={row['_original'].userId}
               className="action_btn"
               id="EditTooltip"
               onClick={e => this.editUser(e, row)}
@@ -179,7 +148,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'edit-user-id-' + row['_index']}
             >
               Edit User
@@ -198,7 +167,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'delete-user-id-' + row['_index']}
             >
               Delete User
@@ -210,7 +179,7 @@ class Users extends React.Component {
 
     this.vehicle_columns = [
       {
-        Header: 'License Plate',
+        Header: 'Licence Plate',
         accessor: 'licensePlate',
         className: 'text-left',
         Cell: ({ row }) => {
@@ -239,7 +208,25 @@ class Users extends React.Component {
       {
         Header: 'Year',
         accessor: 'year',
-        className: 'text-left'
+        className: 'text-left',
+        filterMethod: (filter, row) =>
+          parseInt(filter.value) !== 0
+            ? row[filter.id] === parseInt(filter.value)
+            : true,
+        Filter: ({ filter, onChange }) => (
+          <select
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : 0}
+          >
+            <option value="0">All Years</option>
+            {staticYearArray().map((array_value, key) => (
+              <option value={array_value} key={key}>
+                {array_value}
+              </option>
+            ))}
+          </select>
+        )
       },
       {
         Header: 'Color',
@@ -265,13 +252,14 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'edit-user_vehicle-id-' + row['_index']}
             >
               Edit Vehicle
             </UncontrolledTooltip>
             <Button
               data-user_vehicle_id={row['_original'].vehicleId}
+              data-user_id={row['_original'].userId}
               className="action_btn"
               color="danger"
               size="sm"
@@ -284,7 +272,7 @@ class Users extends React.Component {
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement="top"
               target={'delete-user_vehicle-id-' + row['_index']}
             >
               Delete Vehicle
@@ -299,15 +287,17 @@ class Users extends React.Component {
   expand_row(row) {
     const { expanded, user_data } = this.state;
     var expanded_row = { ...expanded };
-    if (expanded_row[row.index]) {
-      expanded_row[row.index] = !expanded_row[row.index];
-    } else {
-      expanded_row[row.index] = true;
-    }
+    Object.keys(expanded_row).map(key => {
+      expanded_row[key] = row.index === key ? true : false;
+    });
+    expanded_row[row.index] = !expanded_row[row.index];
     var user_id = parseInt(row['original'].userId);
     if (expanded_row[row.index]) {
       var data = { UserId: user_id };
       this.props.getUserVehicleDetails(data);
+    }
+    if (expanded[row.index]) {
+      expanded_row[row.index] = false;
     }
     this.setState(() => ({
       user_data: { ...user_data, userId: user_id },
@@ -317,6 +307,7 @@ class Users extends React.Component {
 
   //Edit User
   editUser = (e, row) => {
+    e.stopPropagation();
     this.setState(prevState => ({
       editModal: !prevState.editModal,
       user_data: {
@@ -421,6 +412,7 @@ class Users extends React.Component {
   }
   //Delete User
   deleteUserDetail(e) {
+    e.stopPropagation();
     let user_id = parseInt(e.currentTarget.dataset.user_id);
     swal
       .fire({
@@ -441,6 +433,7 @@ class Users extends React.Component {
   //Delete User Vehicle
   deleteUserVehicleDetail(e) {
     let vehicle_id = parseInt(e.currentTarget.dataset.user_vehicle_id);
+    let user_id = parseInt(e.currentTarget.dataset.user_id);
     swal
       .fire({
         title: 'Are you sure?',
@@ -453,7 +446,7 @@ class Users extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.props.deleteVehicle(vehicle_id, 'user');
+          this.props.deleteVehicle(vehicle_id, 'user', user_id);
         }
       });
   }
@@ -540,8 +533,8 @@ class Users extends React.Component {
                           ref={r => (this.reactTableVehicle = r)}
                           data={vehicle_data}
                           columns={this.vehicle_columns}
-                          defaultPageSize={3}
-                          pageSizeOptions={[3, 6, 9]}
+                          pageSize={vehicle_data.length}
+                          showPagination={false}
                           noDataText="No Record Found.."
                           filterable
                           HeaderClassName="text-bold"

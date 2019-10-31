@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import 'react-table/react-table.css';
 import { AvForm } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 import * as Datetime from 'react-datetime';
+// import 'react-datetime/css/react-datetime.css';
 // reactstrap components
 import {
+  Collapse,
+  UncontrolledTooltip,
   Card,
   Container,
   Row,
@@ -25,14 +28,15 @@ import {
   vehicleServiceDetails,
   updateVehicleService
 } from '../../redux/actions/Index';
-import { preventDefaultFn, dateTimeFormat } from '../common/helpers/functions';
+import { preventDefaultFn } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
+import swal from 'sweetalert2';
+import moment from 'moment';
 import GoogleMapReact from 'google-map-react';
 import MyGreatPlace from '../map/place';
 import PropTypes from 'prop-types';
-const pointerStyle = { cursor: 'text' };
 
 class vehicleServicepage extends Component {
   static propTypes = {
@@ -50,44 +54,93 @@ class vehicleServicepage extends Component {
       status: '',
       servicePlanID: null,
       scheduleID: null,
-      actualServiceDate: '',
-      serviceOutDate: ''
+      comments: '',
+      serviceOutDate: '',
+      collapse: false
     };
     this.editShedule = this.editShedule.bind(this);
     this.formDataChange = this.formDataChange.bind(this);
-    this.updateVehicleServideDetails = this.updateVehicleServideDetails.bind(
+    this.updateVehicleServiceDetails = this.updateVehicleServiceDetails.bind(
       this
     );
     this.handleInput = this.handleInput.bind(this);
+    this.handleInputOutService = this.handleInputOutService.bind(this);
+    this.completeSchedule = this.completeSchedule.bind(this);
+  }
+  completeSchedule() {
+    this.setState(prevState => ({
+      collapse: !prevState.collapse
+    }));
   }
   handleInput = event => {
-    const formattedDate = dateTimeFormat(event._d);
-    this.setState({ requestedServiceDate: formattedDate });
+    this.setState({ requestedServiceDate: event._d });
+  };
+  handleInputOutService = event => {
+    this.setState({ serviceOutDate: event._d });
   };
   //Update Schedule
-  updateVehicleServideDetails(update_type) {
-    const {
+  updateVehicleServiceDetails(update_type) {
+    let storePermission = false;
+    let setAlert = false;
+    let reqType = '';
+    let {
       scheduleID,
-      serviceID,
       requestedServiceDate,
-      actualServiceDate,
+      comments,
       serviceOutDate,
       status,
       vehicleId
     } = this.state;
-    const reload_data = {
-      VehicleId: parseInt(vehicleId)
-    };
+    if (update_type === 'update_status') {
+      if (serviceOutDate) {
+        setAlert = false;
+        storePermission = true;
+      } else {
+        setAlert = true;
+        reqType = 'Service Out Date Required';
+        storePermission = false;
+      }
+    } else {
+      if (requestedServiceDate) {
+        setAlert = false;
+        storePermission = true;
+      } else {
+        setAlert = true;
+        reqType = 'Requested Service Date Required';
+        storePermission = false;
+      }
+    }
+    if (setAlert) {
+      swal.fire({
+        text: reqType,
+        type: 'warning',
+        confirmButtonColor: '#3085d6'
+      });
+    }
+    if (storePermission) {
+      const reload_data = {
+        VehicleId: parseInt(vehicleId)
+      };
+      var data = {
+        scheduleID: parseInt(scheduleID),
+        requestedServiceDate: moment(
+          requestedServiceDate,
+          'DD/MM/YYYY HH:mm:ss'
+        ).format('YYYY/MM/DD HH:mm:ss'),
+        comments: comments,
+        serviceOutDate: serviceOutDate
+          ? moment(serviceOutDate, 'DD/MM/YYYY HH:mm:ss').format(
+            'YYYY/MM/DD HH:mm:ss'
+          )
+          : '',
+        status: update_type === 'update_status' ? 'Completed' : status
+      };
 
-    var data = {
-      scheduleID: parseInt(scheduleID),
-      serviceID: parseInt(serviceID),
-      requestedServiceDate: requestedServiceDate,
-      actualServiceDate: actualServiceDate,
-      serviceOutDate: serviceOutDate,
-      status: update_type === 'update_status' ? 'Completed' : status
-    };
-    this.props.updateVehicleService(data, reload_data);
+      this.props.updateVehicleService(data, reload_data);
+      this.setState({
+        editScheduleModal: false
+      });
+    }
   }
   //Form Data Change
   formDataChange(e) {
@@ -99,13 +152,18 @@ class vehicleServicepage extends Component {
     var {
       schedule_id = '',
       requested_service_date = '',
-      status = ''
+      service_out_date = '',
+      status = '',
+      comments = ''
     } = e.currentTarget.dataset;
     this.setState(prevState => ({
       editScheduleModal: !prevState.editScheduleModal,
-      scheduleID: schedule_id,
-      requestedServiceDate: dateTimeFormat(requested_service_date),
-      status: status
+      scheduleID: parseInt(schedule_id),
+      requestedServiceDate: requested_service_date,
+      serviceOutDate: service_out_date,
+      comments: comments,
+      status: status,
+      collapse: false
     }));
   }
   componentDidMount() {
@@ -126,13 +184,15 @@ class vehicleServicepage extends Component {
   createPdf = html => Doc.createPdf(html);
   render() {
     const {
-      updateVehicleServiceResponse: {
-        data: update_response = [],
-        loading: update_loading = ''
-      }
+      updateVehicleServiceResponse: { loading: update_loading = '' }
     } = this.props;
 
-    const { editScheduleModal, requestedServiceDate, status } = this.state;
+    const {
+      editScheduleModal,
+      requestedServiceDate,
+      serviceOutDate,
+      collapse
+    } = this.state;
     const vehicle_ser_data =
       this.props.vehicleServiceDetailsResponse.data || [];
     const vehicleInfo = vehicle_ser_data.vehicleInfo || [];
@@ -268,7 +328,7 @@ class vehicleServicepage extends Component {
                           <div className="card-profile shadow card mt-4 p-3">
                             <ul className="licence-plate-userDetails">
                               <li>
-                                <span> Remainder minutes</span>
+                                <span> Remainder Minutes</span>
                                 <Button className="float-right btn btn-default btn-sm">
                                   {!serv_det.remainderMinutes
                                     ? '0'
@@ -341,10 +401,7 @@ class vehicleServicepage extends Component {
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
                             <Col sm="2">
-                              <Button
-                                className="btn btn-default btn-sm "
-                                style={pointerStyle}
-                              >
+                              <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
                             </Col>
@@ -365,10 +422,7 @@ class vehicleServicepage extends Component {
                         <Card className="shadow mt-3" body>
                           <Row>
                             <Col>
-                              <Button
-                                className="btn btn-default btn-sm mb-1"
-                                style={pointerStyle}
-                              >
+                              <Button className="btn btn-default btn-sm mb-1 pointerStyle">
                                 Services
                               </Button>
                             </Col>
@@ -389,7 +443,19 @@ class vehicleServicepage extends Component {
                                   {planInfoList.map((plan_data, index) => (
                                     <tr key={index}>
                                       <td>{plan_data.serviceNameList}</td>
-                                      <td>{plan_data.serviceDescription}</td>
+                                      <td>
+                                        <Fragment>
+                                          <span id={'desc_' + index}>
+                                            {plan_data.serviceDescription}
+                                          </span>
+                                          <UncontrolledTooltip
+                                            placement="left"
+                                            target={'desc_' + index}
+                                          >
+                                            {plan_data.serviceDescription}
+                                          </UncontrolledTooltip>
+                                        </Fragment>
+                                      </td>
                                     </tr>
                                   ))}
                                 </tbody>
@@ -425,62 +491,85 @@ class vehicleServicepage extends Component {
                         ) : (
                           ''
                         )}
-                        {serviceList.map((data, index) => (
-                          <tr key={index}>
-                            <td scope="row">{data.requestedServiceDate}</td>
-                            <td>{data.serviceName}</td>
-                            <td>{data.status}</td>
-                            <td>{data.serviceAmount}</td>
-                            <td className="text-right">
-                              {data.status !== 'Completed' ? (
-                                <UncontrolledDropdown>
-                                  <DropdownToggle
-                                    className="btn-icon-only text-light"
-                                    href="#pablo"
-                                    role="button"
-                                    size="sm"
-                                    color=""
-                                    onClick={preventDefaultFn}
+                        {serviceList.map((data, index) => {
+                          return (
+                            <tr key={index}>
+                              <td scope="row">{data.requestedServiceDate}</td>
+                              <td>
+                                <Fragment>
+                                  <span id={'schedule_' + data.scheduleID}>
+                                    {data.serviceName}
+                                  </span>
+                                  <UncontrolledTooltip
+                                    placement="left"
+                                    target={'schedule_' + data.scheduleID}
                                   >
-                                    <i className="fas fa-ellipsis-v" />
-                                  </DropdownToggle>
-                                  <DropdownMenu
-                                    className="dropdown-menu-arrow"
-                                    right
+                                    {data.serviceName}
+                                  </UncontrolledTooltip>
+                                </Fragment>
+                              </td>
+                              <td>{data.status}</td>
+                              <td>
+                                <Fragment>
+                                  <span id={'comments_' + data.scheduleID}>
+                                    {data.comments}
+                                  </span>
+                                  <UncontrolledTooltip
+                                    placement="left"
+                                    target={'comments_' + data.scheduleID}
                                   >
-                                    <DropdownItem
+                                    {data.comments}
+                                  </UncontrolledTooltip>
+                                </Fragment>
+                              </td>
+                              <td className="text-right">
+                                {data.status !== 'Completed' ? (
+                                  <UncontrolledDropdown>
+                                    <DropdownToggle
+                                      className="btn-icon-only text-light"
                                       href="#pablo"
+                                      role="button"
+                                      size="sm"
+                                      color=""
                                       onClick={preventDefaultFn}
                                     >
-                                      <Button
-                                        color="primary"
-                                        size="sm"
-                                        type="button"
-                                        data-service_id={data.serviceID}
-                                        data-schedule_id={data.scheduleID}
-                                        data-requested_service_date={
-                                          data.requestedServiceDate
-                                        }
-                                        data-actual_service_date={
-                                          data.actualServiceDate
-                                        }
-                                        data-service_out_date={
-                                          data.serviceOutDate
-                                        }
-                                        data-status={data.status}
-                                        onClick={this.editShedule}
+                                      <i className="fas fa-ellipsis-v" />
+                                    </DropdownToggle>
+                                    <DropdownMenu
+                                      className="dropdown-menu-arrow"
+                                      right
+                                    >
+                                      <DropdownItem
+                                        href="#pablo"
+                                        onClick={preventDefaultFn}
                                       >
-                                        <i className="fas fa-edit"></i> Edit
-                                      </Button>
-                                    </DropdownItem>
-                                  </DropdownMenu>
-                                </UncontrolledDropdown>
-                              ) : (
-                                ''
-                              )}
-                            </td>
-                          </tr>
-                        ))}
+                                        <Button
+                                          color="primary"
+                                          size="sm"
+                                          type="button"
+                                          data-schedule_id={data.scheduleID}
+                                          data-requested_service_date={
+                                            data.requestedServiceDate
+                                          }
+                                          data-comments={data.comments}
+                                          data-service_out_date={
+                                            data.serviceOutDate
+                                          }
+                                          data-status={data.status}
+                                          onClick={this.editShedule}
+                                        >
+                                          <i className="fas fa-edit"></i> Edit
+                                        </Button>
+                                      </DropdownItem>
+                                    </DropdownMenu>
+                                  </UncontrolledDropdown>
+                                ) : (
+                                  ''
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </Table>
                   </Card>
@@ -539,38 +628,61 @@ class vehicleServicepage extends Component {
             <div className="modal-body">
               <AvForm
                 onValidSubmit={() =>
-                  this.updateVehicleServideDetails('update_date')
+                  this.updateVehicleServiceDetails('update_date')
                 }
               >
-                <label>Requested Service Date</label>
-                <Datetime
-                  dateFormat="YYYY/MM/DD"
-                  timeFormat="HH:MM:SS"
-                  name="requestedServiceDate"
-                  onChange={this.handleInput}
-                  value={requestedServiceDate}
-                  required
-                />
-                <br />
-                <center>
-                  <Button color="success">Update</Button>
-                </center>
+                <Row>
+                  <Col md={9}>
+                    <label>Requested Service Date</label>
+                    <Datetime
+                      name="requestedServiceDate"
+                      onChange={this.handleInput}
+                      dateFormat="DD/MM/YYYY"
+                      timeFormat="HH:mm:ss"
+                      value={requestedServiceDate}
+                      required
+                    />
+                  </Col>
+                  <Col md={3} className="updateScheduleSubmit">
+                    <Button color="success">Update</Button>
+                  </Col>
+                </Row>
               </AvForm>
-              {status !== 'On Due' ? (
+
+              <Fragment>
                 <center>
                   <hr />
-                  <Button
-                    color="success"
-                    onClick={() =>
-                      this.updateVehicleServideDetails('update_status')
-                    }
-                  >
+                  <Button color="primary" onClick={this.completeSchedule}>
                     Complete Schedule{' '}
                   </Button>
+                  <br />
                 </center>
-              ) : (
-                ''
-              )}
+                <Collapse isOpen={collapse}>
+                  <Row>
+                    <Col md={9}>
+                      <label>Service Out Date</label>
+                      <Datetime
+                        name="serviceOutDate"
+                        dateFormat="DD/MM/YYYY"
+                        timeFormat="HH:mm:ss"
+                        onChange={this.handleInputOutService}
+                        value={serviceOutDate}
+                        required
+                      />
+                    </Col>
+                    <Col md={3} className="updateScheduleSubmit">
+                      <Button
+                        color="success"
+                        onClick={() =>
+                          this.updateVehicleServiceDetails('update_status')
+                        }
+                      >
+                        Submit{' '}
+                      </Button>
+                    </Col>
+                  </Row>
+                </Collapse>
+              </Fragment>
             </div>
             <div className="modal-footer"></div>
           </Modal>

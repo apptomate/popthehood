@@ -6,7 +6,8 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
-const downFileName = 'ServiceReportForWeek-' + dateTimeFormat(new Date());
+const downFileName =
+  'ServiceReportForWeek-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,7 @@ class ReportForWeek extends Component {
     this.redirectService = this.redirectService.bind(this);
     this.columns = [
       {
-        Header: 'License Plate',
+        Header: 'Licence Plate',
         accessor: 'licensePlate',
         className: 'text-left',
         Cell: ({ row }) => {
@@ -94,7 +95,7 @@ class ReportForWeek extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Date', dataKey: 'Date' }
       ],
       columnStyles: {

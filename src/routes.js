@@ -28,8 +28,8 @@ var routes = [
   },
 
   {
-    path: '/list-of-vehicle',
-    name: 'List of vehicle',
+    path: '/list-of-vehicles',
+    name: 'List of vehicles',
     icon: 'ni ni-collection text-primary',
     component: ListVehicle,
     layout: '/admin',

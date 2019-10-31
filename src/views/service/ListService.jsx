@@ -193,7 +193,11 @@ class ListService extends Component {
     const Plans =
       servicePlans.allServicePlans &&
       servicePlans.allServicePlans.map(type => (
-        <option value={type.servicePlanID} key={type.servicePlanID}>
+        <option
+          value={type.servicePlanID}
+          key={type.servicePlanID}
+          data-dropText={type.planType}
+        >
           {type.planType}
         </option>
       ));

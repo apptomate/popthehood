@@ -14,8 +14,8 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateTimeFormat } from '../common/helpers/functions';
-const downFileName = 'Service Report For Day-' + dateTimeFormat(new Date());
-
+const downFileName =
+  'ServiceReportForDay-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ReportForDay extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,7 @@ class ReportForDay extends Component {
     this.downloadPdf = this.downloadPdf.bind(this);
     this.columns = [
       {
-        Header: 'License Plate',
+        Header: 'Licence Plate',
         accessor: 'licensePlate',
         className: 'text-left',
         Cell: ({ row }) => {
@@ -97,7 +97,7 @@ class ReportForDay extends Component {
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'License Plate', dataKey: 'License Plate' },
+        { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
         { header: 'Name', dataKey: 'Name' },
