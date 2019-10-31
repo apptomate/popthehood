@@ -1,23 +1,19 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Card, Alert } from 'reactstrap';
-import UserHeader from 'components/Headers/UserHeader.jsx';
+
 class PageNotFound extends Component {
   render() {
     return (
       <Fragment>
-        <UserHeader />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <Row>
-            <div className="col">
-              <Card className="shadow">
-                <Alert color="primary">
-                  <p className="text-center"> 404 Page Not Found </p>
-                </Alert>
-              </Card>
+        <div>
+          <div id="notfound">
+            <div className="notfound">
+              <div className="notfound-404">
+                <h1>Oops!</h1>
+              </div>
+              <h2>404 - Page not found</h2>
             </div>
-          </Row>
-        </Container>
+          </div>
+        </div>
       </Fragment>
     );
   }

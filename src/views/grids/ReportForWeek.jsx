@@ -123,26 +123,8 @@ class ReportForWeek extends Component {
               <h3 className="mb-0">Due Services</h3>
             </div>
             <div className="col text-right">
-              {/* <Button
-                color="primary"
-                size="sm"
-                onClick={this.download}
-                id="down_csv"
-              >
-                <i className="fas fa-file-download"></i> CSV
-              </Button>
-              <CSVLink
-                data={dataToDownload}
-                filename={downFileName + '.csv'}
-                className="hidden"
-                ref={r => (this.csvLink = r)}
-                target="_blank"
-              />
-              <UncontrolledTooltip placement="top" target={'down_csv'}>
-                Download as CSV
-              </UncontrolledTooltip> */}
               <Button
-                color="info"
+                color="danger"
                 size="sm"
                 id="down_pdf"
                 onClick={this.downloadPdf}
@@ -152,6 +134,14 @@ class ReportForWeek extends Component {
               <UncontrolledTooltip placement="top" target={'down_pdf'}>
                 Download as PDF
               </UncontrolledTooltip>
+              <Button
+                color="info"
+                size="sm"
+                id="down_pdf"
+                onClick={this.redirectService}
+              >
+                <i className="fas fa-arrow-right"></i> View All Dues
+              </Button>
             </div>
           </Row>
         </CardHeader>
@@ -171,16 +161,6 @@ class ReportForWeek extends Component {
           }
           className="-striped -highlight"
         />
-        <div className="col text-right">
-          <Button
-            color="info"
-            size="sm"
-            id="down_pdf"
-            onClick={this.redirectService}
-          >
-            <i className="fas fa-arrow-right"></i> View All Dues
-          </Button>
-        </div>
       </Card>
     );
   }

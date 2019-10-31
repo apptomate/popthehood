@@ -54,7 +54,7 @@ class GeneralServiceList extends Component {
     );
     return (
       <Fragment key={shortid.generate()}>
-        <div className="FirstPie" style={{ width: '100%', height: 380 }}>
+        <div className="FirstPie" style={{ width: '100%', height: 335 }}>
           {filterData.length === 0 ? (
             <center>
               <p style={{ paddingTop: '45%' }}>No Data found !</p>

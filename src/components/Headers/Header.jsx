@@ -29,10 +29,10 @@ class Header extends React.Component {
                   <Card className="card-stats mb-4 mb-xl-0">
                     <CardBody>
                       <Row>
-                        <div className="col">
+                        <div className="l">
                           <CardTitle
                             tag="h5"
-                            className="text-uppercase text-muted mb-0"
+                            className="text-uppercase text-muted mb-0 nowrap"
                           >
                             Reg Users
                           </CardTitle>
@@ -40,11 +40,12 @@ class Header extends React.Component {
                             {dashboard.report.users}
                           </span>
                         </div>
-                        <Col className="col-auto">
+
+                        <div className="r">
                           <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
                             <i className="fas fa-user"></i>
                           </div>
-                        </Col>
+                        </div>
                       </Row>
                     </CardBody>
                   </Card>
@@ -53,10 +54,10 @@ class Header extends React.Component {
                   <Card className="card-stats mb-4 mb-xl-0">
                     <CardBody>
                       <Row>
-                        <div className="col">
+                        <div className="l">
                           <CardTitle
                             tag="h5"
-                            className="text-uppercase text-muted mb-0"
+                            className="text-uppercase text-muted mb-0 nowrap"
                           >
                             Reg vehicles
                           </CardTitle>
@@ -64,11 +65,11 @@ class Header extends React.Component {
                             {dashboard.report.vehicles}
                           </span>
                         </div>
-                        <Col className="col-auto">
+                        <div className="r">
                           <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
                             <i className="fas fa-car"></i>
                           </div>
-                        </Col>
+                        </div>
                       </Row>
                     </CardBody>
                   </Card>
@@ -77,10 +78,10 @@ class Header extends React.Component {
                   <Card className="card-stats mb-4 mb-xl-0">
                     <CardBody>
                       <Row>
-                        <div className="col">
+                        <div className="l">
                           <CardTitle
                             tag="h5"
-                            className="text-uppercase text-muted mb-0"
+                            className="text-uppercase text-muted mb-0 nowrap"
                           >
                             Due Services
                           </CardTitle>
@@ -89,11 +90,11 @@ class Header extends React.Component {
                             {dashboard.report.services}
                           </span>
                         </div>
-                        <Col className="col-auto">
+                        <div className="r">
                           <div className="icon icon-shape bg-green text-white rounded-circle shadow">
                             <i className="fas fa-wrench"></i>
                           </div>
-                        </Col>
+                        </div>
                       </Row>
                     </CardBody>
                   </Card>
@@ -102,20 +103,20 @@ class Header extends React.Component {
                   <Card className="card-stats mb-4 mb-xl-0">
                     <CardBody>
                       <Row>
-                        <div className="col">
+                        <div className="l">
                           <CardTitle
                             tag="h5"
-                            className="text-uppercase text-muted mb-0"
+                            className="text-uppercase text-muted mb-0 nowrap"
                           >
                             Amount Received
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">253</span>
                         </div>
-                        <Col className="col-auto">
+                        <div className="r">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
                             <i className="fas fa-dollar-sign" />
                           </div>
-                        </Col>
+                        </div>
                       </Row>
                     </CardBody>
                   </Card>
