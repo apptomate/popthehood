@@ -10,10 +10,11 @@ import {
   ModalHeader,
   FormGroup
 } from 'reactstrap';
+import { staticYearArray } from '../helpers/functions';
 export function VehicleUpdateModal(props) {
   const {
     user_vehicle_data: {
-      licensePlate = '',
+      licencePlate = '',
       make = '',
       model = '',
       year = '',
@@ -23,6 +24,11 @@ export function VehicleUpdateModal(props) {
     storedImageURL = ''
   } = props.state_data;
   const img_url = storedImageURL ? storedImageURL : imageNotAvailable;
+  const staticArrayValues = staticYearArray().map((array_value, key) => (
+    <option value={array_value} key={key}>
+      {array_value}
+    </option>
+  ));
   return (
     <Modal
       isOpen={props.modal_toggle}
@@ -50,7 +56,7 @@ export function VehicleUpdateModal(props) {
           <FormGroup>
             <center>
               <span>Licence Plate</span>
-              <h1>{licensePlate}</h1>
+              <h1>{licencePlate}</h1>
             </center>
           </FormGroup>
           <AvField
@@ -74,16 +80,16 @@ export function VehicleUpdateModal(props) {
             className="blue_label"
           />
           <AvField
+            type="select"
             name="year"
-            placeholder="Year"
+            label="Year"
             onChange={props.onChange_func}
-            className="blue_label"
             required
             value={year}
-            label="Year"
-            type="text"
-            validate={{ number: true }}
-          />
+          >
+            <option value="">All Years</option>
+            {staticArrayValues}
+          </AvField>
           <AvField
             name="color"
             label="Color"
