@@ -6,8 +6,7 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
-const downFileName =
-  'DueServices-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+const downFileName = 'DueServices-' + dateTimeFormat(new Date(), 'DD/MM/YYYY');
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +19,7 @@ class ReportForWeek extends Component {
     this.columns = [
       {
         Header: 'Licence Plate',
-        accessor: 'licensePlate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -30,7 +29,7 @@ class ReportForWeek extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -155,6 +154,7 @@ class ReportForWeek extends Component {
           data={vehicleScheduledForAWeek}
           columns={this.columns}
           defaultPageSize={5}
+          pageSizeOptions={[5, 10, 15, 20]}
           noDataText="No Record Found.."
           filterable
           HeaderClassName="text-bold"

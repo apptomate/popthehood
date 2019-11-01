@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ class ReportForDay extends Component {
     this.columns = [
       {
         Header: 'Licence Plate',
-        accessor: 'licensePlate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -37,7 +37,7 @@ class ReportForDay extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -60,7 +60,20 @@ class ReportForDay extends Component {
       {
         Header: 'Location',
         accessor: 'locationFullAddress',
-        className: 'text-left'
+        className: 'text-left',
+        Cell: ({ row }) => (
+          <Fragment>
+            <span id={'location_' + row['_index']}>
+              {row['_original'].locationFullAddress}
+            </span>
+            <UncontrolledTooltip
+              placement="left"
+              target={'location_' + row['_index']}
+            >
+              {row['_original'].locationFullAddress}
+            </UncontrolledTooltip>
+          </Fragment>
+        )
       }
     ];
   }
@@ -101,7 +114,7 @@ class ReportForDay extends Component {
         { header: 'Make', dataKey: 'Make' },
         { header: 'Model', dataKey: 'Model' },
         { header: 'Name', dataKey: 'Name' },
-        { header: 'Phone No', dataKey: 'Phone No' },
+        { header: 'Phone No', dataKey: 'Phone Number' },
         { header: 'Location', dataKey: 'Location' }
       ],
       columnStyles: {
@@ -172,6 +185,7 @@ class ReportForDay extends Component {
           data={vehicleScheduledListForADay}
           columns={this.columns}
           defaultPageSize={5}
+          pageSizeOptions={[5, 10, 15, 20]}
           noDataText="No Record Found.."
           filterable
           HeaderClassName="text-bold"

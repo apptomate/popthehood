@@ -66,7 +66,7 @@ class ServiceReport extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -410,7 +410,7 @@ class ServiceReport extends Component {
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
+                  pageSizeOptions={[5, 10, 15, 20]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"

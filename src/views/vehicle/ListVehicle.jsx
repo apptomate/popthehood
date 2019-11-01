@@ -65,7 +65,7 @@ class ListVehicle extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -182,7 +182,7 @@ class ListVehicle extends Component {
         model: row['_original'].model,
         year: parseInt(row['_original'].year),
         color: row['_original'].color,
-        licensePlate: row['_original'].licensePlate,
+        licencePlate: row['_original'].licencePlate,
         specialNotes: row['_original'].specialNotes,
         imageType: '',
         vehicleImage: '',
@@ -344,7 +344,7 @@ class ListVehicle extends Component {
                   data={Vehicles.allVehicles}
                   columns={this.columns}
                   defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
+                  pageSizeOptions={[5, 10, 15, 20]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"
