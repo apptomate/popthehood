@@ -436,7 +436,7 @@ class vehicleServicepage extends Component {
                       <Col>
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
-                            <Col sm="2">
+                            <Col>
                               <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
@@ -578,7 +578,7 @@ class vehicleServicepage extends Component {
                                         onClick={preventDefaultFn}
                                       >
                                         <Button
-                                          color="primary"
+                                          color="default"
                                           size="sm"
                                           type="button"
                                           data-schedule_id={data.scheduleID}
@@ -592,7 +592,7 @@ class vehicleServicepage extends Component {
                                           data-status={data.status}
                                           onClick={this.editShedule}
                                         >
-                                          <i className="fas fa-edit"></i> Edit
+                                          <i className="fas fa-pencil-alt"></i>
                                         </Button>
                                       </DropdownItem>
                                     </DropdownMenu>
@@ -610,6 +610,7 @@ class vehicleServicepage extends Component {
                   {/* Payment History */}
                   <Card className="shadow mt-5" body>
                     <h3 className="mb-3">Payment History</h3>
+
                     <Table
                       className="align-items-center table-flush"
                       responsive

@@ -190,7 +190,18 @@ class Users extends React.Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].isServiceScheduled ? (
+                <i
+                  className="far fa-calendar-check color-success"
+                  style={{ paddingRight: '5px' }}
+                ></i>
+              ) : (
+                <i
+                  className="far fa-calendar-times color-danger"
+                  style={{ paddingRight: '5px' }}
+                ></i>
+              )}{' '}
+              {row['_original'].licensePlate} {row['_original'].licensePlate}
             </Link>
           );
         }

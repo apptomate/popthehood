@@ -40,7 +40,7 @@ class MonthlyReportList extends Component {
         <div className="fstBar" style={{ width: '100%', height: 380 }}>
           {monthlyReportList.length === 0 ? (
             <center>
-              <p style={{ paddingTop: '45%' }}>No Data found !</p>
+              <p style={{ paddingTop: '20%' }}>No Data found !</p>
             </center>
           ) : (
             <ResponsiveContainer>

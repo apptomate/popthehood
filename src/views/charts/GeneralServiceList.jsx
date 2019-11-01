@@ -57,7 +57,7 @@ class GeneralServiceList extends Component {
         <div className="FirstPie" style={{ width: '100%', height: 335 }}>
           {filterData.length === 0 ? (
             <center>
-              <p style={{ paddingTop: '45%' }}>No Data found !</p>
+              <p style={{ paddingTop: '28%' }}>No Data found !</p>
             </center>
           ) : (
             <ResponsiveContainer>
