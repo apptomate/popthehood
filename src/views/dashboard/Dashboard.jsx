@@ -89,14 +89,14 @@ class Dashboard extends Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col xl="6">
+            <Col xl="7">
               <ReportForDay
                 vehicleScheduledListForADay={
                   dashboard.vehicleScheduledListForADay
                 }
               />
             </Col>
-            <Col xl="6">
+            <Col xl="5">
               <ReportForWeek
                 defProps={this.props}
                 vehicleScheduledForAWeek={dashboard.vehicleScheduledForAWeek}
