@@ -494,7 +494,9 @@ class vehicleServicepage extends Component {
                                       </tr>
                                     ))
                                   ) : (
-                                    <div>No Data Found!</div>
+                                    <tr>
+                                      <td>No Data Found!</td>
+                                    </tr>
                                   )}
                                 </tbody>
                               </Table>
@@ -610,7 +612,9 @@ class vehicleServicepage extends Component {
                             );
                           })
                         ) : (
-                          <div>No Data Found!</div>
+                          <tr>
+                            <td> No Data Found!</td>
+                          </tr>
                         )}
                       </tbody>
                     </Table>
@@ -634,7 +638,7 @@ class vehicleServicepage extends Component {
                       <tbody>
                         <tr>
                           {paymentinfo.length === 0 ? (
-                            <div>No Data Found!</div>
+                            <td> No Data Found!</td>
                           ) : (
                             ''
                           )}
