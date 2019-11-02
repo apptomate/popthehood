@@ -133,9 +133,13 @@ class ListService extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_to_download.push(record_to_download);
     }
@@ -150,9 +154,13 @@ class ListService extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_array.push(record_to_download);
     }
@@ -163,13 +171,13 @@ class ListService extends Component {
         { header: 'Serial No', dataKey: 'Serial No' },
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
-        { header: 'Price', dataKey: 'Price' },
+        { header: 'Price ($)', dataKey: 'Price ($)' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
         0: { cellWidth: 70 },
         1: { cellWidth: 90 },
-        2: { cellWidth: 220 },
+        2: { cellWidth: 150 },
         3: { cellWidth: 50 },
         4: { cellWidth: 50 }
       },

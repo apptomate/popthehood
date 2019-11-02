@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
@@ -116,50 +116,52 @@ class ReportForWeek extends Component {
               <h3 className="mb-0" style={{ float: 'left' }}>
                 Due Services
               </h3>
-              {vehicleScheduledForAWeek.length > 0 ? (
-                <div style={{ float: 'right' }}>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    onClick={this.download}
-                    id="down_csv"
-                  >
-                    <i className="fas fa-file-download"></i> CSV
-                  </Button>
-                  <CSVLink
-                    data={dataToDownload}
-                    filename={downFileName + '.csv'}
-                    className="hidden"
-                    ref={r => (this.csvLink = r)}
-                    target="_blank"
-                  />
-                  <UncontrolledTooltip placement="top" target={'down_csv'}>
-                    Download as CSV
-                  </UncontrolledTooltip>
-                  <Button
-                    color="danger"
-                    size="sm"
-                    id="down_pdf"
-                    onClick={this.downloadPdf}
-                  >
-                    <i className="fas fa-file-download"></i> PDF
-                  </Button>
-                  <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                    Download as PDF
-                  </UncontrolledTooltip>
+              <div style={{ float: 'right' }}>
+                {vehicleScheduledForAWeek.length > 0 ? (
+                  <Fragment>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={this.download}
+                      id="down_csv"
+                    >
+                      <i className="fas fa-file-download"></i> CSV
+                    </Button>
+                    <CSVLink
+                      data={dataToDownload}
+                      filename={downFileName + '.csv'}
+                      className="hidden"
+                      ref={r => (this.csvLink = r)}
+                      target="_blank"
+                    />
+                    <UncontrolledTooltip placement="top" target={'down_csv'}>
+                      Download as CSV
+                    </UncontrolledTooltip>
+                    <Button
+                      color="danger"
+                      size="sm"
+                      id="down_pdf"
+                      onClick={this.downloadPdf}
+                    >
+                      <i className="fas fa-file-download"></i> PDF
+                    </Button>
+                    <UncontrolledTooltip placement="top" target={'down_pdf'}>
+                      Download as PDF
+                    </UncontrolledTooltip>
+                  </Fragment>
+                ) : (
+                  ''
+                )}
 
-                  <Button
-                    color="info"
-                    size="sm"
-                    id="down_pdf"
-                    onClick={this.redirectService}
-                  >
-                    See All
-                  </Button>
-                </div>
-              ) : (
-                ''
-              )}
+                <Button
+                  color="info"
+                  size="sm"
+                  id="down_pdf"
+                  onClick={this.redirectService}
+                >
+                  See All
+                </Button>
+              </div>
             </div>
           </Row>
         </CardHeader>

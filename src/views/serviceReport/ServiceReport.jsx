@@ -54,7 +54,8 @@ class ServiceReport extends Component {
         className: 'text-center',
         Cell: row => {
           return <div>{row.index + 1}</div>;
-        }
+        },
+        filterable: false
       },
       {
         Header: 'Licence Plate',
@@ -91,6 +92,7 @@ class ServiceReport extends Component {
       {
         Header: 'Status',
         accessor: 'status',
+        width: 130,
         className: 'text-left',
         filterMethod: (filter, row) => {
           if (filter.value === 'all') return true;
@@ -108,10 +110,10 @@ class ServiceReport extends Component {
             onChange={event => onChange(event.target.value)}
             style={{ width: '100%' }}
             value={
-              this.state.filterFromPrevious
-                ? 'ondue'
-                : filter
-                  ? filter.value
+              filter
+                ? filter.value
+                : this.state.filterFromPrevious
+                  ? 'ondue'
                   : 'all'
             }
           >
@@ -154,6 +156,7 @@ class ServiceReport extends Component {
       {
         Header: 'Service Date',
         accessor: 'requestedServiceDate',
+        filterable: false,
         className: 'text-left',
         Cell: ({ row }) => (
           <Fragment>
@@ -262,63 +265,33 @@ class ServiceReport extends Component {
     doc.save(downFileName + '.pdf');
   }
   onClickFilter() {
-    let { startDate, endDate } = this.state;
-    let { services } = this.props.Services;
-    let data,
-      dateToCheck,
+    let { startDate = '', endDate = '' } = this.state;
+    let { services = [] } = this.props.Services;
+    let dateToCheck,
       filter = true;
-    if (startDate && endDate) {
-      console.log('s & e');
-      startDate = moment(startDate).format('DD/MM/YYYY');
-      endDate = moment(endDate).format('DD/MM/YYYY');
-      data = services.filter(service => {
+    let startDateTime = new Date(startDate).getTime();
+    let endDateTime = new Date(endDate).getTime();
+    if (startDate || endDate) {
+      services = services.filter(service => {
         dateToCheck =
           service.status === 'Completed'
             ? service.serviceOutDate
             : service.requestedServiceDate;
-        dateToCheck = moment(
-          dateToCheck.split(' ')[0],
-          'DD/MM/YYYY HH:mm:ss'
-        ).format('DD/MM/YYYY');
-        return dateToCheck >= startDate && dateToCheck <= endDate;
-      });
-    } else if (startDate) {
-      startDate = moment(startDate).format('DD/MM/YYYY');
-
-      data = services.filter(service => {
-        dateToCheck =
-          service.status === 'Completed'
-            ? service.serviceOutDate
-            : service.requestedServiceDate;
-        dateToCheck = moment(
-          dateToCheck.split(' ')[0],
-          'DD/MM/YYYY HH:mm:ss'
-        ).format('DD/MM/YYYY');
-
-        console.log('s:', moment(dateToCheck).isAfter(startDate, 'year'));
-        return moment(dateToCheck).isAfter(startDate, 'day') ? dateToCheck : '';
-        //return dateToCheck >= startDate;
-      });
-    } else if (endDate) {
-      endDate = moment(endDate).format('DD/MM/YYYY');
-      data = services.filter(service => {
-        dateToCheck =
-          service.status === 'Completed'
-            ? service.serviceOutDate
-            : service.requestedServiceDate;
-        dateToCheck = moment(
-          dateToCheck.split(' ')[0],
-          'DD/MM/YYYY HH:mm:ss'
-        ).format('DD/MM/YYYY');
-        console.log('e:', new Date(dateToCheck) - new Date(endDate));
-        return new Date(dateToCheck) - new Date(endDate) < 0;
+        let dateToCheckTime = moment(dateToCheck, 'DD/MM/YYYY').valueOf();
+        if (startDate && endDate) {
+          return (
+            endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
+          );
+        }
+        return (
+          dateToCheckTime - startDateTime > 0 ||
+          endDateTime - dateToCheckTime > 0
+        );
       });
     } else {
       filter = false;
-      Swal.fire(getAlertToast('warning', 'Please Select One of the Filter!'));
     }
-    console.log('Data:/', data);
-    this.setState({ filter: filter, filterData: data });
+    this.setState({ filter: filter, filterData: services });
   }
   sdateChange(date) {
     this.setState({
@@ -341,7 +314,7 @@ class ServiceReport extends Component {
   render() {
     const { Services = [] } = this.props;
     let {
-      filter,
+      filter = false,
       startDate,
       endDate,
       dataToDownload,
