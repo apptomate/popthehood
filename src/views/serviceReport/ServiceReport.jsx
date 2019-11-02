@@ -485,7 +485,7 @@ class ServiceReport extends Component {
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
+                  pageSizeOptions={[5, 10, 15, 20]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"

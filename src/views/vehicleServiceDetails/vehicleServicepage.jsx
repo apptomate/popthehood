@@ -247,7 +247,7 @@ class vehicleServicepage extends Component {
                           <div className="licence-plate">
                             <h4>
                               LICENCE PLATE NO :{' '}
-                              <span>{vehicleInfo.licensePlate}</span>
+                              <span>{vehicleInfo.licencePlate}</span>
                             </h4>
                           </div>
                           <div className="card-profile shadow card mt-4 p-3">
@@ -474,24 +474,28 @@ class vehicleServicepage extends Component {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {planInfoList.map((plan_data, index) => (
-                                    <tr key={index}>
-                                      <td>{plan_data.serviceNameList}</td>
-                                      <td>
-                                        <Fragment>
-                                          <span id={'desc_' + index}>
-                                            {plan_data.serviceDescription}
-                                          </span>
-                                          <UncontrolledTooltip
-                                            placement="left"
-                                            target={'desc_' + index}
-                                          >
-                                            {plan_data.serviceDescription}
-                                          </UncontrolledTooltip>
-                                        </Fragment>
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {planInfoList.length > 0 ? (
+                                    planInfoList.map((plan_data, index) => (
+                                      <tr key={index}>
+                                        <td>{plan_data.serviceNameList}</td>
+                                        <td>
+                                          <Fragment>
+                                            <span id={'desc_' + index}>
+                                              {plan_data.serviceDescription}
+                                            </span>
+                                            <UncontrolledTooltip
+                                              placement="left"
+                                              target={'desc_' + index}
+                                            >
+                                              {plan_data.serviceDescription}
+                                            </UncontrolledTooltip>
+                                          </Fragment>
+                                        </td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <div>No Data Found!</div>
+                                  )}
                                 </tbody>
                               </Table>
                             </Col>
@@ -525,85 +529,89 @@ class vehicleServicepage extends Component {
                         ) : (
                           ''
                         )}
-                        {serviceList.map((data, index) => {
-                          return (
-                            <tr key={index}>
-                              <td scope="row">{data.requestedServiceDate}</td>
-                              <td>
-                                <Fragment>
-                                  <span id={'schedule_' + data.scheduleID}>
-                                    {data.serviceName}
-                                  </span>
-                                  <UncontrolledTooltip
-                                    placement="left"
-                                    target={'schedule_' + data.scheduleID}
-                                  >
-                                    {data.serviceName}
-                                  </UncontrolledTooltip>
-                                </Fragment>
-                              </td>
-                              <td>{data.status}</td>
-                              <td>
-                                <Fragment>
-                                  <span id={'comments_' + data.scheduleID}>
-                                    {data.comments}
-                                  </span>
-                                  <UncontrolledTooltip
-                                    placement="left"
-                                    target={'comments_' + data.scheduleID}
-                                  >
-                                    {data.comments}
-                                  </UncontrolledTooltip>
-                                </Fragment>
-                              </td>
-                              <td className="text-right">
-                                {data.status !== 'Completed' ? (
-                                  <UncontrolledDropdown>
-                                    <DropdownToggle
-                                      className="btn-icon-only text-light"
-                                      href="#pablo"
-                                      role="button"
-                                      size="sm"
-                                      color=""
-                                      onClick={preventDefaultFn}
+                        {serviceList.length > 0 ? (
+                          serviceList.map((data, index) => {
+                            return (
+                              <tr key={index}>
+                                <td scope="row">{data.requestedServiceDate}</td>
+                                <td>
+                                  <Fragment>
+                                    <span id={'schedule_' + data.scheduleID}>
+                                      {data.serviceName}
+                                    </span>
+                                    <UncontrolledTooltip
+                                      placement="left"
+                                      target={'schedule_' + data.scheduleID}
                                     >
-                                      <i className="fas fa-ellipsis-v" />
-                                    </DropdownToggle>
-                                    <DropdownMenu
-                                      className="dropdown-menu-arrow"
-                                      right
+                                      {data.serviceName}
+                                    </UncontrolledTooltip>
+                                  </Fragment>
+                                </td>
+                                <td>{data.status}</td>
+                                <td>
+                                  <Fragment>
+                                    <span id={'comments_' + data.scheduleID}>
+                                      {data.comments}
+                                    </span>
+                                    <UncontrolledTooltip
+                                      placement="left"
+                                      target={'comments_' + data.scheduleID}
                                     >
-                                      <DropdownItem
+                                      {data.comments}
+                                    </UncontrolledTooltip>
+                                  </Fragment>
+                                </td>
+                                <td className="text-right">
+                                  {data.status !== 'Completed' ? (
+                                    <UncontrolledDropdown>
+                                      <DropdownToggle
+                                        className="btn-icon-only text-light"
                                         href="#pablo"
+                                        role="button"
+                                        size="sm"
+                                        color=""
                                         onClick={preventDefaultFn}
                                       >
-                                        <Button
-                                          color="primary"
-                                          size="sm"
-                                          type="button"
-                                          data-schedule_id={data.scheduleID}
-                                          data-requested_service_date={
-                                            data.requestedServiceDate
-                                          }
-                                          data-comments={data.comments}
-                                          data-service_out_date={
-                                            data.serviceOutDate
-                                          }
-                                          data-status={data.status}
-                                          onClick={this.editShedule}
+                                        <i className="fas fa-ellipsis-v" />
+                                      </DropdownToggle>
+                                      <DropdownMenu
+                                        className="dropdown-menu-arrow"
+                                        right
+                                      >
+                                        <DropdownItem
+                                          href="#pablo"
+                                          onClick={preventDefaultFn}
                                         >
-                                          <i className="fas fa-edit"></i> Edit
-                                        </Button>
-                                      </DropdownItem>
-                                    </DropdownMenu>
-                                  </UncontrolledDropdown>
-                                ) : (
-                                  ''
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                          <Button
+                                            color="primary"
+                                            size="sm"
+                                            type="button"
+                                            data-schedule_id={data.scheduleID}
+                                            data-requested_service_date={
+                                              data.requestedServiceDate
+                                            }
+                                            data-comments={data.comments}
+                                            data-service_out_date={
+                                              data.serviceOutDate
+                                            }
+                                            data-status={data.status}
+                                            onClick={this.editShedule}
+                                          >
+                                            <i className="fas fa-edit"></i> Edit
+                                          </Button>
+                                        </DropdownItem>
+                                      </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                  ) : (
+                                    ''
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <div>No Data Found!</div>
+                        )}
                       </tbody>
                     </Table>
                   </Card>
@@ -625,6 +633,11 @@ class vehicleServicepage extends Component {
                       </thead>
                       <tbody>
                         <tr>
+                          {paymentinfo.length === 0 ? (
+                            <div>No Data Found!</div>
+                          ) : (
+                            ''
+                          )}
                           <th scope="row">{paymentinfo.paymentDate}</th>
                           <td>{paymentinfo.paymentType}</td>
                           <td>{paymentinfo.paymentStatus}</td>
