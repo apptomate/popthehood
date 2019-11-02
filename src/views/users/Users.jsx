@@ -280,30 +280,30 @@ class Users extends React.Component {
     ];
   }
 
-  reset_expand_row(){
-    this.setState({expanded:{}});
+  reset_expand_row() {
+    this.setState({ expanded: {} });
   }
 
   //User's Vehicle List
   expand_row(row) {
     const { expanded, user_data } = this.state;
-    var expanded_row = { ...expanded };    
-      var user_id = parseInt(row['original'].userId);
-      Object.keys(expanded_row).map(key => {
-        expanded_row[key] = row.nestingPath === key ? true : false;
-      });
-      expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
-      if (expanded_row[row.nestingPath]) {
-        var data = { UserId: user_id };
-        this.props.getUserVehicleDetails(data);
-      }
-      if (expanded[row.nestingPath]) {
-        expanded_row[row.nestingPath] = false;
-      }
-      this.setState(() => ({
-        user_data: { ...user_data, userId: user_id },
-        expanded: expanded_row
-      }));    
+    var expanded_row = { ...expanded };
+    var user_id = parseInt(row['original'].userId);
+    Object.keys(expanded_row).map(key => {
+      expanded_row[key] = row.nestingPath === key ? true : false;
+    });
+    expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
+    if (expanded_row[row.nestingPath]) {
+      var data = { UserId: user_id };
+      this.props.getUserVehicleDetails(data);
+    }
+    if (expanded[row.nestingPath]) {
+      expanded_row[row.nestingPath] = false;
+    }
+    this.setState(() => ({
+      user_data: { ...user_data, userId: user_id },
+      expanded: expanded_row
+    }));
   }
 
   //Edit User
@@ -397,7 +397,8 @@ class Users extends React.Component {
     this.props.updateUser(data);
     this.setState(() => ({
       user_data: [],
-      editModal: false
+      editModal: false,
+      expanded: {}
     }));
   }
   //Update User Vehicle
@@ -428,6 +429,7 @@ class Users extends React.Component {
       .then(result => {
         if (result.value) {
           this.props.deleteUser(user_id);
+          this.reset_expand_row();
         }
       });
   }
@@ -494,15 +496,9 @@ class Users extends React.Component {
                 <ReactTable
                   expanded={expanded}
                   onPageChange={this.reset_expand_row}
-                  onPageSizeChange={() => {
-                    this.reset_expand_row({});
-                  }}
-                  onSortedChange={() => {
-                    this.reset_expand_row({});
-                  }}
-                  onFilteredChange={() => {
-                    this.reset_expand_row({});
-                  }}
+                  onPageSizeChange={this.reset_expand_row}
+                  onSortedChange={this.reset_expand_row}
+                  onFilteredChange={this.reset_expand_row}
                   getTdProps={(state, rowInfo) => {
                     if (rowInfo === undefined) {
                       return {};
