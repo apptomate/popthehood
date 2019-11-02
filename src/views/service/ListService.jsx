@@ -46,7 +46,8 @@ class ListService extends Component {
         className: 'text-center',
         Cell: row => {
           return <div>{row.index + 1}</div>;
-        }
+        },
+        filterable: false
       },
       {
         Header: 'Service Name',
@@ -217,49 +218,53 @@ class ListService extends Component {
                     </Col>
                     <Col sm>
                       <div className="flex-center" style={{ float: 'right' }}>
-                        <span style={{ float: 'right' }}>
-                          <Button
-                            color="primary"
-                            size="sm"
-                            onClick={this.download}
-                            id="down_csv"
-                          >
-                            <i className="fas fa-file-download"></i> CSV
-                          </Button>
-                          <CSVLink
-                            data={this.state.dataToDownload}
-                            filename={
-                              downFileName +
-                              planName +
-                              '-' +
-                              dateTimeFormat(new Date()) +
-                              '.csv'
-                            }
-                            className="hidden"
-                            ref={r => (this.csvLink = r)}
-                            target="_blank"
-                          />
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_csv'}
-                          >
-                            Download as CSV
-                          </UncontrolledTooltip>
-                          <Button
-                            color="info"
-                            size="sm"
-                            id="down_pdf"
-                            onClick={this.downloadPdf}
-                          >
-                            <i className="fas fa-file-download"></i> PDF
-                          </Button>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_pdf'}
-                          >
-                            Download as PDF
-                          </UncontrolledTooltip>
-                        </span>
+                        {allServices.length > 0 ? (
+                          <span style={{ float: 'right' }}>
+                            <Button
+                              color="primary"
+                              size="sm"
+                              onClick={this.download}
+                              id="down_csv"
+                            >
+                              <i className="fas fa-file-download"></i> CSV
+                            </Button>
+                            <CSVLink
+                              data={this.state.dataToDownload}
+                              filename={
+                                downFileName +
+                                planName +
+                                '-' +
+                                dateTimeFormat(new Date()) +
+                                '.csv'
+                              }
+                              className="hidden"
+                              ref={r => (this.csvLink = r)}
+                              target="_blank"
+                            />
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_csv'}
+                            >
+                              Download as CSV
+                            </UncontrolledTooltip>
+                            <Button
+                              color="info"
+                              size="sm"
+                              id="down_pdf"
+                              onClick={this.downloadPdf}
+                            >
+                              <i className="fas fa-file-download"></i> PDF
+                            </Button>
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_pdf'}
+                            >
+                              Download as PDF
+                            </UncontrolledTooltip>
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     </Col>
                   </Row>

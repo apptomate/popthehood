@@ -51,7 +51,8 @@ class ListVehicle extends Component {
         className: 'text-center',
         Cell: row => {
           return <div>{row.index + 1}</div>;
-        }
+        },
+        filterable: false
       },
       {
         Header: 'Licence Plate',
@@ -65,7 +66,7 @@ class ListVehicle extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -182,7 +183,7 @@ class ListVehicle extends Component {
         model: row['_original'].model,
         year: parseInt(row['_original'].year),
         color: row['_original'].color,
-        licensePlate: row['_original'].licensePlate,
+        licencePlate: row['_original'].licencePlate,
         specialNotes: row['_original'].specialNotes,
         imageType: '',
         vehicleImage: '',
@@ -200,9 +201,13 @@ class ListVehicle extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length - 1; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_to_download.push(record_to_download);
     }
@@ -217,10 +222,15 @@ class ListVehicle extends Component {
     for (var index = 0; index < currentRecords.length - 1; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
+      // console.error(record_to_download);
       data_array.push(record_to_download);
     }
     var doc = new jsPDF('P', 'px', 'a4');
@@ -236,10 +246,10 @@ class ListVehicle extends Component {
         { header: 'Next Service', dataKey: 'Next Service' }
       ],
       columnStyles: {
-        0: { cellWidth: 70 },
+        0: { cellWidth: 40 },
         1: { cellWidth: 70 },
-        2: { cellWidth: 70 },
-        3: { cellWidth: 70 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 50 },
         4: { cellWidth: 70 },
         5: { cellWidth: 70 },
         6: { cellWidth: 70 }
@@ -297,43 +307,48 @@ class ListVehicle extends Component {
                       <h3 className="mb-0">List Of Vehicles</h3>
                     </Col>
                     <Col>
-                      <span style={{ float: 'right' }}>
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={this.download}
-                          id="down_csv"
-                        >
-                          <i className="fas fa-file-download"></i> CSV
-                        </Button>
-                        <CSVLink
-                          data={this.state.dataToDownload}
-                          filename={downFileName + '.csv'}
-                          className="hidden"
-                          ref={r => (this.csvLink = r)}
-                          target="_blank"
-                        />
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_csv'}
-                        >
-                          Download as CSV
-                        </UncontrolledTooltip>
-                        <Button
-                          color="info"
-                          size="sm"
-                          id="down_pdf"
-                          onClick={this.downloadPdf}
-                        >
-                          <i className="fas fa-file-download"></i> PDF
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_pdf'}
-                        >
-                          Download as PDF
-                        </UncontrolledTooltip>
-                      </span>
+                      {Vehicles.allVehicles &&
+                      Vehicles.allVehicles.length > 0 ? (
+                          <span style={{ float: 'right' }}>
+                            <Button
+                              color="primary"
+                              size="sm"
+                              onClick={this.download}
+                              id="down_csv"
+                            >
+                              <i className="fas fa-file-download"></i> CSV
+                            </Button>
+                            <CSVLink
+                              data={this.state.dataToDownload}
+                              filename={downFileName + '.csv'}
+                              className="hidden"
+                              ref={r => (this.csvLink = r)}
+                              target="_blank"
+                            />
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_csv'}
+                            >
+                            Download as CSV
+                            </UncontrolledTooltip>
+                            <Button
+                              color="info"
+                              size="sm"
+                              id="down_pdf"
+                              onClick={this.downloadPdf}
+                            >
+                              <i className="fas fa-file-download"></i> PDF
+                            </Button>
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_pdf'}
+                            >
+                            Download as PDF
+                            </UncontrolledTooltip>
+                          </span>
+                        ) : (
+                          ''
+                        )}
                     </Col>
                   </Row>
                 </CardHeader>

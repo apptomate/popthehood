@@ -619,3 +619,25 @@ label {
   text-align: center;
   justify-content: center;
 }
+.ReactTable .-pagination {
+  flex-wrap: nowrap !important;
+}
+.ReactTable .-pagination .-center {
+  flex-wrap: nowrap !important;
+}
+.ReactTable .-pagination .-pageJump input {
+  width: 50px !important;
+  text-align: center;
+}
+
+.ReactTable .-pagination input,
+.ReactTable .-pagination select {
+  width: 90px !important;
+}
+.ReactTable .-pagination .-pageSizeOptions {
+  margin: 0px 0px !important;
+}
+
+.licence-pdf-badge {
+  font-size: 14px !important;
+}
