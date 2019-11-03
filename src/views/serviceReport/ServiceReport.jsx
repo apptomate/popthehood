@@ -30,6 +30,7 @@ import {
   dateFormat
 } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
+import swal from 'sweetalert2';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ServiceReport extends Component {
@@ -271,27 +272,31 @@ class ServiceReport extends Component {
       filter = true;
     let startDateTime = new Date(startDate).getTime();
     let endDateTime = new Date(endDate).getTime();
-    if (startDate || endDate) {
-      services = services.filter(service => {
-        dateToCheck =
-          service.status === 'Completed'
-            ? service.serviceOutDate
-            : service.requestedServiceDate;
-        let dateToCheckTime = moment(dateToCheck, 'DD/MM/YYYY').valueOf();
-        if (startDate && endDate) {
-          return (
-            endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
-          );
-        }
-        return (
-          dateToCheckTime - startDateTime > 0 ||
-          endDateTime - dateToCheckTime > 0
-        );
-      });
+    if (!startDate && !endDate) {
+      swal.fire(getAlertToast('warning', 'Please select the date'));
     } else {
-      filter = false;
+      if (startDate || endDate) {
+        services = services.filter(service => {
+          dateToCheck =
+            service.status === 'Completed'
+              ? service.serviceOutDate
+              : service.requestedServiceDate;
+          let dateToCheckTime = moment(dateToCheck, 'DD/MM/YYYY').valueOf();
+          if (startDate && endDate) {
+            return (
+              endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
+            );
+          }          
+          return (
+            dateToCheckTime - startDateTime > 0 ||
+            endDateTime - dateToCheckTime >= 0
+          );
+        });
+      } else {
+        filter = false;
+      }
+      this.setState({ filter: filter, filterData: services });
     }
-    this.setState({ filter: filter, filterData: services });
   }
   sdateChange(date) {
     this.setState({
@@ -395,59 +400,67 @@ class ServiceReport extends Component {
                     </Col>
                   </Row>
                   <div>
-                    <Form className="myform" inline>
-                      <FormGroup>
-                        <DatePicker
-                          selected={startDate}
-                          onChange={this.sdateChange}
-                          dateFormat="dd-MM-yyyy"
-                          placeholderText="Select Start Date"
-                          className="form-control mb-2"
-                          width="100%"
-                        />
-                      </FormGroup>
+                    <Row>
+                      <Col md={3} />
+                      <Col md={6}>
+                        <center>
+                          <Form className="myform" inline>
+                            <FormGroup>
+                              <DatePicker
+                                selected={startDate}
+                                onChange={this.sdateChange}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="Select Start Date"
+                                className="form-control mb-2"
+                                width="100%"
+                              />
+                            </FormGroup>
 
-                      <FormGroup>
-                        <DatePicker
-                          selected={endDate}
-                          onChange={this.edateChange}
-                          dateFormat="dd-MM-yyyy"
-                          placeholderText="Select End Date"
-                          className="form-control mb-2"
-                          width="100%"
-                        />
-                      </FormGroup>
+                            <FormGroup>
+                              <DatePicker
+                                selected={endDate}
+                                onChange={this.edateChange}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="Select End Date"
+                                className="form-control mb-2"
+                                width="100%"
+                              />
+                            </FormGroup>
 
-                      <Button
-                        color="info"
-                        id="FilterTooltip"
-                        className="mb-2"
-                        onClick={this.onClickFilter}
-                      >
-                        <i className="fas fa-filter"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'FilterTooltip'}
-                      >
-                        Filter
-                      </UncontrolledTooltip>
+                            <Button
+                              color="info"
+                              id="FilterTooltip"
+                              className="mb-2"
+                              onClick={this.onClickFilter}
+                            >
+                              <i className="fas fa-filter"></i>
+                            </Button>
+                            <UncontrolledTooltip
+                              placement={'top'}
+                              target={'FilterTooltip'}
+                            >
+                              Filter
+                            </UncontrolledTooltip>
 
-                      <Button
-                        color="warning"
-                        onClick={this.resetFilter}
-                        className="mb-2"
-                        id="reset_tool"
-                      >
-                        <i className="fas fa-history"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'reset_tool'}
-                      >
-                        Reset
-                      </UncontrolledTooltip>
-                    </Form>
+                            <Button
+                              color="warning"
+                              onClick={this.resetFilter}
+                              className="mb-2"
+                              id="reset_tool"
+                            >
+                              <i className="fas fa-history"></i>
+                            </Button>
+                            <UncontrolledTooltip
+                              placement={'top'}
+                              target={'reset_tool'}
+                            >
+                              Reset
+                            </UncontrolledTooltip>
+                          </Form>
+                        </center>
+                      </Col>
+                      <Col md={3} />
+                    </Row>
                   </div>
                 </CardHeader>
 

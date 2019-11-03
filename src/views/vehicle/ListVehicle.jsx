@@ -246,13 +246,13 @@ class ListVehicle extends Component {
         { header: 'Next Service', dataKey: 'Next Service' }
       ],
       columnStyles: {
-        0: { cellWidth: 40 },
-        1: { cellWidth: 70 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 },
+        0: { cellWidth: 30 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 60 },
+        3: { cellWidth: 60 },
         4: { cellWidth: 70 },
-        5: { cellWidth: 70 },
-        6: { cellWidth: 70 }
+        5: { cellWidth: 100 },
+        6: { cellWidth: 50 }
       },
       margin: {
         top: 8,

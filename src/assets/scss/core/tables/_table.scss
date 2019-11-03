@@ -619,6 +619,10 @@ label {
   text-align: center;
   justify-content: center;
 }
+
+.ReactTable .rt-table {
+  overflow-x: hidden !important;
+}
 .ReactTable .-pagination {
   flex-wrap: nowrap !important;
 }
