@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 // reactstrap components
 import {
+  Col,
+  Progress,
   Alert,
   Card,
   CardHeader,
@@ -479,6 +481,7 @@ class Users extends React.Component {
         loading: loadingVehicle = ''
       }
     } = this.props;
+    console.log('Inside/', this.props.getUserVehicleDetailsResponse);
 
     const MyLoader = () => <Loader loading={loading} />;
     const MyLoaderVehicle = () => <Loader loading={loadingVehicle} />;
@@ -529,34 +532,49 @@ class Users extends React.Component {
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }} key={shortid.generate()}>
-                        {parseInt(vehicle_data.length) ? (
-                          <Fragment>
-                            <center>
-                              {' '}
-                              <h3>User&apos;s Registered Vehicles</h3>{' '}
-                            </center>
-                            <ReactTable
-                              id="users_vehicle_table"
-                              LoadingComponent={MyLoaderVehicle}
-                              ref={r => (this.reactTableVehicle = r)}
-                              data={vehicle_data}
-                              columns={this.vehicle_columns}
-                              pageSize={vehicle_data.length}
-                              showPagination={false}
-                              noDataText="No Record Found.."
-                              filterable
-                              HeaderClassName="text-bold"
-                              defaultFilterMethod={(filter, row) =>
-                                String(row[filter.id])
-                                  .toLowerCase()
-                                  .includes(filter.value.toLowerCase())
-                              }
-                            />
-                          </Fragment>
+                        {loadingVehicle ? (
+                          <Row>
+                            <Col md={5} />
+                            <Col md={2}>
+                              <center>
+                                <Progress animated value={100}>
+                                  Loading
+                                </Progress>
+                              </center>
+                            </Col>
+                          </Row>
                         ) : (
-                          <Alert color="warning">
-                            <center>No vehicle found</center>
-                          </Alert>
+                          <Fragment>
+                            {parseInt(vehicle_data.length) ? (
+                              <Fragment>
+                                <center>
+                                  {' '}
+                                  <h3>User&apos;s Registered Vehicles</h3>{' '}
+                                </center>
+                                <ReactTable
+                                  id="users_vehicle_table"
+                                  LoadingComponent={MyLoaderVehicle}
+                                  ref={r => (this.reactTableVehicle = r)}
+                                  data={vehicle_data}
+                                  columns={this.vehicle_columns}
+                                  pageSize={vehicle_data.length}
+                                  showPagination={false}
+                                  noDataText="No Record Found.."
+                                  filterable
+                                  HeaderClassName="text-bold"
+                                  defaultFilterMethod={(filter, row) =>
+                                    String(row[filter.id])
+                                      .toLowerCase()
+                                      .includes(filter.value.toLowerCase())
+                                  }
+                                />
+                              </Fragment>
+                            ) : (
+                              <Alert color="warning">
+                                <center>No vehicle found</center>
+                              </Alert>
+                            )}
+                          </Fragment>
                         )}
                       </div>
                     );

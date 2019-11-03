@@ -19,7 +19,6 @@ import {
   DropdownToggle,
   Table,
   Modal,
-  Spinner,
   Badge
 } from 'reactstrap';
 import UserHeader from 'components/Headers/UserHeader.jsx';
@@ -201,6 +200,14 @@ class vehicleServicepage extends Component {
     const userInfo = vehicle_ser_data.userInfo || [];
     const lat = parseFloat(userInfo.locationLatitude) || '';
     const lng = parseFloat(userInfo.locationLongitude) || '';
+
+    let plan_type_data = [];
+    if (planInfoList.length) {
+      plan_type_data = planInfoList
+        .filter((plan, index) => parseInt(index) === 0)
+        .map(plan_det => plan_det.planType);
+    }
+    console.log(plan_type_data);
     const serv_det = serviceList
       .filter((serv_lst, index) => !index)
       .map(list => list);
@@ -254,26 +261,24 @@ class vehicleServicepage extends Component {
                             <Row>
                               <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Table hover>
-                                  <thead>
+                                  <tbody>
                                     <tr>
-                                      <th>
-                                        <Badge className="badge-default licence-list-badge">
+                                      <th scope="row">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Model
                                         </Badge>
                                       </th>
-                                      <th>
+                                      <td>
                                         {' '}
                                         <span className="licenceplate-pdf-right-value">
                                           {vehicleInfo.model}
                                         </span>
-                                      </th>
+                                      </td>
                                     </tr>
-                                  </thead>
-                                  <tbody>
                                     <tr>
                                       <th scope="row">
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Make
                                         </Badge>
                                       </th>
@@ -287,7 +292,7 @@ class vehicleServicepage extends Component {
                                     <tr>
                                       <th scope="row">
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Year
                                         </Badge>
                                       </th>
@@ -300,7 +305,7 @@ class vehicleServicepage extends Component {
                                     </tr>
                                     <tr>
                                       <th scope="row">
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Color
                                         </Badge>
                                       </th>
@@ -327,22 +332,33 @@ class vehicleServicepage extends Component {
                               <ul className="licence-plate-userDetails">
                                 <li>
                                   <span> User Name</span>{' '}
-                                  <h5>{userInfo.name}</h5>
+                                  <h5>{userInfo.name ? userInfo.name : '-'}</h5>
                                 </li>
 
                                 <li>
                                   <span> Phone Number</span>{' '}
-                                  <h5>{userInfo.phoneNumber}</h5>
+                                  <h5>
+                                    {userInfo.phoneNumber
+                                      ? userInfo.phoneNumber
+                                      : '-'}
+                                  </h5>
                                 </li>
                                 <li>
-                                  <span> E-mail</span> <h5>{userInfo.email}</h5>
+                                  <span> E-mail</span>{' '}
+                                  <h5>
+                                    {userInfo.email ? userInfo.email : '-'}
+                                  </h5>
                                 </li>
                                 <li>
                                   <span> Address</span>{' '}
-                                  <h5>{userInfo.locationFullAddress}</h5>
+                                  <h5>
+                                    {userInfo.locationFullAddress
+                                      ? userInfo.locationFullAddress
+                                      : '-'}
+                                  </h5>
                                 </li>
                                 <li>
-                                  <span> IsEmailVerified</span>{' '}
+                                  <span> Is Email Verified</span>{' '}
                                   <Badge
                                     color="success"
                                     style={{ float: 'right' }}
@@ -353,7 +369,7 @@ class vehicleServicepage extends Component {
                                   </Badge>
                                 </li>
                                 <li>
-                                  <span> IsPhoneNumVerified</span>{' '}
+                                  <span> Is Phone Number Verified</span>{' '}
                                   <Badge
                                     color="warning"
                                     style={{ float: 'right' }}
@@ -436,14 +452,14 @@ class vehicleServicepage extends Component {
                       <Col>
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
-                            <Col sm="2">
+                            <Col>
                               <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
                               <span>
-                                {planInfoList
-                                  .filter((plan_value, index) => !index)
-                                  .map(plan => plan.planType)}
+                                {plan_type_data[0]
+                                  ? plan_type_data[0]
+                                  : '-'}
                               </span>
                             </Col>
                           </Row>
@@ -474,14 +490,20 @@ class vehicleServicepage extends Component {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {planInfoList.length > 0 ? (
+                                  {planInfoList.length ? (
                                     planInfoList.map((plan_data, index) => (
                                       <tr key={index}>
-                                        <td>{plan_data.serviceNameList}</td>
+                                        <td>
+                                          {plan_data.serviceNameList
+                                            ? plan_data.serviceNameList
+                                            : '-'}
+                                        </td>
                                         <td>
                                           <Fragment>
                                             <span id={'desc_' + index}>
-                                              {plan_data.serviceDescription}
+                                              {plan_data.serviceDescription
+                                                ? plan_data.serviceDescription
+                                                : '-'}
                                             </span>
                                             <UncontrolledTooltip
                                               placement="left"
@@ -495,7 +517,9 @@ class vehicleServicepage extends Component {
                                     ))
                                   ) : (
                                     <tr>
-                                      <td>No Data Found!</td>
+                                      <td colSpan={2}>
+                                        <center>No Data Found!</center>
+                                      </td>
                                     </tr>
                                   )}
                                 </tbody>
@@ -510,7 +534,7 @@ class vehicleServicepage extends Component {
                   <Card className="shadow mt-5" body>
                     <h3 className="mb-3">Subscription Schedules</h3>
                     <Table
-                      className="align-items-center table-flush"
+                      className="align-items-center table-flush "
                       responsive
                     >
                       <thead className="thead-light">
@@ -524,13 +548,6 @@ class vehicleServicepage extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {update_loading ? (
-                          <center>
-                            <Spinner size="sm" color="primary" />
-                          </center>
-                        ) : (
-                          ''
-                        )}
                         {serviceList.length > 0 ? (
                           serviceList.map((data, index) => {
                             return (
@@ -613,7 +630,9 @@ class vehicleServicepage extends Component {
                           })
                         ) : (
                           <tr>
-                            <td> No Data Found!</td>
+                            <td colSpan={5}>
+                              <center> No Data Found!</center>
+                            </td>
                           </tr>
                         )}
                       </tbody>
@@ -638,17 +657,20 @@ class vehicleServicepage extends Component {
                       <tbody>
                         <tr>
                           {paymentinfo.length === 0 ? (
-                            <td> No Data Found!</td>
+                            <td colSpan={7}>
+                              <center> No Data Found!</center>
+                            </td>
                           ) : (
-                            ''
+                            <Fragment>
+                              <th scope="row">{paymentinfo.paymentDate}</th>
+                              <td>{paymentinfo.paymentType}</td>
+                              <td>{paymentinfo.paymentStatus}</td>
+                              <td>{paymentinfo.totalAmount}</td>
+                              <td>{paymentinfo.promocode_ReducedAmount}</td>
+                              <td>{paymentinfo.paid}</td>
+                              <td>{paymentinfo.due}</td>
+                            </Fragment>
                           )}
-                          <th scope="row">{paymentinfo.paymentDate}</th>
-                          <td>{paymentinfo.paymentType}</td>
-                          <td>{paymentinfo.paymentStatus}</td>
-                          <td>{paymentinfo.totalAmount}</td>
-                          <td>{paymentinfo.promocode_ReducedAmount}</td>
-                          <td>{paymentinfo.paid}</td>
-                          <td>{paymentinfo.due}</td>
                         </tr>
                       </tbody>
                     </Table>
