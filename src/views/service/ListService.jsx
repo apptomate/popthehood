@@ -46,7 +46,8 @@ class ListService extends Component {
         className: 'text-center',
         Cell: row => {
           return <div>{row.index + 1}</div>;
-        }
+        },
+        filterable: false
       },
       {
         Header: 'Service Name',
@@ -132,9 +133,13 @@ class ListService extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_to_download.push(record_to_download);
     }
@@ -149,9 +154,13 @@ class ListService extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_array.push(record_to_download);
     }
@@ -162,13 +171,13 @@ class ListService extends Component {
         { header: 'Serial No', dataKey: 'Serial No' },
         { header: 'Service Name', dataKey: 'Service Name' },
         { header: 'Description', dataKey: 'Description' },
-        { header: 'Price', dataKey: 'Price' },
+        { header: 'Price ($)', dataKey: 'Price ($)' },
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
         0: { cellWidth: 70 },
         1: { cellWidth: 90 },
-        2: { cellWidth: 220 },
+        2: { cellWidth: 150 },
         3: { cellWidth: 50 },
         4: { cellWidth: 50 }
       },
@@ -217,49 +226,53 @@ class ListService extends Component {
                     </Col>
                     <Col sm>
                       <div className="flex-center" style={{ float: 'right' }}>
-                        <span style={{ float: 'right' }}>
-                          <Button
-                            color="primary"
-                            size="sm"
-                            onClick={this.download}
-                            id="down_csv"
-                          >
-                            <i className="fas fa-file-download"></i> CSV
-                          </Button>
-                          <CSVLink
-                            data={this.state.dataToDownload}
-                            filename={
-                              downFileName +
-                              planName +
-                              '-' +
-                              dateTimeFormat(new Date()) +
-                              '.csv'
-                            }
-                            className="hidden"
-                            ref={r => (this.csvLink = r)}
-                            target="_blank"
-                          />
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_csv'}
-                          >
-                            Download as CSV
-                          </UncontrolledTooltip>
-                          <Button
-                            color="info"
-                            size="sm"
-                            id="down_pdf"
-                            onClick={this.downloadPdf}
-                          >
-                            <i className="fas fa-file-download"></i> PDF
-                          </Button>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={'down_pdf'}
-                          >
-                            Download as PDF
-                          </UncontrolledTooltip>
-                        </span>
+                        {allServices.length > 0 ? (
+                          <span style={{ float: 'right' }}>
+                            <Button
+                              color="primary"
+                              size="sm"
+                              onClick={this.download}
+                              id="down_csv"
+                            >
+                              <i className="fas fa-file-download"></i> CSV
+                            </Button>
+                            <CSVLink
+                              data={this.state.dataToDownload}
+                              filename={
+                                downFileName +
+                                planName +
+                                '-' +
+                                dateTimeFormat(new Date()) +
+                                '.csv'
+                              }
+                              className="hidden"
+                              ref={r => (this.csvLink = r)}
+                              target="_blank"
+                            />
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_csv'}
+                            >
+                              Download as CSV
+                            </UncontrolledTooltip>
+                            <Button
+                              color="info"
+                              size="sm"
+                              id="down_pdf"
+                              onClick={this.downloadPdf}
+                            >
+                              <i className="fas fa-file-download"></i> PDF
+                            </Button>
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={'down_pdf'}
+                            >
+                              Download as PDF
+                            </UncontrolledTooltip>
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     </Col>
                   </Row>

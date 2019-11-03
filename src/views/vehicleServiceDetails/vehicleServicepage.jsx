@@ -257,7 +257,7 @@ class vehicleServicepage extends Component {
                                   <thead>
                                     <tr>
                                       <th>
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Model
                                         </Badge>
                                       </th>
@@ -273,7 +273,7 @@ class vehicleServicepage extends Component {
                                     <tr>
                                       <th scope="row">
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Make
                                         </Badge>
                                       </th>
@@ -287,7 +287,7 @@ class vehicleServicepage extends Component {
                                     <tr>
                                       <th scope="row">
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Year
                                         </Badge>
                                       </th>
@@ -300,7 +300,7 @@ class vehicleServicepage extends Component {
                                     </tr>
                                     <tr>
                                       <th scope="row">
-                                        <Badge className="badge-default licence-list-badge">
+                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Color
                                         </Badge>
                                       </th>
@@ -436,7 +436,7 @@ class vehicleServicepage extends Component {
                       <Col>
                         <Card className="shadow mt-3" body>
                           <Row className="Vehicle-Service-plantype">
-                            <Col sm="2">
+                            <Col>
                               <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
