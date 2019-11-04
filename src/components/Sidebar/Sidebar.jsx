@@ -47,25 +47,24 @@ class Sidebar extends React.Component {
     });
   };
   // creates the links that appear in the left menu / Sidebar
-  createLinks = routes => {
-    return routes.map((prop, key) => {
-      if (prop.showNavbar === true) {
-        return (
+  createLinks = routes =>
+    routes.map(
+      (route, key) =>
+        route.showNavbar && (
           <NavItem key={key}>
             <NavLink
-              to={prop.layout + prop.path}
+              to={route.layout + route.path}
               tag={NavLinkRRD}
               onClick={this.closeCollapse}
               activeClassName="active"
             >
-              <i className={prop.icon} />
-              {prop.name}
+              <i className={route.icon} />
+              {route.name}
             </NavLink>
           </NavItem>
-        );
-      }
-    });
-  };
+        )
+    );
+
   render() {
     const { routes, logo } = this.props;
     let navbarBrandProps;

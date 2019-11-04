@@ -63,7 +63,7 @@ class AdminNavbar extends React.Component {
 
 const getState = state => {
   return {
-    loginData: state.authLogin
+    loginData: state.authLogin || []
   };
 };
 export default connect(getState)(AdminNavbar);

@@ -189,10 +189,14 @@ class Users extends React.Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-            <i
-                  className={(row['_original'].isServiceScheduled) ? 'far fa-calendar-check color-success' : 'far fa-calendar-times color-danger'}
-                  style={{ paddingRight: '5px' }}
-                ></i>{' '}
+              <i
+                className={
+                  row['_original'].isServiceScheduled
+                    ? 'far fa-calendar-check color-success'
+                    : 'far fa-calendar-times color-danger'
+                }
+                style={{ paddingRight: '5px' }}
+              ></i>{' '}
               {row['_original'].licencePlate}
             </Link>
           );
@@ -497,7 +501,7 @@ class Users extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Users List</h3>
+                  <h3 className="mb-0">Users</h3>
                 </CardHeader>
                 <ReactTable
                   expanded={expanded}

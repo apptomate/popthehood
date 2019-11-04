@@ -6,7 +6,6 @@ import * as Datetime from 'react-datetime';
 // import 'react-datetime/css/react-datetime.css';
 // reactstrap components
 import {
-  Progress,
   Collapse,
   UncontrolledTooltip,
   Card,
@@ -14,10 +13,6 @@ import {
   Row,
   Col,
   Button,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
   Table,
   Modal,
   Badge
@@ -182,7 +177,7 @@ class vehicleServicepage extends Component {
   render() {
     const {
       updateVehicleServiceResponse: { loading: update_loading = '' }
-    } = this.props; 
+    } = this.props;
     const {
       editScheduleModal,
       requestedServiceDate,
@@ -357,22 +352,22 @@ class vehicleServicepage extends Component {
                                 <li>
                                   <span> Is Email Verified</span>{' '}
                                   <i
-                                      className={
-                                        userInfo.isEmailVerified
-                                          ? 'far fa-check-circle color-success floatRight'
-                                          : 'far fa-times-circle color-danger floatRight'
-                                      }
-                                    />                                     
-                                                        </li>
-                                                        <li>
-                                                          <span> Is Phone Number Verified</span>{' '}
-                                                          <i
-                                      className={
-                                        userInfo.isPhoneNumVerified
-                                          ? 'far fa-check-circle color-success floatRight'
-                                          : 'far fa-times-circle color-danger floatRight'
-                                      }
-                                    />                                  
+                                    className={
+                                      userInfo.isEmailVerified
+                                        ? 'far fa-check-circle color-success floatRight'
+                                        : 'far fa-times-circle color-danger floatRight'
+                                    }
+                                  />
+                                </li>
+                                <li>
+                                  <span> Is Phone Number Verified</span>{' '}
+                                  <i
+                                    className={
+                                      userInfo.isPhoneNumVerified
+                                        ? 'far fa-check-circle color-success floatRight'
+                                        : 'far fa-times-circle color-danger floatRight'
+                                    }
+                                  />
                                 </li>
                               </ul>
                             </div>
@@ -452,9 +447,7 @@ class vehicleServicepage extends Component {
                                 Plan Type
                               </Button>
                               <span>
-                                {plan_type_data[0]
-                                  ? plan_type_data[0]
-                                  : '-'}
+                                {plan_type_data[0] ? plan_type_data[0] : '-'}
                               </span>
                             </Col>
                           </Row>
@@ -543,82 +536,87 @@ class vehicleServicepage extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                      {update_loading? (
-                        <tr>
-                        <td colSpan={5}>
-                          <center> 
-                        Loading...
-                      </center>
-                        </td>
-                      </tr>                          
-                        ) : (
-                          <Fragment>     
-                        {serviceList.length ? (
-                          serviceList.map((data, index) => {
-                            return (
-                              <tr key={index}>
-                                <td scope="row">{data.requestedServiceDate}</td>
-                                <td>
-                                  <Fragment>
-                                    <span id={'schedule_' + data.scheduleID}>
-                                      {data.serviceName}
-                                    </span>
-                                    <UncontrolledTooltip
-                                      placement="left"
-                                      target={'schedule_' + data.scheduleID}
-                                    >
-                                      {data.serviceName}
-                                    </UncontrolledTooltip>
-                                  </Fragment>
-                                </td>
-                                <td>{data.status}</td>
-                                <td>
-                                  <Fragment>
-                                    <span id={'comments_' + data.scheduleID}>
-                                      {data.comments}
-                                    </span>
-                                    <UncontrolledTooltip
-                                      placement="left"
-                                      target={'comments_' + data.scheduleID}
-                                    >
-                                      {data.comments}
-                                    </UncontrolledTooltip>
-                                  </Fragment>
-                                </td>
-                                <td className="text-right">
-                                  {data.status !== 'Completed' ? (
-                                    <Button
-                                      color="primary"
-                                      size="sm"
-                                      type="button"
-                                      data-schedule_id={data.scheduleID}
-                                      data-requested_service_date={
-                                        data.requestedServiceDate
-                                      }
-                                      data-comments={data.comments}
-                                      data-service_out_date={
-                                        data.serviceOutDate
-                                      }
-                                      data-status={data.status}
-                                      onClick={this.editShedule}
-                                    >
-                                      <i className="fas fa-edit"></i> Edit
-                                    </Button>
-                                  ) : (
-                                    ''
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })
-                        ) : (
+                        {update_loading ? (
                           <tr>
                             <td colSpan={5}>
-                              <center> No Data Found!</center>
+                              <center>Loading...</center>
                             </td>
                           </tr>
+                        ) : (
+                          <Fragment>
+                            {serviceList.length ? (
+                              serviceList.map((data, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td scope="row">
+                                      {data.requestedServiceDate}
+                                    </td>
+                                    <td>
+                                      <Fragment>
+                                        <span
+                                          id={'schedule_' + data.scheduleID}
+                                        >
+                                          {data.serviceName}
+                                        </span>
+                                        <UncontrolledTooltip
+                                          placement="left"
+                                          target={'schedule_' + data.scheduleID}
+                                        >
+                                          {data.serviceName}
+                                        </UncontrolledTooltip>
+                                      </Fragment>
+                                    </td>
+                                    <td>{data.status}</td>
+                                    <td>
+                                      <Fragment>
+                                        <span
+                                          id={'comments_' + data.scheduleID}
+                                        >
+                                          {data.comments}
+                                        </span>
+                                        <UncontrolledTooltip
+                                          placement="left"
+                                          target={'comments_' + data.scheduleID}
+                                        >
+                                          {data.comments}
+                                        </UncontrolledTooltip>
+                                      </Fragment>
+                                    </td>
+                                    <td className="text-right">
+                                      {data.status !== 'Completed' ? (
+                                        <Button
+                                          color="primary"
+                                          size="sm"
+                                          type="button"
+                                          data-schedule_id={data.scheduleID}
+                                          data-requested_service_date={
+                                            data.requestedServiceDate
+                                          }
+                                          data-comments={data.comments}
+                                          data-service_out_date={
+                                            data.serviceOutDate
+                                          }
+                                          data-status={data.status}
+                                          onClick={this.editShedule}
+                                        >
+                                          <i className="fas fa-edit"></i> Edit
+                                        </Button>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })
+                            ) : (
+                              <tr>
+                                <td colSpan={5}>
+                                  <center> No Data Found!</center>
+                                </td>
+                              </tr>
+                            )}
+                          </Fragment>
                         )}
-                        </Fragment> )}
                       </tbody>
                     </Table>
                   </Card>

@@ -55,6 +55,7 @@ import {
   UPDATEVEHICLESERVICE_LOADING,
   UPDATEVEHICLESERVICE_SUCCESS,
   UPDATEVEHICLESERVICE_ERROR,
+  GETSERVICEREPORTWITHFILTER_SUCCESS,
   DASHBOARD_LOADING,
   DASHBOARD_SUCCESS,
   DASHBOARD_ERROR
@@ -346,7 +347,7 @@ export function getServicePriceByID(id) {
   };
 }
 
-export function getServiceReport() {
+export function getServiceReport(filter) {
   return dispatch => {
     dispatch({
       type: GETSERVICEREPORT_LOADING
@@ -355,10 +356,17 @@ export function getServiceReport() {
       headers: authHeader()
     })
       .then(response => {
-        dispatch({
-          type: GETSERVICEREPORT_SUCCESS,
-          payload: response.data
-        });
+        if (filter) {
+          dispatch({
+            type: GETSERVICEREPORTWITHFILTER_SUCCESS,
+            payload: response.data
+          });
+        } else {
+          dispatch({
+            type: GETSERVICEREPORT_SUCCESS,
+            payload: response.data
+          });
+        }
       })
       .catch(function(error) {
         if (error.response) {
