@@ -66,6 +66,13 @@ class ListVehicle extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
+              <i
+                className={
+                  row['_original'].isServiceScheduled
+                    ? 'far fa-calendar-check color-success licence-icon-padding'
+                    : 'far fa-calendar-times color-danger licence-icon-padding'
+                }
+              ></i>{' '}
               {row['_original'].licencePlate}
             </Link>
           );
@@ -229,7 +236,7 @@ class ListVehicle extends Component {
             currentRecords[index][this.columns[colIndex].accessor]
           ).replace(',', '');
         }
-      }      
+      }
       data_array.push(record_to_download);
     }
     var doc = new jsPDF('P', 'px', 'a4');

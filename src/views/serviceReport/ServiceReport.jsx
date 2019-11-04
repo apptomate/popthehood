@@ -23,11 +23,9 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Swal from 'sweetalert2';
 import {
   getAlertToast,
   dateTimeFormat,
-  dateFormat
 } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
 import swal from 'sweetalert2';

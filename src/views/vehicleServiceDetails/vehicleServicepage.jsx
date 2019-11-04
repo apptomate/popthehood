@@ -237,8 +237,18 @@ class vehicleServicepage extends Component {
                 <PdfContainer createPdf={this.createPdf}>
                   <Row>
                     <Col>
+                    <Row>
+                      <Col>
+                      <div className="licence-plate">
+                            <h4>
+                              LICENCE PLATE NO :{' '}
+                              <span>{vehicleInfo.licencePlate}</span>
+                            </h4>
+                          </div></Col>
+                    </Row>
                       <Row>
-                        <Col md="4" className="item-middle">
+                        <Col md="4">
+                        {/* className="item-middle" */}
                           <div className="ServiceReport-imgcard">
                             <img
                               src={
@@ -249,13 +259,8 @@ class vehicleServicepage extends Component {
                           </div>
                         </Col>
                         <Col md="8" className="">
-                          <div className="licence-plate">
-                            <h4>
-                              LICENCE PLATE NO :{' '}
-                              <span>{vehicleInfo.licencePlate}</span>
-                            </h4>
-                          </div>
-                          <div className="card-profile shadow card mt-4 p-3">
+                        
+                          <div className="card-profile shadow card">
                             <Row>
                               <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Table hover>
