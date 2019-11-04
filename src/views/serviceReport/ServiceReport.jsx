@@ -23,12 +23,8 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Swal from 'sweetalert2';
-import {
-  getAlertToast,
-  dateTimeFormat,
-  dateFormat
-} from '../common/helpers/functions.jsx';
+import shortid from 'shortid';
+import { dateTimeFormat } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
@@ -106,8 +102,14 @@ class ServiceReport extends Component {
         },
         Filter: ({ filter, onChange }) => (
           <select
+            key={shortid.generate()}
             name="statusFilter"
-            onChange={event => onChange(event.target.value)}
+            onChange={event => {
+              this.setState({
+                filterFromPrevious: false
+              });
+              onChange(event.target.value);
+            }}
             style={{ width: '100%' }}
             value={
               filter
@@ -308,7 +310,8 @@ class ServiceReport extends Component {
     this.setState({
       endDate: '',
       startDate: '',
-      filter: false
+      filter: false,
+      filterFromPrevious:false
     });
   }
   render() {

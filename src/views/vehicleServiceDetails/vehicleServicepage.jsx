@@ -27,7 +27,6 @@ import {
   vehicleServiceDetails,
   updateVehicleService
 } from '../../redux/actions/Index';
-import { preventDefaultFn } from '../common/helpers/functions';
 import PdfContainer from '../common/pdfContainer/PdfContainer';
 import Doc from '../../assets/js/DocService';
 import imageNotAvailable from '../../assets/img/icons/common/vehicle_not_available.png';
@@ -563,45 +562,23 @@ class vehicleServicepage extends Component {
                                 </td>
                                 <td className="text-right">
                                   {data.status !== 'Completed' ? (
-                                    <UncontrolledDropdown>
-                                      <DropdownToggle
-                                        className="btn-icon-only text-light"
-                                        href="#pablo"
-                                        role="button"
-                                        size="sm"
-                                        color=""
-                                        onClick={preventDefaultFn}
-                                      >
-                                        <i className="fas fa-ellipsis-v" />
-                                      </DropdownToggle>
-                                      <DropdownMenu
-                                        className="dropdown-menu-arrow"
-                                        right
-                                      >
-                                        <DropdownItem
-                                          href="#pablo"
-                                          onClick={preventDefaultFn}
-                                        >
-                                          <Button
-                                            color="primary"
-                                            size="sm"
-                                            type="button"
-                                            data-schedule_id={data.scheduleID}
-                                            data-requested_service_date={
-                                              data.requestedServiceDate
-                                            }
-                                            data-comments={data.comments}
-                                            data-service_out_date={
-                                              data.serviceOutDate
-                                            }
-                                            data-status={data.status}
-                                            onClick={this.editShedule}
-                                          >
-                                            <i className="fas fa-edit"></i> Edit
-                                          </Button>
-                                        </DropdownItem>
-                                      </DropdownMenu>
-                                    </UncontrolledDropdown>
+                                    <Button
+                                      color="primary"
+                                      size="sm"
+                                      type="button"
+                                      data-schedule_id={data.scheduleID}
+                                      data-requested_service_date={
+                                        data.requestedServiceDate
+                                      }
+                                      data-comments={data.comments}
+                                      data-service_out_date={
+                                        data.serviceOutDate
+                                      }
+                                      data-status={data.status}
+                                      onClick={this.editShedule}
+                                    >
+                                      <i className="fas fa-edit"></i> Edit
+                                    </Button>
                                   ) : (
                                     ''
                                   )}
