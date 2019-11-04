@@ -690,3 +690,8 @@ label {
   padding: 9px !important;
   color: rgba(0, 0, 0, 0.5) !important;
 }
+
+.table-flush tbody tr:first-child td,
+.table-flush tbody tr:first-child th {
+  white-space: normal;
+}
