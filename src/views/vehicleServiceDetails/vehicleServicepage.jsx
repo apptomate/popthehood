@@ -207,7 +207,6 @@ class vehicleServicepage extends Component {
         .filter((plan, index) => parseInt(index) === 0)
         .map(plan_det => plan_det.planType);
     }
-    console.log(plan_type_data);
     const serv_det = serviceList
       .filter((serv_lst, index) => !index)
       .map(list => list);
@@ -359,25 +358,23 @@ class vehicleServicepage extends Component {
                                 </li>
                                 <li>
                                   <span> Is Email Verified</span>{' '}
-                                  <Badge
-                                    color="success"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isEmailVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
+                                  <i
+              className={
+                userInfo.isEmailVerified
+                  ? 'far fa-check-circle color-success floatRight'
+                  : 'far fa-times-circle color-danger floatRight'
+              }
+            />                                     
                                 </li>
                                 <li>
                                   <span> Is Phone Number Verified</span>{' '}
-                                  <Badge
-                                    color="warning"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isPhoneNumVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
+                                  <i
+              className={
+                userInfo.isPhoneNumVerified
+                  ? 'far fa-check-circle color-success floatRight'
+                  : 'far fa-times-circle color-danger floatRight'
+              }
+            />                                  
                                 </li>
                               </ul>
                             </div>
