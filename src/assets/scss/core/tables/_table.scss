@@ -671,3 +671,22 @@ label {
   content: "Time " !important;
   font-family: Open Sans, sans-serif !important;
 }
+
+.ReactTable .rt-tbody {
+  min-height: 4rem !important;
+}
+.ReactTable .rt-noData {
+  display: block;
+  position: absolute !important;
+  left: 50%;
+  top: 52% !important;
+  -webkit-transform: translate(-50%, -50%) !important;
+  transform: translate(-50%, 30%) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  -webkit-transition: all 0.3s ease !important;
+  transition: all 0.3s ease !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  padding: 9px !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+}
