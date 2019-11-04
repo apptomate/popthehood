@@ -27,7 +27,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import { dateTimeFormat } from '../common/helpers/functions.jsx';
-const downFileName = 'ServiceList - ';
+const downFileName = 'ServiceList-';
 class ListService extends Component {
   constructor(props) {
     super(props);
