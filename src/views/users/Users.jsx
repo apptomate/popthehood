@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 // reactstrap components
 import {
+  Col,
+  Progress,
   Alert,
   Card,
   CardHeader,
@@ -187,6 +189,10 @@ class Users extends React.Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
+            <i
+                  className={(row['_original'].isServiceScheduled) ? 'far fa-calendar-check color-success' : 'far fa-calendar-times color-danger'}
+                  style={{ paddingRight: '5px' }}
+                ></i>{' '}
               {row['_original'].licencePlate}
             </Link>
           );
@@ -280,30 +286,30 @@ class Users extends React.Component {
     ];
   }
 
-  reset_expand_row(){
-    this.setState({expanded:{}});
+  reset_expand_row() {
+    this.setState({ expanded: {} });
   }
 
   //User's Vehicle List
   expand_row(row) {
     const { expanded, user_data } = this.state;
-    var expanded_row = { ...expanded };    
-      var user_id = parseInt(row['original'].userId);
-      Object.keys(expanded_row).map(key => {
-        expanded_row[key] = row.nestingPath === key ? true : false;
-      });
-      expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
-      if (expanded_row[row.nestingPath]) {
-        var data = { UserId: user_id };
-        this.props.getUserVehicleDetails(data);
-      }
-      if (expanded[row.nestingPath]) {
-        expanded_row[row.nestingPath] = false;
-      }
-      this.setState(() => ({
-        user_data: { ...user_data, userId: user_id },
-        expanded: expanded_row
-      }));    
+    var expanded_row = { ...expanded };
+    var user_id = parseInt(row['original'].userId);
+    Object.keys(expanded_row).map(key => {
+      expanded_row[key] = row.nestingPath === key ? true : false;
+    });
+    expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
+    if (expanded_row[row.nestingPath]) {
+      var data = { UserId: user_id };
+      this.props.getUserVehicleDetails(data);
+    }
+    if (expanded[row.nestingPath]) {
+      expanded_row[row.nestingPath] = false;
+    }
+    this.setState(() => ({
+      user_data: { ...user_data, userId: user_id },
+      expanded: expanded_row
+    }));
   }
 
   //Edit User
@@ -397,7 +403,8 @@ class Users extends React.Component {
     this.props.updateUser(data);
     this.setState(() => ({
       user_data: [],
-      editModal: false
+      editModal: false,
+      expanded: {}
     }));
   }
   //Update User Vehicle
@@ -428,6 +435,7 @@ class Users extends React.Component {
       .then(result => {
         if (result.value) {
           this.props.deleteUser(user_id);
+          this.reset_expand_row();
         }
       });
   }
@@ -494,15 +502,9 @@ class Users extends React.Component {
                 <ReactTable
                   expanded={expanded}
                   onPageChange={this.reset_expand_row}
-                  onPageSizeChange={() => {
-                    this.reset_expand_row({});
-                  }}
-                  onSortedChange={() => {
-                    this.reset_expand_row({});
-                  }}
-                  onFilteredChange={() => {
-                    this.reset_expand_row({});
-                  }}
+                  onPageSizeChange={this.reset_expand_row}
+                  onSortedChange={this.reset_expand_row}
+                  onFilteredChange={this.reset_expand_row}
                   getTdProps={(state, rowInfo) => {
                     if (rowInfo === undefined) {
                       return {};
@@ -533,34 +535,49 @@ class Users extends React.Component {
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }} key={shortid.generate()}>
-                        {parseInt(vehicle_data.length) ? (
-                          <Fragment>
-                            <center>
-                              {' '}
-                              <h3>User&apos;s Registered Vehicles</h3>{' '}
-                            </center>
-                            <ReactTable
-                              id="users_vehicle_table"
-                              LoadingComponent={MyLoaderVehicle}
-                              ref={r => (this.reactTableVehicle = r)}
-                              data={vehicle_data}
-                              columns={this.vehicle_columns}
-                              pageSize={vehicle_data.length}
-                              showPagination={false}
-                              noDataText="No Record Found.."
-                              filterable
-                              HeaderClassName="text-bold"
-                              defaultFilterMethod={(filter, row) =>
-                                String(row[filter.id])
-                                  .toLowerCase()
-                                  .includes(filter.value.toLowerCase())
-                              }
-                            />
-                          </Fragment>
+                        {loadingVehicle ? (
+                          <Row>
+                            <Col md={5} />
+                            <Col md={2}>
+                              <center>
+                                <Progress animated value={100}>
+                                  Loading
+                                </Progress>
+                              </center>
+                            </Col>
+                          </Row>
                         ) : (
-                          <Alert color="warning">
-                            <center>No vehicle found</center>
-                          </Alert>
+                          <Fragment>
+                            {parseInt(vehicle_data.length) ? (
+                              <Fragment>
+                                <center>
+                                  {' '}
+                                  <h3>User&apos;s Registered Vehicles</h3>{' '}
+                                </center>
+                                <ReactTable
+                                  id="users_vehicle_table"
+                                  LoadingComponent={MyLoaderVehicle}
+                                  ref={r => (this.reactTableVehicle = r)}
+                                  data={vehicle_data}
+                                  columns={this.vehicle_columns}
+                                  pageSize={vehicle_data.length}
+                                  showPagination={false}
+                                  noDataText="No Record Found.."
+                                  filterable
+                                  HeaderClassName="text-bold"
+                                  defaultFilterMethod={(filter, row) =>
+                                    String(row[filter.id])
+                                      .toLowerCase()
+                                      .includes(filter.value.toLowerCase())
+                                  }
+                                />
+                              </Fragment>
+                            ) : (
+                              <Alert color="warning">
+                                <center>No vehicle found</center>
+                              </Alert>
+                            )}
+                          </Fragment>
                         )}
                       </div>
                     );

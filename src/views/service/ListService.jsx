@@ -44,6 +44,7 @@ class ListService extends Component {
       {
         Header: 'Serial No',
         className: 'text-center',
+        width: 100,
         Cell: row => {
           return <div>{row.index + 1}</div>;
         },
@@ -175,11 +176,11 @@ class ListService extends Component {
         { header: 'Is Available', dataKey: 'Is Available' }
       ],
       columnStyles: {
-        0: { cellWidth: 70 },
+        0: { cellWidth: 30 },
         1: { cellWidth: 90 },
-        2: { cellWidth: 150 },
-        3: { cellWidth: 50 },
-        4: { cellWidth: 50 }
+        2: { cellWidth: 230 },
+        3: { cellWidth: 40 },
+        4: { cellWidth: 40 }
       },
       margin: {
         top: 8,
@@ -222,7 +223,7 @@ class ListService extends Component {
                 <CardHeader className="border-0">
                   <Row>
                     <Col sm>
-                      <h3 className="mb-0">List Of Available Services</h3>
+                      <h3 className="mb-0">Available Services</h3>
                     </Col>
                     <Col sm>
                       <div className="flex-center" style={{ float: 'right' }}>

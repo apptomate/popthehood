@@ -6,6 +6,7 @@ import * as Datetime from 'react-datetime';
 // import 'react-datetime/css/react-datetime.css';
 // reactstrap components
 import {
+  Progress,
   Collapse,
   UncontrolledTooltip,
   Card,
@@ -19,7 +20,6 @@ import {
   DropdownToggle,
   Table,
   Modal,
-  Spinner,
   Badge
 } from 'reactstrap';
 import UserHeader from 'components/Headers/UserHeader.jsx';
@@ -133,7 +133,6 @@ class vehicleServicepage extends Component {
           : '',
         status: update_type === 'update_status' ? 'Completed' : status
       };
-
       this.props.updateVehicleService(data, reload_data);
       this.setState({
         editScheduleModal: false
@@ -183,8 +182,7 @@ class vehicleServicepage extends Component {
   render() {
     const {
       updateVehicleServiceResponse: { loading: update_loading = '' }
-    } = this.props;
-
+    } = this.props; 
     const {
       editScheduleModal,
       requestedServiceDate,
@@ -200,6 +198,13 @@ class vehicleServicepage extends Component {
     const userInfo = vehicle_ser_data.userInfo || [];
     const lat = parseFloat(userInfo.locationLatitude) || '';
     const lng = parseFloat(userInfo.locationLongitude) || '';
+
+    let plan_type_data = [];
+    if (planInfoList.length) {
+      plan_type_data = planInfoList
+        .filter((plan, index) => parseInt(index) === 0)
+        .map(plan_det => plan_det.planType);
+    }
     const serv_det = serviceList
       .filter((serv_lst, index) => !index)
       .map(list => list);
@@ -253,22 +258,20 @@ class vehicleServicepage extends Component {
                             <Row>
                               <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Table hover>
-                                  <thead>
+                                  <tbody>
                                     <tr>
-                                      <th>
+                                      <th scope="row">
                                         <Badge className="badge-default licence-list-badge licence-pdf-badge">
                                           Model
                                         </Badge>
                                       </th>
-                                      <th>
+                                      <td>
                                         {' '}
                                         <span className="licenceplate-pdf-right-value">
                                           {vehicleInfo.model}
                                         </span>
-                                      </th>
+                                      </td>
                                     </tr>
-                                  </thead>
-                                  <tbody>
                                     <tr>
                                       <th scope="row">
                                         {' '}
@@ -326,41 +329,50 @@ class vehicleServicepage extends Component {
                               <ul className="licence-plate-userDetails">
                                 <li>
                                   <span> User Name</span>{' '}
-                                  <h5>{userInfo.name}</h5>
+                                  <h5>{userInfo.name ? userInfo.name : '-'}</h5>
                                 </li>
 
                                 <li>
                                   <span> Phone Number</span>{' '}
-                                  <h5>{userInfo.phoneNumber}</h5>
+                                  <h5>
+                                    {userInfo.phoneNumber
+                                      ? userInfo.phoneNumber
+                                      : '-'}
+                                  </h5>
                                 </li>
                                 <li>
-                                  <span> E-mail</span> <h5>{userInfo.email}</h5>
+                                  <span> E-mail</span>{' '}
+                                  <h5>
+                                    {userInfo.email ? userInfo.email : '-'}
+                                  </h5>
                                 </li>
                                 <li>
                                   <span> Address</span>{' '}
-                                  <h5>{userInfo.locationFullAddress}</h5>
+                                  <h5>
+                                    {userInfo.locationFullAddress
+                                      ? userInfo.locationFullAddress
+                                      : '-'}
+                                  </h5>
                                 </li>
                                 <li>
-                                  <span> IsEmailVerified</span>{' '}
-                                  <Badge
-                                    color="success"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isEmailVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
-                                </li>
-                                <li>
-                                  <span> IsPhoneNumVerified</span>{' '}
-                                  <Badge
-                                    color="warning"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isPhoneNumVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
+                                  <span> Is Email Verified</span>{' '}
+                                  <i
+                                      className={
+                                        userInfo.isEmailVerified
+                                          ? 'far fa-check-circle color-success floatRight'
+                                          : 'far fa-times-circle color-danger floatRight'
+                                      }
+                                    />                                     
+                                                        </li>
+                                                        <li>
+                                                          <span> Is Phone Number Verified</span>{' '}
+                                                          <i
+                                      className={
+                                        userInfo.isPhoneNumVerified
+                                          ? 'far fa-check-circle color-success floatRight'
+                                          : 'far fa-times-circle color-danger floatRight'
+                                      }
+                                    />                                  
                                 </li>
                               </ul>
                             </div>
@@ -440,9 +452,9 @@ class vehicleServicepage extends Component {
                                 Plan Type
                               </Button>
                               <span>
-                                {planInfoList
-                                  .filter((plan_value, index) => !index)
-                                  .map(plan => plan.planType)}
+                                {plan_type_data[0]
+                                  ? plan_type_data[0]
+                                  : '-'}
                               </span>
                             </Col>
                           </Row>
@@ -473,14 +485,20 @@ class vehicleServicepage extends Component {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {planInfoList.length > 0 ? (
+                                  {planInfoList.length ? (
                                     planInfoList.map((plan_data, index) => (
                                       <tr key={index}>
-                                        <td>{plan_data.serviceNameList}</td>
+                                        <td>
+                                          {plan_data.serviceNameList
+                                            ? plan_data.serviceNameList
+                                            : '-'}
+                                        </td>
                                         <td>
                                           <Fragment>
                                             <span id={'desc_' + index}>
-                                              {plan_data.serviceDescription}
+                                              {plan_data.serviceDescription
+                                                ? plan_data.serviceDescription
+                                                : '-'}
                                             </span>
                                             <UncontrolledTooltip
                                               placement="left"
@@ -493,7 +511,11 @@ class vehicleServicepage extends Component {
                                       </tr>
                                     ))
                                   ) : (
-                                    <div>No Data Found!</div>
+                                    <tr>
+                                      <td colSpan={2}>
+                                        <center>No Data Found!</center>
+                                      </td>
+                                    </tr>
                                   )}
                                 </tbody>
                               </Table>
@@ -507,7 +529,7 @@ class vehicleServicepage extends Component {
                   <Card className="shadow mt-5" body>
                     <h3 className="mb-3">Subscription Schedules</h3>
                     <Table
-                      className="align-items-center table-flush"
+                      className="align-items-center table-flush "
                       responsive
                     >
                       <thead className="thead-light">
@@ -521,14 +543,17 @@ class vehicleServicepage extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {update_loading ? (
-                          <center>
-                            <Spinner size="sm" color="primary" />
-                          </center>
+                      {update_loading? (
+                        <tr>
+                        <td colSpan={5}>
+                          <center> 
+                        Loading...
+                      </center>
+                        </td>
+                      </tr>                          
                         ) : (
-                          ''
-                        )}
-                        {serviceList.length > 0 ? (
+                          <Fragment>     
+                        {serviceList.length ? (
                           serviceList.map((data, index) => {
                             return (
                               <tr key={index}>
@@ -587,8 +612,13 @@ class vehicleServicepage extends Component {
                             );
                           })
                         ) : (
-                          <div>No Data Found!</div>
+                          <tr>
+                            <td colSpan={5}>
+                              <center> No Data Found!</center>
+                            </td>
+                          </tr>
                         )}
+                        </Fragment> )}
                       </tbody>
                     </Table>
                   </Card>
@@ -611,17 +641,20 @@ class vehicleServicepage extends Component {
                       <tbody>
                         <tr>
                           {paymentinfo.length === 0 ? (
-                            <div>No Data Found!</div>
+                            <td colSpan={7}>
+                              <center> No Data Found!</center>
+                            </td>
                           ) : (
-                            ''
+                            <Fragment>
+                              <th scope="row">{paymentinfo.paymentDate}</th>
+                              <td>{paymentinfo.paymentType}</td>
+                              <td>{paymentinfo.paymentStatus}</td>
+                              <td>{paymentinfo.totalAmount}</td>
+                              <td>{paymentinfo.promocode_ReducedAmount}</td>
+                              <td>{paymentinfo.paid}</td>
+                              <td>{paymentinfo.due}</td>
+                            </Fragment>
                           )}
-                          <th scope="row">{paymentinfo.paymentDate}</th>
-                          <td>{paymentinfo.paymentType}</td>
-                          <td>{paymentinfo.paymentStatus}</td>
-                          <td>{paymentinfo.totalAmount}</td>
-                          <td>{paymentinfo.promocode_ReducedAmount}</td>
-                          <td>{paymentinfo.paid}</td>
-                          <td>{paymentinfo.due}</td>
                         </tr>
                       </tbody>
                     </Table>
