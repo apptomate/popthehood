@@ -4,8 +4,12 @@ import ReactTable from 'react-table';
 import swal from 'sweetalert2';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
+import shortid from 'shortid';
 // reactstrap components
 import {
+  Col,
+  Progress,
+  Alert,
   Card,
   CardHeader,
   Container,
@@ -55,6 +59,7 @@ class Users extends React.Component {
     this.updateUserVehicleDetails = this.updateUserVehicleDetails.bind(this);
     this.deleteUserVehicleDetail = this.deleteUserVehicleDetail.bind(this);
     this.onChangeVehicleEdit = this.onChangeVehicleEdit.bind(this);
+    this.reset_expand_row = this.reset_expand_row.bind(this);
     this.columns = [
       {
         Header: 'Name',
@@ -89,12 +94,6 @@ class Users extends React.Component {
         accessor: 'vehicleCount',
         className: 'text-center',
         width: 180
-      },
-      {
-        Header: 'Source',
-        accessor: 'sourceofReg',
-        className: 'text-left',
-        width: 150
       },
       {
         Header: 'Email Verified',
@@ -180,7 +179,7 @@ class Users extends React.Component {
     this.vehicle_columns = [
       {
         Header: 'Licence Plate',
-        accessor: 'licensePlate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -190,18 +189,7 @@ class Users extends React.Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].isServiceScheduled ? (
-                <i
-                  className="far fa-calendar-check color-success"
-                  style={{ paddingRight: '5px' }}
-                ></i>
-              ) : (
-                <i
-                  className="far fa-calendar-times color-danger"
-                  style={{ paddingRight: '5px' }}
-                ></i>
-              )}{' '}
-              {row['_original'].licensePlate} {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -294,21 +282,25 @@ class Users extends React.Component {
     ];
   }
 
+  reset_expand_row() {
+    this.setState({ expanded: {} });
+  }
+
   //User's Vehicle List
   expand_row(row) {
     const { expanded, user_data } = this.state;
     var expanded_row = { ...expanded };
-    Object.keys(expanded_row).map(key => {
-      expanded_row[key] = row.index === key ? true : false;
-    });
-    expanded_row[row.index] = !expanded_row[row.index];
     var user_id = parseInt(row['original'].userId);
-    if (expanded_row[row.index]) {
+    Object.keys(expanded_row).map(key => {
+      expanded_row[key] = row.nestingPath === key ? true : false;
+    });
+    expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
+    if (expanded_row[row.nestingPath]) {
       var data = { UserId: user_id };
       this.props.getUserVehicleDetails(data);
     }
-    if (expanded[row.index]) {
-      expanded_row[row.index] = false;
+    if (expanded[row.nestingPath]) {
+      expanded_row[row.nestingPath] = false;
     }
     this.setState(() => ({
       user_data: { ...user_data, userId: user_id },
@@ -347,7 +339,7 @@ class Users extends React.Component {
         model: row['_original'].model,
         year: parseInt(row['_original'].year),
         color: row['_original'].color,
-        licensePlate: row['_original'].licensePlate,
+        licencePlate: row['_original'].licencePlate,
         specialNotes: row['_original'].specialNotes,
         imageType: '',
         vehicleImage: '',
@@ -407,7 +399,8 @@ class Users extends React.Component {
     this.props.updateUser(data);
     this.setState(() => ({
       user_data: [],
-      editModal: false
+      editModal: false,
+      expanded: {}
     }));
   }
   //Update User Vehicle
@@ -438,6 +431,7 @@ class Users extends React.Component {
       .then(result => {
         if (result.value) {
           this.props.deleteUser(user_id);
+          this.reset_expand_row();
         }
       });
   }
@@ -487,6 +481,7 @@ class Users extends React.Component {
         loading: loadingVehicle = ''
       }
     } = this.props;
+    console.log('Inside/', this.props.getUserVehicleDetailsResponse);
 
     const MyLoader = () => <Loader loading={loading} />;
     const MyLoaderVehicle = () => <Loader loading={loadingVehicle} />;
@@ -503,6 +498,10 @@ class Users extends React.Component {
                 </CardHeader>
                 <ReactTable
                   expanded={expanded}
+                  onPageChange={this.reset_expand_row}
+                  onPageSizeChange={this.reset_expand_row}
+                  onSortedChange={this.reset_expand_row}
+                  onFilteredChange={this.reset_expand_row}
                   getTdProps={(state, rowInfo) => {
                     if (rowInfo === undefined) {
                       return {};
@@ -520,7 +519,7 @@ class Users extends React.Component {
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
+                  pageSizeOptions={[5, 10, 15, 20]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"
@@ -529,32 +528,54 @@ class Users extends React.Component {
                       .toLowerCase()
                       .includes(filter.value.toLowerCase())
                   }
-                  onFilteredChange={this.filterData}
                   className="-striped -highlight"
                   SubComponent={() => {
                     return (
-                      <div style={{ padding: '20px' }}>
-                        <center>
-                          {' '}
-                          <h3>User&apos;s Registered Vehicles</h3>{' '}
-                        </center>
-                        <ReactTable
-                          id="users_vehicle_table"
-                          LoadingComponent={MyLoaderVehicle}
-                          ref={r => (this.reactTableVehicle = r)}
-                          data={vehicle_data}
-                          columns={this.vehicle_columns}
-                          pageSize={vehicle_data.length}
-                          showPagination={false}
-                          noDataText="No Record Found.."
-                          filterable
-                          HeaderClassName="text-bold"
-                          defaultFilterMethod={(filter, row) =>
-                            String(row[filter.id])
-                              .toLowerCase()
-                              .includes(filter.value.toLowerCase())
-                          }
-                        />
+                      <div style={{ padding: '20px' }} key={shortid.generate()}>
+                        {loadingVehicle ? (
+                          <Row>
+                            <Col md={5} />
+                            <Col md={2}>
+                              <center>
+                                <Progress animated value={100}>
+                                  Loading
+                                </Progress>
+                              </center>
+                            </Col>
+                          </Row>
+                        ) : (
+                          <Fragment>
+                            {parseInt(vehicle_data.length) ? (
+                              <Fragment>
+                                <center>
+                                  {' '}
+                                  <h3>User&apos;s Registered Vehicles</h3>{' '}
+                                </center>
+                                <ReactTable
+                                  id="users_vehicle_table"
+                                  LoadingComponent={MyLoaderVehicle}
+                                  ref={r => (this.reactTableVehicle = r)}
+                                  data={vehicle_data}
+                                  columns={this.vehicle_columns}
+                                  pageSize={vehicle_data.length}
+                                  showPagination={false}
+                                  noDataText="No Record Found.."
+                                  filterable
+                                  HeaderClassName="text-bold"
+                                  defaultFilterMethod={(filter, row) =>
+                                    String(row[filter.id])
+                                      .toLowerCase()
+                                      .includes(filter.value.toLowerCase())
+                                  }
+                                />
+                              </Fragment>
+                            ) : (
+                              <Alert color="warning">
+                                <center>No vehicle found</center>
+                              </Alert>
+                            )}
+                          </Fragment>
+                        )}
                       </div>
                     );
                   }}

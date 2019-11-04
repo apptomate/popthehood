@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardHeader, Row, UncontrolledTooltip } from 'reactstrap';
@@ -6,8 +6,7 @@ import { CSVLink } from 'react-csv';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { dateFormat, dateTimeFormat } from '../common/helpers/functions';
-const downFileName =
-  'DueServices-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+const downFileName = 'DueServices-' + dateTimeFormat(new Date(), 'DD/MM/YYYY');
 class ReportForWeek extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +19,7 @@ class ReportForWeek extends Component {
     this.columns = [
       {
         Header: 'Licence Plate',
-        accessor: 'licensePlate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -30,7 +29,7 @@ class ReportForWeek extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -114,38 +113,55 @@ class ReportForWeek extends Component {
         <CardHeader className="border-0">
           <Row className="align-items-center">
             <div className="col">
-              <h3 className="mb-0">Due Services</h3>
-            </div>
-            <div className="col text-right">
-              <Button
-                color="primary"
-                size="sm"
-                onClick={this.download}
-                id="down_csv"
-              >
-                <i className="fas fa-file-download"></i> CSV
-              </Button>
-              <CSVLink
-                data={dataToDownload}
-                filename={downFileName + '.csv'}
-                className="hidden"
-                ref={r => (this.csvLink = r)}
-                target="_blank"
-              />
-              <UncontrolledTooltip placement="top" target={'down_csv'}>
-                Download as CSV
-              </UncontrolledTooltip>
-              <Button
-                color="danger"
-                size="sm"
-                id="down_pdf"
-                onClick={this.downloadPdf}
-              >
-                <i className="fas fa-file-download"></i> PDF
-              </Button>
-              <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                Download as PDF
-              </UncontrolledTooltip>
+              <h3 className="mb-0" style={{ float: 'left' }}>
+                Due Services
+              </h3>
+              <div style={{ float: 'right' }}>
+                {vehicleScheduledForAWeek.length > 0 ? (
+                  <Fragment>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={this.download}
+                      id="down_csv"
+                    >
+                      <i className="fas fa-file-download"></i> CSV
+                    </Button>
+                    <CSVLink
+                      data={dataToDownload}
+                      filename={downFileName + '.csv'}
+                      className="hidden"
+                      ref={r => (this.csvLink = r)}
+                      target="_blank"
+                    />
+                    <UncontrolledTooltip placement="top" target={'down_csv'}>
+                      Download as CSV
+                    </UncontrolledTooltip>
+                    <Button
+                      color="danger"
+                      size="sm"
+                      id="down_pdf"
+                      onClick={this.downloadPdf}
+                    >
+                      <i className="fas fa-file-download"></i> PDF
+                    </Button>
+                    <UncontrolledTooltip placement="top" target={'down_pdf'}>
+                      Download as PDF
+                    </UncontrolledTooltip>
+                  </Fragment>
+                ) : (
+                  ''
+                )}
+
+                <Button
+                  color="info"
+                  size="sm"
+                  id="down_pdf"
+                  onClick={this.redirectService}
+                >
+                  See All
+                </Button>
+              </div>
             </div>
           </Row>
         </CardHeader>
@@ -155,6 +171,7 @@ class ReportForWeek extends Component {
           data={vehicleScheduledForAWeek}
           columns={this.columns}
           defaultPageSize={5}
+          pageSizeOptions={[5, 10, 15, 20]}
           noDataText="No Record Found.."
           filterable
           HeaderClassName="text-bold"
@@ -165,16 +182,6 @@ class ReportForWeek extends Component {
           }
           className="-striped -highlight"
         />
-        <Button
-          color="info"
-          style={{ float: 'right' }}
-          size="sm"
-          id="down_pdf"
-          className="m-3"
-          onClick={this.redirectService}
-        >
-          <i className="fas fa-arrow-right"></i> View All Dues
-        </Button>
       </Card>
     );
   }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ class ReportForDay extends Component {
     this.columns = [
       {
         Header: 'Licence Plate',
-        accessor: 'licensePlate',
+        accessor: 'licencePlate',
         className: 'text-left',
         Cell: ({ row }) => {
           return (
@@ -37,7 +37,7 @@ class ReportForDay extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -60,19 +60,44 @@ class ReportForDay extends Component {
       {
         Header: 'Location',
         accessor: 'locationFullAddress',
-        className: 'text-left'
+        className: 'text-left',
+        Cell: ({ row }) => (
+          <Fragment>
+            <span id={'location_' + row['_index']}>
+              {row['_original'].locationFullAddress}
+            </span>
+            <UncontrolledTooltip
+              placement="left"
+              target={'location_' + row['_index']}
+            >
+              {row['_original'].locationFullAddress}
+            </UncontrolledTooltip>
+          </Fragment>
+        )
       }
     ];
   }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
+    const obj = {
+      Header: 'Model',
+      accessor: 'model',
+      className: 'text-left'
+    };
+    this.columns.push(obj);
     var data_to_download = [];
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (this.columns[colIndex].Header === 'Model') {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index]._original.model
+          ).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_to_download.push(record_to_download);
     }
@@ -83,13 +108,25 @@ class ReportForDay extends Component {
 
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
+    const obj = {
+      Header: 'Model',
+      accessor: 'model',
+      className: 'text-left'
+    };
+    this.columns.push(obj);
     var data_array = [];
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (this.columns[colIndex].Header === 'Model') {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index]._original.model
+          ).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_array.push(record_to_download);
     }
@@ -99,17 +136,17 @@ class ReportForDay extends Component {
       columns: [
         { header: 'Licence Plate', dataKey: 'Licence Plate' },
         { header: 'Make', dataKey: 'Make' },
-        { header: 'Model', dataKey: 'Model' },
         { header: 'Name', dataKey: 'Name' },
-        { header: 'Phone No', dataKey: 'Phone No' },
-        { header: 'Location', dataKey: 'Location' }
+        { header: 'Phone Number', dataKey: 'Phone Number' },
+        { header: 'Location', dataKey: 'Location' },
+        { header: 'Model', dataKey: 'Model' }
       ],
       columnStyles: {
         0: { cellWidth: 80 },
-        1: { cellWidth: 50 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 },
-        4: { cellWidth: 60 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 60 },
+        3: { cellWidth: 60 },
+        4: { cellWidth: 90 },
         5: { cellWidth: 50 }
       },
       margin: {
@@ -133,37 +170,41 @@ class ReportForDay extends Component {
             <Col sm>
               <h3 className="mb-0 nowrap">Services Scheduled For Today</h3>
             </Col>
-            <Col className="text-right">
-              <Button
-                color="primary"
-                size="sm"
-                onClick={this.download}
-                id="down_csv"
-              >
-                <i className="fas fa-file-download"></i> CSV
-              </Button>
-              <CSVLink
-                data={dataToDownload}
-                filename={downFileName + '.csv'}
-                className="hidden"
-                ref={r => (this.csvLink = r)}
-                target="_blank"
-              />
-              <UncontrolledTooltip placement="top" target={'down_csv'}>
-                Download as CSV
-              </UncontrolledTooltip>
-              <Button
-                color="danger"
-                size="sm"
-                id="down_pdf"
-                onClick={this.downloadPdf}
-              >
-                <i className="fas fa-file-download"></i> PDF
-              </Button>
-              <UncontrolledTooltip placement="top" target={'down_pdf'}>
-                Download as PDF
-              </UncontrolledTooltip>
-            </Col>
+            {vehicleScheduledListForADay.length > 0 ? (
+              <Col className="text-right">
+                <Button
+                  color="primary"
+                  size="sm"
+                  onClick={this.download}
+                  id="down_csv"
+                >
+                  <i className="fas fa-file-download"></i> CSV
+                </Button>
+                <CSVLink
+                  data={dataToDownload}
+                  filename={downFileName + '.csv'}
+                  className="hidden"
+                  ref={r => (this.csvLink = r)}
+                  target="_blank"
+                />
+                <UncontrolledTooltip placement="top" target={'down_csv'}>
+                  Download as CSV
+                </UncontrolledTooltip>
+                <Button
+                  color="danger"
+                  size="sm"
+                  id="down_pdf"
+                  onClick={this.downloadPdf}
+                >
+                  <i className="fas fa-file-download"></i> PDF
+                </Button>
+                <UncontrolledTooltip placement="top" target={'down_pdf'}>
+                  Download as PDF
+                </UncontrolledTooltip>
+              </Col>
+            ) : (
+              ''
+            )}
           </Row>
         </CardHeader>
         <ReactTable
@@ -172,6 +213,7 @@ class ReportForDay extends Component {
           data={vehicleScheduledListForADay}
           columns={this.columns}
           defaultPageSize={5}
+          pageSizeOptions={[5, 10, 15, 20]}
           noDataText="No Record Found.."
           filterable
           HeaderClassName="text-bold"

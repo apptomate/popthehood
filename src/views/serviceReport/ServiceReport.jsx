@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import moment from 'moment';
 import {
   Card,
   CardHeader,
@@ -25,10 +26,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
 import {
   getAlertToast,
-  dateFormat,
-  dateTimeFormat
+  dateTimeFormat,
+  dateFormat
 } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
+import swal from 'sweetalert2';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ServiceReport extends Component {
@@ -38,7 +40,8 @@ class ServiceReport extends Component {
       dataToDownload: [],
       startDate: '',
       endDate: '',
-      filter: false
+      filter: false,
+      filterFromPrevious: false
     };
     this.download = this.download.bind(this);
     this.downloadPdf = this.downloadPdf.bind(this);
@@ -52,7 +55,8 @@ class ServiceReport extends Component {
         className: 'text-center',
         Cell: row => {
           return <div>{row.index + 1}</div>;
-        }
+        },
+        filterable: false
       },
       {
         Header: 'Licence Plate',
@@ -66,7 +70,7 @@ class ServiceReport extends Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
-              {row['_original'].licensePlate}
+              {row['_original'].licencePlate}
             </Link>
           );
         }
@@ -89,6 +93,7 @@ class ServiceReport extends Component {
       {
         Header: 'Status',
         accessor: 'status',
+        width: 130,
         className: 'text-left',
         filterMethod: (filter, row) => {
           if (filter.value === 'all') return true;
@@ -102,9 +107,16 @@ class ServiceReport extends Component {
         },
         Filter: ({ filter, onChange }) => (
           <select
+            name="statusFilter"
             onChange={event => onChange(event.target.value)}
             style={{ width: '100%' }}
-            value={filter ? filter.value : 'all'}
+            value={
+              filter
+                ? filter.value
+                : this.state.filterFromPrevious
+                  ? 'ondue'
+                  : 'all'
+            }
           >
             <option value="all">All Status</option>
             <option value="completed">Completed</option>
@@ -145,17 +157,28 @@ class ServiceReport extends Component {
       {
         Header: 'Service Date',
         accessor: 'requestedServiceDate',
+        filterable: false,
         className: 'text-left',
-        Cell: row => {
-          return dateFormat(row.value);
-        }
+        Cell: ({ row }) => (
+          <Fragment>
+            {row['_original'].status === 'Completed'
+              ? moment(
+                row['_original'].serviceOutDate,
+                'DD/MM/YYYY HH:mm:ss'
+              ).format('DD/MM/YYYY')
+              : moment(
+                row['_original'].requestedServiceDate,
+                'DD/MM/YYYY HH:mm:ss'
+              ).format('DD/MM/YYYY')}
+          </Fragment>
+        )
       }
     ];
   }
   componentDidMount() {
     this.props.getServiceReport();
     let { services = [] } = this.props.Services;
-    if (this.props.location.state && services.length > 0) {
+    if (this.props.location && this.props.location.state) {
       let { isFilter, filterBy } = this.props.location.state;
       let data = [],
         filter = false;
@@ -163,7 +186,11 @@ class ServiceReport extends Component {
         filter = true;
         data = services.filter(service => service.status === 'On Due');
       }
-      this.setState({ filter: filter, filterData: data });
+      this.setState({
+        filterData: data,
+        filterFromPrevious: filter
+      });
+      this.props.history.replace({ state: {} });
     }
   }
   download() {
@@ -172,9 +199,13 @@ class ServiceReport extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_to_download.push(record_to_download);
     }
@@ -189,9 +220,13 @@ class ServiceReport extends Component {
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
-        record_to_download[this.columns[colIndex].Header] = String(
-          currentRecords[index][this.columns[colIndex].accessor]
-        ).replace(',', '');
+        if (colIndex === 0) {
+          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else {
+          record_to_download[this.columns[colIndex].Header] = String(
+            currentRecords[index][this.columns[colIndex].accessor]
+          ).replace(',', '');
+        }
       }
       data_array.push(record_to_download);
     }
@@ -210,14 +245,14 @@ class ServiceReport extends Component {
         { header: 'Paid Amount', dataKey: 'Paid Amount' }
       ],
       columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 50 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 },
-        4: { cellWidth: 50 },
+        0: { cellWidth: 30 },
+        1: { cellWidth: 45 },
+        2: { cellWidth: 45 },
+        3: { cellWidth: 45 },
+        4: { cellWidth: 45 },
         5: { cellWidth: 60 },
-        6: { cellWidth: 50 },
-        7: { cellWidth: 50 }
+        6: { cellWidth: 45 },
+        7: { cellWidth: 45 }
       },
       margin: {
         top: 8,
@@ -231,30 +266,37 @@ class ServiceReport extends Component {
     doc.save(downFileName + '.pdf');
   }
   onClickFilter() {
-    let { startDate, endDate } = this.state;
-    let { services } = this.props.Services;
-    let data,
+    let { startDate = '', endDate = '' } = this.state;
+    let { services = [] } = this.props.Services;
+    let dateToCheck,
       filter = true;
-    if (startDate && endDate) {
-      data = services.filter(
-        service =>
-          new Date(service.requestedServiceDate) >= new Date(startDate) &&
-          new Date(service.requestedServiceDate) <= new Date(endDate)
-      );
-    } else if (startDate) {
-      data = services.filter(
-        service => new Date(service.requestedServiceDate) >= new Date(startDate)
-      );
-    } else if (endDate) {
-      data = services.filter(
-        service => new Date(service.requestedServiceDate) <= new Date(endDate)
-      );
+    let startDateTime = new Date(startDate).getTime();
+    let endDateTime = new Date(endDate).getTime();
+    if (!startDate && !endDate) {
+      swal.fire(getAlertToast('warning', 'Please select the date'));
     } else {
-      filter = false;
-      Swal.fire(getAlertToast('warning', 'Please Select One of the Filter!'));
+      if (startDate || endDate) {
+        services = services.filter(service => {
+          dateToCheck =
+            service.status === 'Completed'
+              ? service.serviceOutDate
+              : service.requestedServiceDate;
+          let dateToCheckTime = moment(dateToCheck, 'DD/MM/YYYY').valueOf();
+          if (startDate && endDate) {
+            return (
+              endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
+            );
+          }          
+          return (
+            dateToCheckTime - startDateTime > 0 ||
+            endDateTime - dateToCheckTime >= 0
+          );
+        });
+      } else {
+        filter = false;
+      }
+      this.setState({ filter: filter, filterData: services });
     }
-
-    this.setState({ filter: filter, filterData: data });
   }
   sdateChange(date) {
     this.setState({
@@ -276,10 +318,17 @@ class ServiceReport extends Component {
   }
   render() {
     const { Services = [] } = this.props;
-    let { filter, startDate, endDate, dataToDownload, filterData } = this.state;
+    let {
+      filter = false,
+      startDate,
+      endDate,
+      dataToDownload,
+      filterData,
+      filterFromPrevious
+    } = this.state;
     const MyLoader = () => <Loader loading={Services.loading} />;
     let data;
-    if (filter) {
+    if (filter || filterFromPrevious) {
       data = filterData || [];
     } else if (Services.services) {
       data = Services.services;
@@ -300,106 +349,118 @@ class ServiceReport extends Component {
                       <h3 className="mb-0">Service Report</h3>
                     </Col>
                     <Col>
-                      <span
-                        style={{
-                          float: 'right',
-                          paddingTop: '0.5rem',
-                          marginLeft: '1rem',
-                          marginBottom: '1rem'
-                        }}
-                      >
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={this.download}
-                          id="down_csv"
+                      {data.length > 0 ? (
+                        <span
+                          style={{
+                            float: 'right',
+                            paddingTop: '0.5rem',
+                            marginLeft: '1rem',
+                            marginBottom: '1rem'
+                          }}
                         >
-                          <i className="fas fa-file-download"></i> CSV
-                        </Button>
-                        <CSVLink
-                          data={dataToDownload}
-                          filename={downFileName + '.csv'}
-                          className="hidden"
-                          ref={r => (this.csvLink = r)}
-                          target="_blank"
-                        />
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_csv'}
-                        >
-                          Download as CSV
-                        </UncontrolledTooltip>
-                        <Button
-                          color="info"
-                          size="sm"
-                          id="down_pdf"
-                          onClick={this.downloadPdf}
-                        >
-                          <i className="fas fa-file-download"></i> PDF
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={'down_pdf'}
-                        >
-                          Download as PDF
-                        </UncontrolledTooltip>
-                      </span>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={this.download}
+                            id="down_csv"
+                          >
+                            <i className="fas fa-file-download"></i> CSV
+                          </Button>
+                          <CSVLink
+                            data={dataToDownload}
+                            filename={downFileName + '.csv'}
+                            className="hidden"
+                            ref={r => (this.csvLink = r)}
+                            target="_blank"
+                          />
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_csv'}
+                          >
+                            Download as CSV
+                          </UncontrolledTooltip>
+                          <Button
+                            color="info"
+                            size="sm"
+                            id="down_pdf"
+                            onClick={this.downloadPdf}
+                          >
+                            <i className="fas fa-file-download"></i> PDF
+                          </Button>
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={'down_pdf'}
+                          >
+                            Download as PDF
+                          </UncontrolledTooltip>
+                        </span>
+                      ) : (
+                        ''
+                      )}
                     </Col>
                   </Row>
                   <div>
-                    <Form className="myform" inline>
-                      <FormGroup>
-                        <DatePicker
-                          selected={startDate}
-                          onChange={this.sdateChange}
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="Select Start Date"
-                          className="form-control mb-2"
-                          width="100%"
-                        />
-                      </FormGroup>
+                    <Row>
+                      <Col md={3} />
+                      <Col md={6}>
+                        <center>
+                          <Form className="myform" inline>
+                            <FormGroup>
+                              <DatePicker
+                                selected={startDate}
+                                onChange={this.sdateChange}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="Select Start Date"
+                                className="form-control mb-2"
+                                width="100%"
+                              />
+                            </FormGroup>
 
-                      <FormGroup>
-                        <DatePicker
-                          selected={endDate}
-                          onChange={this.edateChange}
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="Select End Date"
-                          className="form-control mb-2"
-                          width="100%"
-                        />
-                      </FormGroup>
+                            <FormGroup>
+                              <DatePicker
+                                selected={endDate}
+                                onChange={this.edateChange}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="Select End Date"
+                                className="form-control mb-2"
+                                width="100%"
+                              />
+                            </FormGroup>
 
-                      <Button
-                        color="info"
-                        id="FilterTooltip"
-                        className="mb-2"
-                        onClick={this.onClickFilter}
-                      >
-                        <i className="fas fa-filter"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'FilterTooltip'}
-                      >
-                        Filter
-                      </UncontrolledTooltip>
+                            <Button
+                              color="info"
+                              id="FilterTooltip"
+                              className="mb-2"
+                              onClick={this.onClickFilter}
+                            >
+                              <i className="fas fa-filter"></i>
+                            </Button>
+                            <UncontrolledTooltip
+                              placement={'top'}
+                              target={'FilterTooltip'}
+                            >
+                              Filter
+                            </UncontrolledTooltip>
 
-                      <Button
-                        color="warning"
-                        onClick={this.resetFilter}
-                        className="mb-2"
-                        id="reset_tool"
-                      >
-                        <i className="fas fa-history"></i>
-                      </Button>
-                      <UncontrolledTooltip
-                        placement={'top'}
-                        target={'reset_tool'}
-                      >
-                        Reset
-                      </UncontrolledTooltip>
-                    </Form>
+                            <Button
+                              color="warning"
+                              onClick={this.resetFilter}
+                              className="mb-2"
+                              id="reset_tool"
+                            >
+                              <i className="fas fa-history"></i>
+                            </Button>
+                            <UncontrolledTooltip
+                              placement={'top'}
+                              target={'reset_tool'}
+                            >
+                              Reset
+                            </UncontrolledTooltip>
+                          </Form>
+                        </center>
+                      </Col>
+                      <Col md={3} />
+                    </Row>
                   </div>
                 </CardHeader>
 
@@ -410,7 +471,7 @@ class ServiceReport extends Component {
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
-                  pageSizeOptions={[10, 20]}
+                  pageSizeOptions={[5, 10, 15, 20]}
                   noDataText="No Record Found.."
                   filterable
                   HeaderClassName="text-bold"

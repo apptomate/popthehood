@@ -63,7 +63,7 @@ class Login extends React.Component {
         <Col lg="5" md="7">
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center mb-5 login-title">Login</div>
+              <div className="text-center mb-3 login-title">Login</div>
               <Form role="form" onSubmit={this.onClickLogin}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">

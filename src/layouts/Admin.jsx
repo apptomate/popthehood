@@ -21,6 +21,7 @@ class Admin extends React.Component {
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
+            exact={true}
             key={key}
           />
         );
