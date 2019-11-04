@@ -666,6 +666,7 @@ class vehicleServicepage extends Component {
             className="modal-dialog-centered"
             isOpen={editScheduleModal}
             toggle={this.editShedule}
+            backdrop={false}
           >
             <div className="modal-header">
               <h4 className="modal-title" id="modal-title-default">

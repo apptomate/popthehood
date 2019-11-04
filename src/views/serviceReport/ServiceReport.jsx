@@ -295,7 +295,7 @@ class ServiceReport extends Component {
       } else {
         filter = false;
       }
-      this.setState({ filter: filter, filterData: services });
+      this.setState({ filter: filter, filterData: services,filterFromPrevious:false });
     }
   }
   sdateChange(date) {

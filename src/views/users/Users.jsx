@@ -595,6 +595,7 @@ class Users extends React.Component {
             toggle={this.editToggle}
             className={this.props.className}
             centered={true}
+            backdrop={false}
           >
             <AvForm onValidSubmit={this.updateUserDetails}>
               <ModalHeader toggle={this.editToggle}> Update User</ModalHeader>
