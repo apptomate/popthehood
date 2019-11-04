@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { getServiceReport } from '../../redux/actions/Index.jsx';
+import swal from 'sweetalert2';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
 import 'react-table/react-table.css';
@@ -23,14 +24,9 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Swal from 'sweetalert2';
-import {
-  getAlertToast,
-  dateTimeFormat,
-  dateFormat
-} from '../common/helpers/functions.jsx';
+import shortid from 'shortid';
+import { dateTimeFormat, getAlertToast } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-import swal from 'sweetalert2';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ServiceReport extends Component {
@@ -107,8 +103,14 @@ class ServiceReport extends Component {
         },
         Filter: ({ filter, onChange }) => (
           <select
+            key={shortid.generate()}
             name="statusFilter"
-            onChange={event => onChange(event.target.value)}
+            onChange={event => {
+              this.setState({
+                filterFromPrevious: false
+              });
+              onChange(event.target.value);
+            }}
             style={{ width: '100%' }}
             value={
               filter
@@ -246,7 +248,7 @@ class ServiceReport extends Component {
       ],
       columnStyles: {
         0: { cellWidth: 30 },
-        1: { cellWidth: 45 },
+        1: { cellWidth: 60 },
         2: { cellWidth: 45 },
         3: { cellWidth: 45 },
         4: { cellWidth: 45 },
@@ -286,9 +288,9 @@ class ServiceReport extends Component {
             return (
               endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
             );
-          }          
+          }
           return (
-            dateToCheckTime - startDateTime > 0 ||
+            dateToCheckTime - startDateTime >= 0 ||
             endDateTime - dateToCheckTime >= 0
           );
         });
@@ -313,7 +315,8 @@ class ServiceReport extends Component {
     this.setState({
       endDate: '',
       startDate: '',
-      filter: false
+      filter: false,
+      filterFromPrevious: false
     });
   }
   render() {
@@ -400,67 +403,59 @@ class ServiceReport extends Component {
                     </Col>
                   </Row>
                   <div>
-                    <Row>
-                      <Col md={3} />
-                      <Col md={6}>
-                        <center>
-                          <Form className="myform" inline>
-                            <FormGroup>
-                              <DatePicker
-                                selected={startDate}
-                                onChange={this.sdateChange}
-                                dateFormat="dd-MM-yyyy"
-                                placeholderText="Select Start Date"
-                                className="form-control mb-2"
-                                width="100%"
-                              />
-                            </FormGroup>
+                    <Form className="myform" inline>
+                      <FormGroup>
+                        <DatePicker
+                          selected={startDate}
+                          onChange={this.sdateChange}
+                          dateFormat="dd-MM-yyyy"
+                          placeholderText="Select Start Date"
+                          className="form-control mb-2"
+                          width="100%"
+                        />
+                      </FormGroup>
 
-                            <FormGroup>
-                              <DatePicker
-                                selected={endDate}
-                                onChange={this.edateChange}
-                                dateFormat="dd-MM-yyyy"
-                                placeholderText="Select End Date"
-                                className="form-control mb-2"
-                                width="100%"
-                              />
-                            </FormGroup>
+                      <FormGroup>
+                        <DatePicker
+                          selected={endDate}
+                          onChange={this.edateChange}
+                          dateFormat="dd-MM-yyyy"
+                          placeholderText="Select End Date"
+                          className="form-control mb-2"
+                          width="100%"
+                        />
+                      </FormGroup>
 
-                            <Button
-                              color="info"
-                              id="FilterTooltip"
-                              className="mb-2"
-                              onClick={this.onClickFilter}
-                            >
-                              <i className="fas fa-filter"></i>
-                            </Button>
-                            <UncontrolledTooltip
-                              placement={'top'}
-                              target={'FilterTooltip'}
-                            >
-                              Filter
-                            </UncontrolledTooltip>
+                      <Button
+                        color="info"
+                        id="FilterTooltip"
+                        className="mb-2"
+                        onClick={this.onClickFilter}
+                      >
+                        <i className="fas fa-filter"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'FilterTooltip'}
+                      >
+                        Filter
+                      </UncontrolledTooltip>
 
-                            <Button
-                              color="warning"
-                              onClick={this.resetFilter}
-                              className="mb-2"
-                              id="reset_tool"
-                            >
-                              <i className="fas fa-history"></i>
-                            </Button>
-                            <UncontrolledTooltip
-                              placement={'top'}
-                              target={'reset_tool'}
-                            >
-                              Reset
-                            </UncontrolledTooltip>
-                          </Form>
-                        </center>
-                      </Col>
-                      <Col md={3} />
-                    </Row>
+                      <Button
+                        color="warning"
+                        onClick={this.resetFilter}
+                        className="mb-2"
+                        id="reset_tool"
+                      >
+                        <i className="fas fa-history"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'reset_tool'}
+                      >
+                        Reset
+                      </UncontrolledTooltip>
+                    </Form>
                   </div>
                 </CardHeader>
 
