@@ -23,10 +23,7 @@ import 'jspdf-autotable';
 import { CSVLink } from 'react-csv';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {
-  getAlertToast,
-  dateTimeFormat,
-} from '../common/helpers/functions.jsx';
+import { getAlertToast, dateTimeFormat } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
 import swal from 'sweetalert2';
 const downFileName =
@@ -284,7 +281,7 @@ class ServiceReport extends Component {
             return (
               endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
             );
-          }          
+          }
           return (
             dateToCheckTime - startDateTime > 0 ||
             endDateTime - dateToCheckTime >= 0
@@ -398,67 +395,59 @@ class ServiceReport extends Component {
                     </Col>
                   </Row>
                   <div>
-                    <Row>
-                      <Col md={3} />
-                      <Col md={6}>
-                        <center>
-                          <Form className="myform" inline>
-                            <FormGroup>
-                              <DatePicker
-                                selected={startDate}
-                                onChange={this.sdateChange}
-                                dateFormat="dd-MM-yyyy"
-                                placeholderText="Select Start Date"
-                                className="form-control mb-2"
-                                width="100%"
-                              />
-                            </FormGroup>
+                    <Form className="myform" inline>
+                      <FormGroup>
+                        <DatePicker
+                          selected={startDate}
+                          onChange={this.sdateChange}
+                          dateFormat="dd-MM-yyyy"
+                          placeholderText="Select Start Date"
+                          className="form-control mb-2"
+                          width="100%"
+                        />
+                      </FormGroup>
 
-                            <FormGroup>
-                              <DatePicker
-                                selected={endDate}
-                                onChange={this.edateChange}
-                                dateFormat="dd-MM-yyyy"
-                                placeholderText="Select End Date"
-                                className="form-control mb-2"
-                                width="100%"
-                              />
-                            </FormGroup>
+                      <FormGroup>
+                        <DatePicker
+                          selected={endDate}
+                          onChange={this.edateChange}
+                          dateFormat="dd-MM-yyyy"
+                          placeholderText="Select End Date"
+                          className="form-control mb-2"
+                          width="100%"
+                        />
+                      </FormGroup>
 
-                            <Button
-                              color="info"
-                              id="FilterTooltip"
-                              className="mb-2"
-                              onClick={this.onClickFilter}
-                            >
-                              <i className="fas fa-filter"></i>
-                            </Button>
-                            <UncontrolledTooltip
-                              placement={'top'}
-                              target={'FilterTooltip'}
-                            >
-                              Filter
-                            </UncontrolledTooltip>
+                      <Button
+                        color="info"
+                        id="FilterTooltip"
+                        className="mb-2"
+                        onClick={this.onClickFilter}
+                      >
+                        <i className="fas fa-filter"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'FilterTooltip'}
+                      >
+                        Filter
+                      </UncontrolledTooltip>
 
-                            <Button
-                              color="warning"
-                              onClick={this.resetFilter}
-                              className="mb-2"
-                              id="reset_tool"
-                            >
-                              <i className="fas fa-history"></i>
-                            </Button>
-                            <UncontrolledTooltip
-                              placement={'top'}
-                              target={'reset_tool'}
-                            >
-                              Reset
-                            </UncontrolledTooltip>
-                          </Form>
-                        </center>
-                      </Col>
-                      <Col md={3} />
-                    </Row>
+                      <Button
+                        color="warning"
+                        onClick={this.resetFilter}
+                        className="mb-2"
+                        id="reset_tool"
+                      >
+                        <i className="fas fa-history"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement={'top'}
+                        target={'reset_tool'}
+                      >
+                        Reset
+                      </UncontrolledTooltip>
+                    </Form>
                   </div>
                 </CardHeader>
 
