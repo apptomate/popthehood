@@ -374,6 +374,10 @@ export function getServiceReport() {
 //Vehicle Service Details
 export function vehicleServiceDetails(data) {
   return dispatch => {
+    dispatch({
+      type: UPDATEVEHICLESERVICE_LOADING,
+      payload: ''
+    });
     API.get(VEHICLESERVICEDETAILS_URL, { headers: authHeader(), params: data })
       .then(response => {
         dispatch({
