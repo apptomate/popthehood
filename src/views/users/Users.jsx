@@ -612,13 +612,21 @@ class Users extends React.Component {
                 <AvField
                   name="phoneNumber"
                   label="Phone Number"
-                  type="tel"
                   placeholder="Phone Number"
                   id="phoneNumber"
                   value={phoneNumber}
-                  required
                   onChange={this.onChange}
                   className="blue_label"
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: 'This field is required'
+                    },
+                    pattern: {
+                      value: '^[0-9]+$',
+                      errorMessage: 'Enter valid phone number'
+                    }
+                  }}
                 />
                 <AvField
                   name="email"

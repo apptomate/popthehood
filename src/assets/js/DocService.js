@@ -4,7 +4,7 @@ class DocService {
   createPdf = html => {
     savePDF(html, {
       paperSize: 'A4',
-      fileName: 'Service Detail.pdf',
+      fileName: 'VehicleServiceDetails.pdf',
       margin: 3,
       scale: 0.6
     });
