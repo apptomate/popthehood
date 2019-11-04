@@ -6,6 +6,7 @@ import * as Datetime from 'react-datetime';
 // import 'react-datetime/css/react-datetime.css';
 // reactstrap components
 import {
+  Progress,
   Collapse,
   UncontrolledTooltip,
   Card,
@@ -133,7 +134,6 @@ class vehicleServicepage extends Component {
           : '',
         status: update_type === 'update_status' ? 'Completed' : status
       };
-
       this.props.updateVehicleService(data, reload_data);
       this.setState({
         editScheduleModal: false
@@ -183,8 +183,7 @@ class vehicleServicepage extends Component {
   render() {
     const {
       updateVehicleServiceResponse: { loading: update_loading = '' }
-    } = this.props;
-
+    } = this.props; 
     const {
       editScheduleModal,
       requestedServiceDate,
@@ -207,7 +206,6 @@ class vehicleServicepage extends Component {
         .filter((plan, index) => parseInt(index) === 0)
         .map(plan_det => plan_det.planType);
     }
-    console.log(plan_type_data);
     const serv_det = serviceList
       .filter((serv_lst, index) => !index)
       .map(list => list);
@@ -359,25 +357,23 @@ class vehicleServicepage extends Component {
                                 </li>
                                 <li>
                                   <span> Is Email Verified</span>{' '}
-                                  <Badge
-                                    color="success"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isEmailVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
-                                </li>
-                                <li>
-                                  <span> Is Phone Number Verified</span>{' '}
-                                  <Badge
-                                    color="warning"
-                                    style={{ float: 'right' }}
-                                  >
-                                    {userInfo.isPhoneNumVerified === true
-                                      ? 'true'
-                                      : 'false'}
-                                  </Badge>
+                                  <i
+                                      className={
+                                        userInfo.isEmailVerified
+                                          ? 'far fa-check-circle color-success floatRight'
+                                          : 'far fa-times-circle color-danger floatRight'
+                                      }
+                                    />                                     
+                                                        </li>
+                                                        <li>
+                                                          <span> Is Phone Number Verified</span>{' '}
+                                                          <i
+                                      className={
+                                        userInfo.isPhoneNumVerified
+                                          ? 'far fa-check-circle color-success floatRight'
+                                          : 'far fa-times-circle color-danger floatRight'
+                                      }
+                                    />                                  
                                 </li>
                               </ul>
                             </div>
@@ -548,7 +544,17 @@ class vehicleServicepage extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {serviceList.length > 0 ? (
+                      {update_loading? (
+                        <tr>
+                        <td colSpan={5}>
+                          <center> 
+                        Loading...
+                      </center>
+                        </td>
+                      </tr>                          
+                        ) : (
+                          <Fragment>     
+                        {serviceList.length ? (
                           serviceList.map((data, index) => {
                             return (
                               <tr key={index}>
@@ -635,6 +641,7 @@ class vehicleServicepage extends Component {
                             </td>
                           </tr>
                         )}
+                        </Fragment> )}
                       </tbody>
                     </Table>
                   </Card>

@@ -189,6 +189,10 @@ class Users extends React.Component {
                   'vehicle-service-details/' + row['_original'].vehicleId
               }}
             >
+            <i
+                  className={(row['_original'].isServiceScheduled) ? 'far fa-calendar-check color-success' : 'far fa-calendar-times color-danger'}
+                  style={{ paddingRight: '5px' }}
+                ></i>{' '}
               {row['_original'].licencePlate}
             </Link>
           );
@@ -481,7 +485,6 @@ class Users extends React.Component {
         loading: loadingVehicle = ''
       }
     } = this.props;
-    console.log('Inside/', this.props.getUserVehicleDetailsResponse);
 
     const MyLoader = () => <Loader loading={loading} />;
     const MyLoaderVehicle = () => <Loader loading={loadingVehicle} />;
