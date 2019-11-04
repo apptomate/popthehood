@@ -192,10 +192,9 @@ class Users extends React.Component {
               <i
                 className={
                   row['_original'].isServiceScheduled
-                    ? 'far fa-calendar-check color-success'
-                    : 'far fa-calendar-times color-danger'
+                    ? 'far fa-calendar-check color-success licence-icon-padding'
+                    : 'far fa-calendar-times color-danger licence-icon-padding'
                 }
-                style={{ paddingRight: '5px' }}
               ></i>{' '}
               {row['_original'].licencePlate}
             </Link>
@@ -596,6 +595,7 @@ class Users extends React.Component {
             toggle={this.editToggle}
             className={this.props.className}
             centered={true}
+            backdrop={false}
           >
             <AvForm onValidSubmit={this.updateUserDetails}>
               <ModalHeader toggle={this.editToggle}> Update User</ModalHeader>
@@ -613,13 +613,21 @@ class Users extends React.Component {
                 <AvField
                   name="phoneNumber"
                   label="Phone Number"
-                  type="tel"
                   placeholder="Phone Number"
                   id="phoneNumber"
                   value={phoneNumber}
-                  required
                   onChange={this.onChange}
                   className="blue_label"
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: 'This field is required'
+                    },
+                    pattern: {
+                      value: '^[0-9]+$',
+                      errorMessage: 'Enter valid phone number'
+                    }
+                  }}
                 />
                 <AvField
                   name="email"

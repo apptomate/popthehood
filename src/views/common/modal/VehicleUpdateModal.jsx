@@ -35,6 +35,7 @@ export function VehicleUpdateModal(props) {
       toggle={props.modal_toggle_func}
       className={props.className}
       centered={true}
+      backdrop={false}
     >
       <AvForm onValidSubmit={props.updateUserVehicleDetails}>
         <ModalHeader toggle={props.modal_toggle_func}>

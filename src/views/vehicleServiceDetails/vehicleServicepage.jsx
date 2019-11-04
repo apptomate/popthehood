@@ -232,7 +232,18 @@ class vehicleServicepage extends Component {
                   <Row>
                     <Col>
                       <Row>
-                        <Col md="4" className="item-middle">
+                        <Col>
+                          <div className="licence-plate">
+                            <h4>
+                              LICENCE PLATE NO :{' '}
+                              <span>{vehicleInfo.licencePlate}</span>
+                            </h4>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md="4">
+                          {/* className="item-middle" */}
                           <div className="ServiceReport-imgcard">
                             <img
                               src={
@@ -243,13 +254,7 @@ class vehicleServicepage extends Component {
                           </div>
                         </Col>
                         <Col md="8" className="">
-                          <div className="licence-plate">
-                            <h4>
-                              LICENCE PLATE NO :{' '}
-                              <span>{vehicleInfo.licencePlate}</span>
-                            </h4>
-                          </div>
-                          <div className="card-profile shadow card mt-4 p-3">
+                          <div className="card-profile shadow card">
                             <Row>
                               <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Table hover>
@@ -324,30 +329,20 @@ class vehicleServicepage extends Component {
                               <ul className="licence-plate-userDetails">
                                 <li>
                                   <span> User Name</span>{' '}
-                                  <h5>{userInfo.name ? userInfo.name : '-'}</h5>
+                                  <h5>{userInfo.name || '-'}</h5>
                                 </li>
 
                                 <li>
                                   <span> Phone Number</span>{' '}
-                                  <h5>
-                                    {userInfo.phoneNumber
-                                      ? userInfo.phoneNumber
-                                      : '-'}
-                                  </h5>
+                                  <h5>{userInfo.phoneNumber || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> E-mail</span>{' '}
-                                  <h5>
-                                    {userInfo.email ? userInfo.email : '-'}
-                                  </h5>
+                                  <h5>{userInfo.email || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> Address</span>{' '}
-                                  <h5>
-                                    {userInfo.locationFullAddress
-                                      ? userInfo.locationFullAddress
-                                      : '-'}
-                                  </h5>
+                                  <h5>{userInfo.locationFullAddress || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> Is Email Verified</span>{' '}
@@ -446,9 +441,7 @@ class vehicleServicepage extends Component {
                               <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
-                              <span>
-                                {plan_type_data[0] ? plan_type_data[0] : '-'}
-                              </span>
+                              <span>{plan_type_data[0] || '-'}</span>
                             </Col>
                           </Row>
                         </Card>
@@ -482,16 +475,13 @@ class vehicleServicepage extends Component {
                                     planInfoList.map((plan_data, index) => (
                                       <tr key={index}>
                                         <td>
-                                          {plan_data.serviceNameList
-                                            ? plan_data.serviceNameList
-                                            : '-'}
+                                          {plan_data.serviceNameList || '-'}
                                         </td>
                                         <td>
                                           <Fragment>
                                             <span id={'desc_' + index}>
-                                              {plan_data.serviceDescription
-                                                ? plan_data.serviceDescription
-                                                : '-'}
+                                              {plan_data.serviceDescription ||
+                                                '-'}
                                             </span>
                                             <UncontrolledTooltip
                                               placement="left"
@@ -644,13 +634,17 @@ class vehicleServicepage extends Component {
                             </td>
                           ) : (
                             <Fragment>
-                              <th scope="row">{paymentinfo.paymentDate}</th>
-                              <td>{paymentinfo.paymentType}</td>
-                              <td>{paymentinfo.paymentStatus}</td>
-                              <td>{paymentinfo.totalAmount}</td>
-                              <td>{paymentinfo.promocode_ReducedAmount}</td>
-                              <td>{paymentinfo.paid}</td>
-                              <td>{paymentinfo.due}</td>
+                              <th scope="row">
+                                {paymentinfo.paymentDate || '-'}
+                              </th>
+                              <td>{paymentinfo.paymentType || '-'}</td>
+                              <td>{paymentinfo.paymentStatus || '-'}</td>
+                              <td>{paymentinfo.totalAmount || '-'}</td>
+                              <td>
+                                {paymentinfo.promocode_ReducedAmount || '-'}
+                              </td>
+                              <td>{paymentinfo.paid || '-'}</td>
+                              <td>{paymentinfo.due || '-'}</td>
                             </Fragment>
                           )}
                         </tr>
@@ -665,6 +659,7 @@ class vehicleServicepage extends Component {
             className="modal-dialog-centered"
             isOpen={editScheduleModal}
             toggle={this.editShedule}
+            backdrop={false}
           >
             <div className="modal-header">
               <h4 className="modal-title" id="modal-title-default">
