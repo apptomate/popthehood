@@ -183,7 +183,7 @@ class vehicleServicepage extends Component {
   render() {
     const {
       updateVehicleServiceResponse: { loading: update_loading = '' }
-    } = this.props; console.log('Load:/',update_loading);
+    } = this.props; 
     const {
       editScheduleModal,
       requestedServiceDate,

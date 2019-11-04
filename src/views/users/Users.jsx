@@ -485,7 +485,6 @@ class Users extends React.Component {
         loading: loadingVehicle = ''
       }
     } = this.props;
-    console.log('Inside/', this.props.getUserVehicleDetailsResponse);
 
     const MyLoader = () => <Loader loading={loading} />;
     const MyLoaderVehicle = () => <Loader loading={loadingVehicle} />;

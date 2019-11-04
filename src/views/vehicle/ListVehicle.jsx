@@ -229,8 +229,7 @@ class ListVehicle extends Component {
             currentRecords[index][this.columns[colIndex].accessor]
           ).replace(',', '');
         }
-      }
-      // console.error(record_to_download);
+      }      
       data_array.push(record_to_download);
     }
     var doc = new jsPDF('P', 'px', 'a4');
