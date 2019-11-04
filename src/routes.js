@@ -8,7 +8,6 @@ import ServiceReport from './views/serviceReport/ServiceReport';
 import vehicleServicepage from './views/vehicleServiceDetails/vehicleServicepage';
 import Dashboard from './views/dashboard/Dashboard';
 import PageNotFound from './views/common/PageNotFound';
-import AuthPageNotFound from './views/common/AuthPageNotFound';
 var routes = [
   {
     path: '/index',
