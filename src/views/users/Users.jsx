@@ -500,7 +500,7 @@ class Users extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Users List</h3>
+                  <h3 className="mb-0">Users</h3>
                 </CardHeader>
                 <ReactTable
                   expanded={expanded}
