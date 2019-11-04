@@ -410,6 +410,7 @@ class ServiceReport extends Component {
                           placeholderText="Select Start Date"
                           className="form-control mb-2"
                           width="100%"
+                          maxDate={endDate}
                         />
                       </FormGroup>
 
@@ -421,6 +422,7 @@ class ServiceReport extends Component {
                           placeholderText="Select End Date"
                           className="form-control mb-2"
                           width="100%"
+                          minDate={startDate}
                         />
                       </FormGroup>
 

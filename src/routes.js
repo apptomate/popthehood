@@ -87,6 +87,7 @@ var routes = [
     showNavbar: false
   },
   {
+    path: '*',
     name: '404 page',
     component: PageNotFound,
     layout: '/admin',
