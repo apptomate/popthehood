@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { getServiceReport } from '../../redux/actions/Index.jsx';
+import swal from 'sweetalert2';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
 import 'react-table/react-table.css';
@@ -25,7 +26,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getAlertToast, dateTimeFormat } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
-import swal from 'sweetalert2';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
 class ServiceReport extends Component {
@@ -103,7 +103,12 @@ class ServiceReport extends Component {
         Filter: ({ filter, onChange }) => (
           <select
             name="statusFilter"
-            onChange={event => onChange(event.target.value)}
+            onChange={event => {
+              this.setState({
+                filterFromPrevious: false
+              });
+              onChange(event.target.value);
+            }}
             style={{ width: '100%' }}
             value={
               filter
@@ -241,7 +246,7 @@ class ServiceReport extends Component {
       ],
       columnStyles: {
         0: { cellWidth: 30 },
-        1: { cellWidth: 45 },
+        1: { cellWidth: 60 },
         2: { cellWidth: 45 },
         3: { cellWidth: 45 },
         4: { cellWidth: 45 },
@@ -283,7 +288,7 @@ class ServiceReport extends Component {
             );
           }
           return (
-            dateToCheckTime - startDateTime > 0 ||
+            dateToCheckTime - startDateTime >= 0 ||
             endDateTime - dateToCheckTime >= 0
           );
         });
@@ -308,7 +313,8 @@ class ServiceReport extends Component {
     this.setState({
       endDate: '',
       startDate: '',
-      filter: false
+      filter: false,
+      filterFromPrevious: false
     });
   }
   render() {
