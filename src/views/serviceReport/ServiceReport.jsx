@@ -175,24 +175,7 @@ class ServiceReport extends Component {
       }
     ];
   }
-  componentDidMount() {
-    this.props.getServiceReport();
-    let { services = [] } = this.props.Services;
-    if (this.props.location && this.props.location.state) {
-      let { isFilter, filterBy } = this.props.location.state;
-      let data = [],
-        filter = false;
-      if (isFilter && filterBy === 'ON_DUE') {
-        filter = true;
-        data = services.filter(service => service.status === 'On Due');
-      }
-      this.setState({
-        filterData: data,
-        filterFromPrevious: filter
-      });
-      this.props.history.replace({ state: {} });
-    }
-  }
+
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -317,24 +300,50 @@ class ServiceReport extends Component {
       filterFromPrevious: false
     });
   }
+
+  componentDidMount() {
+    if (this.props.location && this.props.location.state) {
+      let { isFilter, filterBy } = this.props.location.state;
+      if (isFilter && filterBy === 'ON_DUE') {
+        this.props.getServiceReport(true);
+      }
+      this.props.history.replace({ state: {} });
+    } else {
+      this.props.getServiceReport(false);
+    }
+  }
+  componentDidUpdate(prevProps) {
+    const { Services = [] } = this.props;
+    let { services = [] } = Services;
+    let data = [];
+    if (prevProps.Services.filter !== Services.filter) {
+      if (services && Services.filter) {
+        data = services.filter(service => service.status === 'On Due');
+      }
+      this.setState({
+        filterData: data,
+        filterFromPrevious: Services.filter
+      });
+    }
+  }
+
   render() {
     const { Services = [] } = this.props;
+    let { services = [] } = Services;
     let {
-      filter = false,
       startDate,
       endDate,
       dataToDownload,
-      filterData,
-      filterFromPrevious
+      filter,
+      filterFromPrevious,
+      filterData
     } = this.state;
     const MyLoader = () => <Loader loading={Services.loading} />;
-    let data;
+    let data = [];
     if (filter || filterFromPrevious) {
       data = filterData || [];
-    } else if (Services.services) {
-      data = Services.services;
     } else {
-      data = [];
+      data = services;
     }
     return (
       <Fragment>
@@ -347,7 +356,7 @@ class ServiceReport extends Component {
                 <CardHeader className="border-0">
                   <Row>
                     <Col>
-                      <h3 className="mb-0">Service Report</h3>
+                      <h3 className="mb-0">Services Report</h3>
                     </Col>
                     <Col>
                       {data.length > 0 ? (

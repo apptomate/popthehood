@@ -334,23 +334,15 @@ class vehicleServicepage extends Component {
 
                                 <li>
                                   <span> Phone Number</span>{' '}
-                                  <h5>
-                                    {userInfo.phoneNumber
-                                      || '-'}
-                                  </h5>
+                                  <h5>{userInfo.phoneNumber || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> E-mail</span>{' '}
-                                  <h5>
-                                    {userInfo.email || '-'}
-                                  </h5>
+                                  <h5>{userInfo.email || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> Address</span>{' '}
-                                  <h5>
-                                    {userInfo.locationFullAddress
-                                      || '-'}
-                                  </h5>
+                                  <h5>{userInfo.locationFullAddress || '-'}</h5>
                                 </li>
                                 <li>
                                   <span> Is Email Verified</span>{' '}
@@ -449,9 +441,7 @@ class vehicleServicepage extends Component {
                               <Button className="btn btn-default btn-sm pointerStyle ">
                                 Plan Type
                               </Button>
-                              <span>
-                                {plan_type_data[0] || '-'}
-                              </span>
+                              <span>{plan_type_data[0] || '-'}</span>
                             </Col>
                           </Row>
                         </Card>
@@ -485,14 +475,13 @@ class vehicleServicepage extends Component {
                                     planInfoList.map((plan_data, index) => (
                                       <tr key={index}>
                                         <td>
-                                          {plan_data.serviceNameList
-                                            || '-'}
+                                          {plan_data.serviceNameList || '-'}
                                         </td>
                                         <td>
                                           <Fragment>
                                             <span id={'desc_' + index}>
-                                              {plan_data.serviceDescription
-                                                || '-'}
+                                              {plan_data.serviceDescription ||
+                                                '-'}
                                             </span>
                                             <UncontrolledTooltip
                                               placement="left"
@@ -645,11 +634,15 @@ class vehicleServicepage extends Component {
                             </td>
                           ) : (
                             <Fragment>
-                              <th scope="row">{paymentinfo.paymentDate || '-'}</th>
+                              <th scope="row">
+                                {paymentinfo.paymentDate || '-'}
+                              </th>
                               <td>{paymentinfo.paymentType || '-'}</td>
                               <td>{paymentinfo.paymentStatus || '-'}</td>
                               <td>{paymentinfo.totalAmount || '-'}</td>
-                              <td>{paymentinfo.promocode_ReducedAmount || '-'}</td>
+                              <td>
+                                {paymentinfo.promocode_ReducedAmount || '-'}
+                              </td>
                               <td>{paymentinfo.paid || '-'}</td>
                               <td>{paymentinfo.due || '-'}</td>
                             </Fragment>
