@@ -23,8 +23,8 @@ class AdminNavbar extends React.Component {
     window.location.href = '/auth/login';
   }
   render() {
-    const { user = {} } = this.props.loginData;
-    const { name = '' } = user;
+    let { user } = this.props.loginData;
+    let { name = '' } = user || {};
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -63,7 +63,7 @@ class AdminNavbar extends React.Component {
 
 const getState = state => {
   return {
-    loginData: state.authLogin || []
+    loginData: state.authLogin || {}
   };
 };
 export default connect(getState)(AdminNavbar);
