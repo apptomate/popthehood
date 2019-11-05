@@ -28,6 +28,7 @@ import { getAlertToast, dateTimeFormat } from '../common/helpers/functions.jsx';
 import { FormGroup } from 'reactstrap';
 const downFileName =
   'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+let serviceDateColumn;
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
@@ -159,19 +160,32 @@ class ServiceReport extends Component {
         accessor: 'requestedServiceDate',
         filterable: false,
         className: 'text-left',
-        Cell: ({ row }) => (
-          <Fragment>
-            {row['_original'].status === 'Completed'
+        Cell: ({ row }) => {
+          serviceDateColumn =
+            row['_original'].status === 'Completed'
               ? moment(
                 row['_original'].serviceOutDate,
                 'DD/MM/YYYY HH:mm:ss'
-              ).format('DD/MM/YYYY')
+              ).format('DD/MM/YYYY HH:mm:ss')
               : moment(
                 row['_original'].requestedServiceDate,
                 'DD/MM/YYYY HH:mm:ss'
-              ).format('DD/MM/YYYY')}
-          </Fragment>
-        )
+              ).format('DD/MM/YYYY HH:mm:ss');
+          return (
+            <Fragment>
+              <span id={'serviceDate_' + row['_index']}>
+                {' '}
+                {serviceDateColumn}
+              </span>
+              <UncontrolledTooltip
+                placement="left"
+                target={'serviceDate_' + row['_index']}
+              >
+                {serviceDateColumn}
+              </UncontrolledTooltip>
+            </Fragment>
+          );
+        }
       }
     ];
   }
@@ -229,13 +243,13 @@ class ServiceReport extends Component {
       ],
       columnStyles: {
         0: { cellWidth: 30 },
-        1: { cellWidth: 60 },
+        1: { cellWidth: 50 },
         2: { cellWidth: 45 },
         3: { cellWidth: 45 },
         4: { cellWidth: 45 },
-        5: { cellWidth: 60 },
+        5: { cellWidth: 50 },
         6: { cellWidth: 45 },
-        7: { cellWidth: 45 }
+        7: { cellWidth: 35 }
       },
       margin: {
         top: 8,
@@ -278,7 +292,11 @@ class ServiceReport extends Component {
       } else {
         filter = false;
       }
-      this.setState({ filter: filter, filterData: services,filterFromPrevious:false });
+      this.setState({
+        filter: filter,
+        filterData: services,
+        filterFromPrevious: false
+      });
     }
   }
   sdateChange(date) {
