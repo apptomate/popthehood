@@ -30,6 +30,7 @@ import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
 const downFileName =
   'VehiclesList-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+let nextServiceDateColumn;
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
@@ -115,8 +116,26 @@ class ListVehicle extends Component {
         Header: 'Next Service',
         accessor: 'nextService',
         className: 'text-left',
-        Cell: row => {
-          return dateTimeFormat(row.value, 'DD/MM/YYYY HH:MM:SS');
+        Cell: ({ row }) => {
+          nextServiceDateColumn = dateTimeFormat(
+            row['_original'].nextService,
+            'DD/MM/YYYY HH:mm:ss'
+          );
+
+          return (
+            <Fragment>
+              <span id={'nextServiceDate_' + row['_original'].vehicleId}>
+                {' '}
+                {nextServiceDateColumn}
+              </span>
+              <UncontrolledTooltip
+                placement="left"
+                target={'nextServiceDate_' + row['_original'].vehicleId}
+              >
+                {nextServiceDateColumn}
+              </UncontrolledTooltip>
+            </Fragment>
+          );
         }
       },
       {
@@ -205,11 +224,18 @@ class ListVehicle extends Component {
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
+    let dateToFormat;
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length - 1; colIndex++) {
+        dateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
         if (colIndex === 0) {
           record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else if (this.columns[colIndex].Header === 'Next Service') {
+          record_to_download['Next Service'] = dateToFormat;
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]
@@ -226,11 +252,18 @@ class ListVehicle extends Component {
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
+    let dateToFormat;
     for (var index = 0; index < currentRecords.length - 1; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
+        dateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
         if (colIndex === 0) {
           record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else if (this.columns[colIndex].Header === 'Next Service') {
+          record_to_download['Next Service'] = dateToFormat;
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]

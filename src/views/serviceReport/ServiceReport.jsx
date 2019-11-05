@@ -239,17 +239,20 @@ class ServiceReport extends Component {
         { header: 'Status', dataKey: 'Status' },
         { header: 'Plan Type', dataKey: 'Plan Type' },
         { header: 'Due Amount', dataKey: 'Due Amount' },
-        { header: 'Paid Amount', dataKey: 'Paid Amount' }
+        { header: 'Paid Amount', dataKey: 'Paid Amount' },
+        { header: 'Service Date', dataKey: 'Service Date' }
       ],
       columnStyles: {
         0: { cellWidth: 30 },
         1: { cellWidth: 50 },
         2: { cellWidth: 45 },
         3: { cellWidth: 45 },
-        4: { cellWidth: 45 },
+        4: { cellWidth: 30 },
         5: { cellWidth: 50 },
-        6: { cellWidth: 45 },
-        7: { cellWidth: 35 }
+        6: { cellWidth: 60 },
+        7: { cellWidth: 35 },
+        8: { cellWidth: 35 },
+        9: { cellWidth: 45 }
       },
       margin: {
         top: 8,
