@@ -312,7 +312,7 @@ class ServiceReport extends Component {
       this.props.getServiceReport(false);
     }
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { Services = [] } = this.props;
     let { services = [] } = Services;
     let data = [];
