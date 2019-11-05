@@ -117,6 +117,7 @@ class ListVehicle extends Component {
         Header: 'Due Service',
         accessor: 'dueService',
         className: 'text-left',
+        filterable: false,
         Cell: ({ row }) => {
           dueService = dateTimeFormat(
             row['_original'].dueService,
@@ -143,6 +144,7 @@ class ListVehicle extends Component {
         Header: 'Next Service',
         accessor: 'nextService',
         className: 'text-left',
+        filterable: false,
         Cell: ({ row }) => {
           nextServiceDateColumn = dateTimeFormat(
             row['_original'].nextService,
