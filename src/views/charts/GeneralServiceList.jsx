@@ -78,7 +78,9 @@ class GeneralServiceList extends Component {
                       fill={
                         entry.serviceStatus === 'Completed'
                           ? '#03C03C'
-                          : '#E30022'
+                          : entry.serviceStatus === 'UpComing'
+                            ? ' #fcc200'
+                            : '#E30022'
                       }
                     />
                   ))}

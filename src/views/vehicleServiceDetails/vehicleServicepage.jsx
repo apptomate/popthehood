@@ -173,7 +173,15 @@ class vehicleServicepage extends Component {
     this.pdfExportComponent.save();
   };
 
-  createPdf = html => Doc.createPdf(html);
+  createPdf = (html, number) => {
+    const pdfMeta = {
+      paperSize: 'A4',
+      fileName: `Vehicle_${number}.pdf`,
+      margin: 3,
+      scale: 0.6
+    };
+    Doc.createPdf(html, pdfMeta);
+  };
   render() {
     const {
       updateVehicleServiceResponse: { loading: update_loading = '' }
@@ -228,7 +236,7 @@ class vehicleServicepage extends Component {
           <Row>
             <div className="col">
               <Card className="shadow p-4">
-                <PdfContainer createPdf={this.createPdf}>
+                <PdfContainer createPdf={ (e) => this.createPdf(e, vehicleInfo.licencePlate)}>
                   <Row>
                     <Col>
                       <Row>

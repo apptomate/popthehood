@@ -30,6 +30,8 @@ import { VehicleUpdateModal } from '../common/modal/VehicleUpdateModal';
 
 const downFileName =
   'VehiclesList-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+let nextServiceDateColumn;
+let dueService;
 class ListVehicle extends Component {
   constructor(props) {
     super(props);
@@ -112,11 +114,57 @@ class ListVehicle extends Component {
         )
       },
       {
+        Header: 'Due Service',
+        accessor: 'dueService',
+        className: 'text-left',
+        filterable: false,
+        Cell: ({ row }) => {
+          dueService = dateTimeFormat(
+            row['_original'].dueService,
+            'DD/MM/YYYY HH:mm:ss'
+          );
+
+          return (
+            <Fragment>
+              <span id={'dueService_' + row['_original'].vehicleId}>
+                {' '}
+                {dueService}
+              </span>
+              <UncontrolledTooltip
+                placement="left"
+                target={'dueService_' + row['_original'].vehicleId}
+              >
+                {dueService}
+              </UncontrolledTooltip>
+            </Fragment>
+          );
+        }
+      },
+      {
         Header: 'Next Service',
         accessor: 'nextService',
         className: 'text-left',
-        Cell: row => {
-          return dateTimeFormat(row.value, 'DD/MM/YYYY HH:MM:SS');
+        filterable: false,
+        Cell: ({ row }) => {
+          nextServiceDateColumn = dateTimeFormat(
+            row['_original'].nextService,
+            'DD/MM/YYYY HH:mm:ss'
+          );
+
+          return (
+            <Fragment>
+              <span id={'nextServiceDate_' + row['_original'].vehicleId}>
+                {' '}
+                {nextServiceDateColumn}
+              </span>
+              <UncontrolledTooltip
+                placement="left"
+                target={'nextServiceDate_' + row['_original'].vehicleId}
+              >
+                {nextServiceDateColumn}
+              </UncontrolledTooltip>
+            </Fragment>
+          );
         }
       },
       {
@@ -205,11 +253,25 @@ class ListVehicle extends Component {
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
+    let dateToFormat;
+    let dueDateToFormat;
     for (var index = 0; index < currentRecords.length; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length - 1; colIndex++) {
+        dateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
+        dueDateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
         if (colIndex === 0) {
           record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else if (this.columns[colIndex].Header === 'Next Service') {
+          record_to_download['Next Service'] = dateToFormat;
+        } else if (this.columns[colIndex].Header === 'Due Service') {
+          record_to_download['Due Service'] = dueDateToFormat;
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]
@@ -226,11 +288,25 @@ class ListVehicle extends Component {
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
+    let dateToFormat;
+    let dueDateToFormat;
     for (var index = 0; index < currentRecords.length - 1; index++) {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
+        dateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
+        dueDateToFormat = dateTimeFormat(
+          currentRecords[index][this.columns[colIndex].accessor],
+          'DD/MM/YYYY HH:mm:ss'
+        );
         if (colIndex === 0) {
           record_to_download['Serial No'] = String(index + 1).replace(',', '');
+        } else if (this.columns[colIndex].Header === 'Next Service') {
+          record_to_download['Next Service'] = dateToFormat;
+        } else if (this.columns[colIndex].Header === 'Due Service') {
+          record_to_download['Due Service'] = dueDateToFormat;
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]
@@ -249,16 +325,18 @@ class ListVehicle extends Component {
         { header: 'Model', dataKey: 'Model' },
         { header: 'User Name', dataKey: 'User Name' },
         { header: 'Location', dataKey: 'Location' },
+        { header: 'Due Service', dataKey: 'Due Service' },
         { header: 'Next Service', dataKey: 'Next Service' }
       ],
       columnStyles: {
         0: { cellWidth: 30 },
-        1: { cellWidth: 60 },
-        2: { cellWidth: 60 },
-        3: { cellWidth: 60 },
-        4: { cellWidth: 70 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 40 },
+        4: { cellWidth: 50 },
         5: { cellWidth: 100 },
-        6: { cellWidth: 50 }
+        6: { cellWidth: 50 },
+        7: { cellWidth: 50 }
       },
       margin: {
         top: 8,
