@@ -278,7 +278,11 @@ class ServiceReport extends Component {
       } else {
         filter = false;
       }
-      this.setState({ filter: filter, filterData: services,filterFromPrevious:false });
+      this.setState({
+        filter: filter,
+        filterData: services,
+        filterFromPrevious: false
+      });
     }
   }
   sdateChange(date) {
@@ -306,6 +310,8 @@ class ServiceReport extends Component {
       let { isFilter, filterBy } = this.props.location.state;
       if (isFilter && filterBy === 'ON_DUE') {
         this.props.getServiceReport(true);
+      } else {
+        this.props.getServiceReport(false);
       }
       this.props.history.replace({ state: {} });
     } else {
