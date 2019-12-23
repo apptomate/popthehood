@@ -123,8 +123,8 @@ class vehicleServicepage extends Component {
         comments: comments,
         serviceOutDate: serviceOutDate
           ? moment(serviceOutDate, 'DD/MM/YYYY HH:mm:ss').format(
-            'YYYY/MM/DD HH:mm:ss'
-          )
+              'YYYY/MM/DD HH:mm:ss'
+            )
           : '',
         status: update_type === 'update_status' ? 'Completed' : status
       };
@@ -232,16 +232,18 @@ class vehicleServicepage extends Component {
       <>
         <UserHeader />
         {/* Page content */}
-        <Container className="mt--7">
+        <Container className='mt--7'>
           <Row>
-            <div className="col">
-              <Card className="shadow p-4">
-                <PdfContainer createPdf={ (e) => this.createPdf(e, vehicleInfo.licencePlate)}>
+            <div className='col'>
+              <Card className='shadow p-4'>
+                <PdfContainer
+                  createPdf={e => this.createPdf(e, vehicleInfo.licencePlate)}
+                >
                   <Row>
                     <Col>
                       <Row>
                         <Col>
-                          <div className="licence-plate">
+                          <div className='licence-plate'>
                             <h4>
                               LICENCE PLATE NO :{' '}
                               <span>{vehicleInfo.licencePlate}</span>
@@ -250,10 +252,11 @@ class vehicleServicepage extends Component {
                         </Col>
                       </Row>
                       <Row>
-                        <Col md="4">
+                        <Col md='4'>
                           {/* className="item-middle" */}
-                          <div className="ServiceReport-imgcard">
+                          <div className='ServiceReport-imgcard'>
                             <img
+                              alt='no data'
                               src={
                                 vehicleInfo.vehicleImageURL || imageNotAvailable
                               }
@@ -261,62 +264,62 @@ class vehicleServicepage extends Component {
                             />
                           </div>
                         </Col>
-                        <Col md="8" className="">
-                          <div className="card-profile shadow card">
+                        <Col md='8' className=''>
+                          <div className='card-profile shadow card'>
                             <Row>
-                              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                              <Col sm='12' md={{ size: 6, offset: 3 }}>
                                 <Table hover>
                                   <tbody>
                                     <tr>
-                                      <th scope="row">
-                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
+                                      <th scope='row'>
+                                        <Badge className='badge-default licence-list-badge licence-pdf-badge'>
                                           Model
                                         </Badge>
                                       </th>
                                       <td>
                                         {' '}
-                                        <span className="licenceplate-pdf-right-value">
+                                        <span className='licenceplate-pdf-right-value'>
                                           {vehicleInfo.model}
                                         </span>
                                       </td>
                                     </tr>
                                     <tr>
-                                      <th scope="row">
+                                      <th scope='row'>
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
+                                        <Badge className='badge-default licence-list-badge licence-pdf-badge'>
                                           Make
                                         </Badge>
                                       </th>
                                       <td>
                                         {' '}
-                                        <span className="licenceplate-pdf-right-value">
+                                        <span className='licenceplate-pdf-right-value'>
                                           {vehicleInfo.make}
                                         </span>
                                       </td>
                                     </tr>
                                     <tr>
-                                      <th scope="row">
+                                      <th scope='row'>
                                         {' '}
-                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
+                                        <Badge className='badge-default licence-list-badge licence-pdf-badge'>
                                           Year
                                         </Badge>
                                       </th>
                                       <td>
                                         {' '}
-                                        <span className="licenceplate-pdf-right-value">
+                                        <span className='licenceplate-pdf-right-value'>
                                           {vehicleInfo.year}
                                         </span>
                                       </td>
                                     </tr>
                                     <tr>
-                                      <th scope="row">
-                                        <Badge className="badge-default licence-list-badge licence-pdf-badge">
+                                      <th scope='row'>
+                                        <Badge className='badge-default licence-list-badge licence-pdf-badge'>
                                           Color
                                         </Badge>
                                       </th>
                                       <td>
                                         {' '}
-                                        <span className="licenceplate-pdf-right-value">
+                                        <span className='licenceplate-pdf-right-value'>
                                           {vehicleInfo.color}
                                         </span>
                                       </td>
@@ -330,11 +333,11 @@ class vehicleServicepage extends Component {
                       </Row>
 
                       <Row>
-                        <Col md="6">
+                        <Col md='6'>
                           {/* User Name details */}
-                          <div className="card-profile shadow card mt-4">
-                            <div className="pt-0 pt-md-4 card-body">
-                              <ul className="licence-plate-userDetails">
+                          <div className='card-profile shadow card mt-4'>
+                            <div className='pt-0 pt-md-4 card-body'>
+                              <ul className='licence-plate-userDetails'>
                                 <li>
                                   <span> User Name</span>{' '}
                                   <h5>{userInfo.name || '-'}</h5>
@@ -376,12 +379,12 @@ class vehicleServicepage extends Component {
                             </div>
                           </div>
                         </Col>
-                        <Col md="6">
-                          <div className="card-profile shadow card mt-4 p-3">
-                            <ul className="licence-plate-userDetails">
+                        <Col md='6'>
+                          <div className='card-profile shadow card mt-4 p-3'>
+                            <ul className='licence-plate-userDetails'>
                               <li>
                                 <span> Remainder Minutes</span>
-                                <Button className="float-right btn btn-default btn-sm">
+                                <Button className='float-right btn btn-default btn-sm'>
                                   {!serv_det.remainderMinutes
                                     ? '0'
                                     : serv_det.remainderMinutes}{' '}
@@ -402,9 +405,9 @@ class vehicleServicepage extends Component {
                                     : 'Not-Accepted'}
                                 </Button>
                               </li>
-                              <li className="mb-1">
+                              <li className='mb-1'>
                                 <span>Location</span>
-                                <div className="map-view">
+                                <div className='map-view'>
                                   {lat && lng ? (
                                     <GoogleMapReact
                                       bootstrapURLKeys={{
@@ -438,15 +441,15 @@ class vehicleServicepage extends Component {
                     </Col>
                   </Row>
                   {/* Service Details */}
-                  <Card className="shadow mt-5" body>
+                  <Card className='shadow mt-5' body>
                     <h3>Service Details</h3>
 
                     <Row>
                       <Col>
-                        <Card className="shadow mt-3" body>
-                          <Row className="Vehicle-Service-plantype">
+                        <Card className='shadow mt-3' body>
+                          <Row className='Vehicle-Service-plantype'>
                             <Col>
-                              <Button className="btn btn-default btn-sm pointerStyle ">
+                              <Button className='btn btn-default btn-sm pointerStyle '>
                                 Plan Type
                               </Button>
                               <span>{plan_type_data[0] || '-'}</span>
@@ -458,10 +461,10 @@ class vehicleServicepage extends Component {
 
                     <Row>
                       <Col>
-                        <Card className="shadow mt-3" body>
+                        <Card className='shadow mt-3' body>
                           <Row>
                             <Col>
-                              <Button className="btn btn-default btn-sm mb-1 pointerStyle">
+                              <Button className='btn btn-default btn-sm mb-1 pointerStyle'>
                                 Services
                               </Button>
                             </Col>
@@ -469,13 +472,13 @@ class vehicleServicepage extends Component {
                           <Row>
                             <Col>
                               <Table
-                                className="align-items-center table-flush"
+                                className='align-items-center table-flush'
                                 responsive
                               >
-                                <thead className="thead-light">
+                                <thead className='thead-light'>
                                   <tr>
-                                    <th scope="col">Serives</th>
-                                    <th scope="col">Description</th>
+                                    <th scope='col'>Serives</th>
+                                    <th scope='col'>Description</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -492,7 +495,7 @@ class vehicleServicepage extends Component {
                                                 '-'}
                                             </span>
                                             <UncontrolledTooltip
-                                              placement="left"
+                                              placement='left'
                                               target={'desc_' + index}
                                             >
                                               {plan_data.serviceDescription}
@@ -517,20 +520,20 @@ class vehicleServicepage extends Component {
                     </Row>
                   </Card>
                   {/* Subscription Schedules */}
-                  <Card className="shadow mt-5" body>
-                    <h3 className="mb-3">Subscription Schedules</h3>
+                  <Card className='shadow mt-5' body>
+                    <h3 className='mb-3'>Subscription Schedules</h3>
                     <Table
-                      className="align-items-center table-flush "
+                      className='align-items-center table-flush '
                       responsive
                     >
-                      <thead className="thead-light">
+                      <thead className='thead-light'>
                         <tr>
                           {serv_list_column.map((column_head, index) => (
-                            <th key={index} scope="col">
+                            <th key={index} scope='col'>
                               {column_head}
                             </th>
                           ))}
-                          <th scope="col" />
+                          <th scope='col' />
                         </tr>
                       </thead>
                       <tbody>
@@ -546,9 +549,7 @@ class vehicleServicepage extends Component {
                               serviceList.map((data, index) => {
                                 return (
                                   <tr key={index}>
-                                    <td scope="row">
-                                      {data.requestedServiceDate}
-                                    </td>
+                                    <td>{data.requestedServiceDate}</td>
                                     <td>
                                       <Fragment>
                                         <span
@@ -557,7 +558,7 @@ class vehicleServicepage extends Component {
                                           {data.serviceName}
                                         </span>
                                         <UncontrolledTooltip
-                                          placement="left"
+                                          placement='left'
                                           target={'schedule_' + data.scheduleID}
                                         >
                                           {data.serviceName}
@@ -573,19 +574,19 @@ class vehicleServicepage extends Component {
                                           {data.comments}
                                         </span>
                                         <UncontrolledTooltip
-                                          placement="left"
+                                          placement='left'
                                           target={'comments_' + data.scheduleID}
                                         >
                                           {data.comments}
                                         </UncontrolledTooltip>
                                       </Fragment>
                                     </td>
-                                    <td className="text-right">
+                                    <td className='text-right'>
                                       {data.status !== 'Completed' ? (
                                         <Button
-                                          color="primary"
-                                          size="sm"
-                                          type="button"
+                                          color='primary'
+                                          size='sm'
+                                          type='button'
                                           data-schedule_id={data.scheduleID}
                                           data-requested_service_date={
                                             data.requestedServiceDate
@@ -597,7 +598,7 @@ class vehicleServicepage extends Component {
                                           data-status={data.status}
                                           onClick={this.editShedule}
                                         >
-                                          <i className="fas fa-edit"></i> Edit
+                                          <i className='fas fa-edit'></i> Edit
                                         </Button>
                                       ) : (
                                         ''
@@ -619,16 +620,16 @@ class vehicleServicepage extends Component {
                     </Table>
                   </Card>
                   {/* Payment History */}
-                  <Card className="shadow mt-5" body>
-                    <h3 className="mb-3">Payment History</h3>
+                  <Card className='shadow mt-5' body>
+                    <h3 className='mb-3'>Payment History</h3>
                     <Table
-                      className="align-items-center table-flush"
+                      className='align-items-center table-flush'
                       responsive
                     >
-                      <thead className="thead-light">
+                      <thead className='thead-light'>
                         <tr>
                           {payment_tbl_column.map((column, index) => (
-                            <th key={index} scope="col">
+                            <th key={index} scope='col'>
                               {column}
                             </th>
                           ))}
@@ -642,7 +643,7 @@ class vehicleServicepage extends Component {
                             </td>
                           ) : (
                             <Fragment>
-                              <th scope="row">
+                              <th scope='row'>
                                 {paymentinfo.paymentDate || '-'}
                               </th>
                               <td>{paymentinfo.paymentType || '-'}</td>
@@ -664,26 +665,26 @@ class vehicleServicepage extends Component {
             </div>
           </Row>
           <Modal
-            className="modal-dialog-centered"
+            className='modal-dialog-centered'
             isOpen={editScheduleModal}
             toggle={this.editShedule}
             backdrop={false}
           >
-            <div className="modal-header">
-              <h4 className="modal-title" id="modal-title-default">
+            <div className='modal-header'>
+              <h4 className='modal-title' id='modal-title-default'>
                 Update Schedule
               </h4>
               <button
-                aria-label="Close"
-                className="close"
-                data-dismiss="modal"
-                type="button"
+                aria-label='Close'
+                className='close'
+                data-dismiss='modal'
+                type='button'
                 onClick={this.editShedule}
               >
                 <span aria-hidden={true}>×</span>
               </button>
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               <AvForm
                 onValidSubmit={() =>
                   this.updateVehicleServiceDetails('update_date')
@@ -693,16 +694,16 @@ class vehicleServicepage extends Component {
                   <Col md={9}>
                     <label>Requested Service Date</label>
                     <Datetime
-                      name="requestedServiceDate"
+                      name='requestedServiceDate'
                       onChange={this.handleInput}
-                      dateFormat="DD/MM/YYYY"
-                      timeFormat="HH:mm:ss"
+                      dateFormat='DD/MM/YYYY'
+                      timeFormat='HH:mm:ss'
                       value={requestedServiceDate}
                       required
                     />
                   </Col>
-                  <Col md={3} className="updateScheduleSubmit">
-                    <Button color="success">Update</Button>
+                  <Col md={3} className='updateScheduleSubmit'>
+                    <Button color='success'>Update</Button>
                   </Col>
                 </Row>
               </AvForm>
@@ -710,7 +711,7 @@ class vehicleServicepage extends Component {
               <Fragment>
                 <center>
                   <hr />
-                  <Button color="primary" onClick={this.completeSchedule}>
+                  <Button color='primary' onClick={this.completeSchedule}>
                     Complete Schedule{' '}
                   </Button>
                   <br />
@@ -720,17 +721,17 @@ class vehicleServicepage extends Component {
                     <Col md={9}>
                       <label>Service Out Date</label>
                       <Datetime
-                        name="serviceOutDate"
-                        dateFormat="DD/MM/YYYY"
-                        timeFormat="HH:mm:ss"
+                        name='serviceOutDate'
+                        dateFormat='DD/MM/YYYY'
+                        timeFormat='HH:mm:ss'
                         onChange={this.handleInputOutService}
                         value={serviceOutDate}
                         required
                       />
                     </Col>
-                    <Col md={3} className="updateScheduleSubmit">
+                    <Col md={3} className='updateScheduleSubmit'>
                       <Button
-                        color="success"
+                        color='success'
                         onClick={() =>
                           this.updateVehicleServiceDetails('update_status')
                         }
@@ -742,7 +743,7 @@ class vehicleServicepage extends Component {
                 </Collapse>
               </Fragment>
             </div>
-            <div className="modal-footer"></div>
+            <div className='modal-footer'></div>
           </Modal>
         </Container>
       </>
@@ -755,10 +756,7 @@ const getState = state => {
     updateVehicleServiceResponse: state.updateVehicleService
   };
 };
-export default connect(
-  getState,
-  {
-    vehicleServiceDetails,
-    updateVehicleService
-  }
-)(vehicleServicepage);
+export default connect(getState, {
+  vehicleServiceDetails,
+  updateVehicleService
+})(vehicleServicepage);

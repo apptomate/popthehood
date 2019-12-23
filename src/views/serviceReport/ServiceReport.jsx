@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import moment from 'moment';
+import React, { Component, Fragment } from "react";
+import moment from "moment";
 import {
   Card,
   CardHeader,
@@ -9,33 +9,33 @@ import {
   UncontrolledTooltip,
   Col,
   Form
-} from 'reactstrap';
-import { connect } from 'react-redux';
-import { getServiceReport } from '../../redux/actions/Index.jsx';
-import swal from 'sweetalert2';
+} from "reactstrap";
+import { connect } from "react-redux";
+import { getServiceReport } from "../../redux/actions/Index.jsx";
+import swal from "sweetalert2";
 // core components
-import UserHeader from 'components/Headers/UserHeader.jsx';
-import 'react-table/react-table.css';
-import ReactTable from 'react-table';
-import Loader from '../common/Loader.jsx';
-import { Link } from 'react-router-dom';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { CSVLink } from 'react-csv';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { getAlertToast, dateTimeFormat } from '../common/helpers/functions.jsx';
-import { FormGroup } from 'reactstrap';
+import UserHeader from "components/Headers/UserHeader.jsx";
+import "react-table/react-table.css";
+import ReactTable from "react-table";
+import Loader from "../common/Loader.jsx";
+import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { CSVLink } from "react-csv";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { getAlertToast, dateTimeFormat } from "../common/helpers/functions.jsx";
+import { FormGroup } from "reactstrap";
 const downFileName =
-  'ServiceReport-' + dateTimeFormat(new Date(), 'DD/MM/YYYY HH:MM:SS');
+  "ServiceReport-" + dateTimeFormat(new Date(), "DD/MM/YYYY HH:MM:SS");
 let serviceDateColumn;
 class ServiceReport extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataToDownload: [],
-      startDate: '',
-      endDate: '',
+      startDate: "",
+      endDate: "",
       filter: false,
       filterFromPrevious: false
     };
@@ -47,58 +47,58 @@ class ServiceReport extends Component {
     this.resetFilter = this.resetFilter.bind(this);
     this.columns = [
       {
-        Header: 'Serial No',
-        className: 'text-center',
+        Header: "Serial No",
+        className: "text-center",
         Cell: row => {
           return <div>{row.index + 1}</div>;
         },
         filterable: false
       },
       {
-        Header: 'Licence Plate',
-        accessor: 'licencePlate',
-        className: 'text-left',
+        Header: "Licence Plate",
+        accessor: "licencePlate",
+        className: "text-left",
         Cell: ({ row }) => {
           return (
             <Link
               to={{
                 pathname:
-                  'vehicle-service-details/' + row['_original'].vehicleId
+                  "vehicle-service-details/" + row["_original"].vehicleId
               }}
             >
-              {row['_original'].licencePlate}
+              {row["_original"].licencePlate}
             </Link>
           );
         }
       },
       {
-        Header: 'Make',
-        accessor: 'make',
-        className: 'text-left'
+        Header: "Make",
+        accessor: "make",
+        className: "text-left"
       },
       {
-        Header: 'Model',
-        accessor: 'model',
-        className: 'text-left'
+        Header: "Model",
+        accessor: "model",
+        className: "text-left"
       },
       {
-        Header: 'User Name',
-        accessor: 'name',
-        className: 'text-left'
+        Header: "User Name",
+        accessor: "name",
+        className: "text-left"
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         width: 130,
-        className: 'text-left',
+        className: "text-left",
         filterMethod: (filter, row) => {
-          if (filter.value === 'all') return true;
-          if (filter.value === 'completed') {
-            return row[filter.id] === 'Completed';
-          } else if (filter.value === 'ondue') {
-            return row[filter.id] === 'On Due';
+          if (filter.value === "all") return true;
+          if (filter.value === "completed") {
+            return row[filter.id] === "Completed";
+          } else if (filter.value === "ondue") {
+            return row[filter.id] === "On Due";
           } else {
-            return row[filter.id] === 'UpComing';
+            return row[filter.id] === "UpComing";
           }
         },
         Filter: ({ filter, onChange }) => (
@@ -110,13 +110,13 @@ class ServiceReport extends Component {
               });
               onChange(event.target.value);
             }}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             value={
               filter
                 ? filter.value
                 : this.state.filterFromPrevious
-                  ? 'ondue'
-                  : 'all'
+                ? "ondue"
+                : "all"
             }
           >
             <option value="all">All Status</option>
@@ -127,59 +127,59 @@ class ServiceReport extends Component {
         )
       },
       {
-        Header: 'Plan Type',
-        accessor: 'planType',
-        className: 'text-left',
+        Header: "Plan Type",
+        accessor: "planType",
+        className: "text-left",
         Cell: ({ row }) => (
           <Fragment>
-            <span id={'planType_' + row['_index']}>
-              {' '}
-              {row['_original'].planType}
+            <span id={"planType_" + row["_index"]}>
+              {" "}
+              {row["_original"].planType}
             </span>
             <UncontrolledTooltip
               placement="top"
-              target={'planType_' + row['_index']}
+              target={"planType_" + row["_index"]}
             >
-              {row['_original'].planType}
+              {row["_original"].planType}
             </UncontrolledTooltip>
           </Fragment>
         )
       },
       {
-        Header: 'Due Amount',
-        accessor: 'due',
-        className: 'text-center'
+        Header: "Due Amount",
+        accessor: "due",
+        className: "text-center"
       },
       {
-        Header: 'Paid Amount',
-        accessor: 'paid',
-        className: 'text-center'
+        Header: "Paid Amount",
+        accessor: "paid",
+        className: "text-center"
       },
       {
-        Header: 'Service Date',
-        accessor: 'requestedServiceDate',
+        Header: "Service Date",
+        accessor: "requestedServiceDate",
         filterable: false,
-        className: 'text-left',
+        className: "text-left",
         Cell: ({ row }) => {
           serviceDateColumn =
-            row['_original'].status === 'Completed'
+            row["_original"].status === "Completed"
               ? moment(
-                row['_original'].serviceOutDate,
-                'DD/MM/YYYY HH:mm:ss'
-              ).format('DD/MM/YYYY HH:mm:ss')
+                  row["_original"].serviceOutDate,
+                  "DD/MM/YYYY HH:mm:ss"
+                ).format("DD/MM/YYYY HH:mm:ss")
               : moment(
-                row['_original'].requestedServiceDate,
-                'DD/MM/YYYY HH:mm:ss'
-              ).format('DD/MM/YYYY HH:mm:ss');
+                  row["_original"].requestedServiceDate,
+                  "DD/MM/YYYY HH:mm:ss"
+                ).format("DD/MM/YYYY HH:mm:ss");
           return (
             <Fragment>
-              <span id={'serviceDate_' + row['_index']}>
-                {' '}
+              <span id={"serviceDate_" + row["_index"]}>
+                {" "}
                 {serviceDateColumn}
               </span>
               <UncontrolledTooltip
                 placement="left"
-                target={'serviceDate_' + row['_index']}
+                target={"serviceDate_" + row["_index"]}
               >
                 {serviceDateColumn}
               </UncontrolledTooltip>
@@ -189,7 +189,6 @@ class ServiceReport extends Component {
       }
     ];
   }
-
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_to_download = [];
@@ -197,11 +196,11 @@ class ServiceReport extends Component {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
         if (colIndex === 0) {
-          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+          record_to_download["Serial No"] = String(index + 1).replace(",", "");
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]
-          ).replace(',', '');
+          ).replace(",", "");
         }
       }
       data_to_download.push(record_to_download);
@@ -210,7 +209,6 @@ class ServiceReport extends Component {
       this.csvLink.link.click();
     });
   }
-
   downloadPdf() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
     var data_array = [];
@@ -218,29 +216,29 @@ class ServiceReport extends Component {
       let record_to_download = {};
       for (var colIndex = 0; colIndex < this.columns.length; colIndex++) {
         if (colIndex === 0) {
-          record_to_download['Serial No'] = String(index + 1).replace(',', '');
+          record_to_download["Serial No"] = String(index + 1).replace(",", "");
         } else {
           record_to_download[this.columns[colIndex].Header] = String(
             currentRecords[index][this.columns[colIndex].accessor]
-          ).replace(',', '');
+          ).replace(",", "");
         }
       }
       data_array.push(record_to_download);
     }
-    var doc = new jsPDF('P', 'px', 'a4');
+    var doc = new jsPDF("P", "px", "a4");
     doc.autoTable({
       body: data_array,
       columns: [
-        { header: 'Serial No', dataKey: 'Serial No' },
-        { header: 'Licence Plate', dataKey: 'Licence Plate' },
-        { header: 'Make', dataKey: 'Make' },
-        { header: 'Model', dataKey: 'Model' },
-        { header: 'User Name', dataKey: 'User Name' },
-        { header: 'Status', dataKey: 'Status' },
-        { header: 'Plan Type', dataKey: 'Plan Type' },
-        { header: 'Due Amount', dataKey: 'Due Amount' },
-        { header: 'Paid Amount', dataKey: 'Paid Amount' },
-        { header: 'Service Date', dataKey: 'Service Date' }
+        { header: "Serial No", dataKey: "Serial No" },
+        { header: "Licence Plate", dataKey: "Licence Plate" },
+        { header: "Make", dataKey: "Make" },
+        { header: "Model", dataKey: "Model" },
+        { header: "User Name", dataKey: "User Name" },
+        { header: "Status", dataKey: "Status" },
+        { header: "Plan Type", dataKey: "Plan Type" },
+        { header: "Due Amount", dataKey: "Due Amount" },
+        { header: "Paid Amount", dataKey: "Paid Amount" },
+        { header: "Service Date", dataKey: "Service Date" }
       ],
       columnStyles: {
         0: { cellWidth: 30 },
@@ -260,28 +258,28 @@ class ServiceReport extends Component {
         bottom: 8,
         left: 8
       },
-      rowPageBreak: 'avoid',
-      theme: 'grid'
+      rowPageBreak: "avoid",
+      theme: "grid"
     });
-    doc.save(downFileName + '.pdf');
+    doc.save(downFileName + ".pdf");
   }
   onClickFilter() {
-    let { startDate = '', endDate = '' } = this.state;
+    let { startDate = "", endDate = "" } = this.state;
     let { services = [] } = this.props.Services;
     let dateToCheck,
       filter = true;
     let startDateTime = new Date(startDate).getTime();
     let endDateTime = new Date(endDate).getTime();
     if (!startDate && !endDate) {
-      swal.fire(getAlertToast('warning', 'Please select the date'));
+      swal.fire(getAlertToast("warning", "Please select the date"));
     } else {
       if (startDate || endDate) {
         services = services.filter(service => {
           dateToCheck =
-            service.status === 'Completed'
+            service.status === "Completed"
               ? service.serviceOutDate
               : service.requestedServiceDate;
-          let dateToCheckTime = moment(dateToCheck, 'DD/MM/YYYY').valueOf();
+          let dateToCheckTime = moment(dateToCheck, "DD/MM/YYYY").valueOf();
           if (startDate && endDate) {
             return (
               endDateTime >= dateToCheckTime && dateToCheckTime >= startDateTime
@@ -315,17 +313,16 @@ class ServiceReport extends Component {
   resetFilter(e) {
     e.preventDefault();
     this.setState({
-      endDate: '',
-      startDate: '',
+      endDate: "",
+      startDate: "",
       filter: false,
       filterFromPrevious: false
     });
   }
-
   componentDidMount() {
     if (this.props.location && this.props.location.state) {
       let { isFilter, filterBy } = this.props.location.state;
-      if (isFilter && filterBy === 'ON_DUE') {
+      if (isFilter && filterBy === "ON_DUE") {
         this.props.getServiceReport(true);
       } else {
         this.props.getServiceReport(false);
@@ -341,7 +338,7 @@ class ServiceReport extends Component {
     let data = [];
     if (prevProps.Services.filter !== Services.filter) {
       if (services && Services.filter) {
-        data = services.filter(service => service.status === 'On Due');
+        data = services.filter(service => service.status === "On Due");
       }
       this.setState({
         filterData: data,
@@ -349,7 +346,6 @@ class ServiceReport extends Component {
       });
     }
   }
-
   render() {
     const { Services = [] } = this.props;
     let { services = [] } = Services;
@@ -385,10 +381,10 @@ class ServiceReport extends Component {
                       {data.length > 0 ? (
                         <span
                           style={{
-                            float: 'right',
-                            paddingTop: '0.5rem',
-                            marginLeft: '1rem',
-                            marginBottom: '1rem'
+                            float: "right",
+                            paddingTop: "0.5rem",
+                            marginLeft: "1rem",
+                            marginBottom: "1rem"
                           }}
                         >
                           <Button
@@ -401,14 +397,14 @@ class ServiceReport extends Component {
                           </Button>
                           <CSVLink
                             data={dataToDownload}
-                            filename={downFileName + '.csv'}
+                            filename={downFileName + ".csv"}
                             className="hidden"
                             ref={r => (this.csvLink = r)}
                             target="_blank"
                           />
                           <UncontrolledTooltip
                             placement="top"
-                            target={'down_csv'}
+                            target={"down_csv"}
                           >
                             Download as CSV
                           </UncontrolledTooltip>
@@ -422,13 +418,13 @@ class ServiceReport extends Component {
                           </Button>
                           <UncontrolledTooltip
                             placement="top"
-                            target={'down_pdf'}
+                            target={"down_pdf"}
                           >
                             Download as PDF
                           </UncontrolledTooltip>
                         </span>
                       ) : (
-                        ''
+                        ""
                       )}
                     </Col>
                   </Row>
@@ -445,7 +441,6 @@ class ServiceReport extends Component {
                           maxDate={endDate}
                         />
                       </FormGroup>
-
                       <FormGroup>
                         <DatePicker
                           selected={endDate}
@@ -457,7 +452,6 @@ class ServiceReport extends Component {
                           minDate={startDate}
                         />
                       </FormGroup>
-
                       <Button
                         color="info"
                         id="FilterTooltip"
@@ -467,12 +461,11 @@ class ServiceReport extends Component {
                         <i className="fas fa-filter"></i>
                       </Button>
                       <UncontrolledTooltip
-                        placement={'top'}
-                        target={'FilterTooltip'}
+                        placement={"top"}
+                        target={"FilterTooltip"}
                       >
                         Filter
                       </UncontrolledTooltip>
-
                       <Button
                         color="warning"
                         onClick={this.resetFilter}
@@ -482,15 +475,14 @@ class ServiceReport extends Component {
                         <i className="fas fa-history"></i>
                       </Button>
                       <UncontrolledTooltip
-                        placement={'top'}
-                        target={'reset_tool'}
+                        placement={"top"}
+                        target={"reset_tool"}
                       >
                         Reset
                       </UncontrolledTooltip>
                     </Form>
                   </div>
                 </CardHeader>
-
                 <ReactTable
                   id="service_report"
                   LoadingComponent={MyLoader}
@@ -518,16 +510,12 @@ class ServiceReport extends Component {
     );
   }
 }
-
 const getState = state => {
   return {
     loginData: state.authLogin,
     Services: state.serviceReport
   };
 };
-export default connect(
-  getState,
-  {
-    getServiceReport
-  }
-)(ServiceReport);
+export default connect(getState, {
+  getServiceReport
+})(ServiceReport);

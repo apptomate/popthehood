@@ -1,23 +1,23 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 // reactstrap components
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from "reactstrap";
 
 // core components
-import AuthNavbar from 'components/Navbars/AuthNavbar.jsx';
-import { connect } from 'react-redux';
-import routes from 'routes.js';
-import logo from '../assets/img/brand/popthehood-logo.png';
+import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
+import { connect } from "react-redux";
+import routes from "routes.js";
+import logo from "../assets/img/brand/popthehood-logo.png";
 class Auth extends React.Component {
   componentDidMount() {
-    document.body.classList.add('bg-default');
+    document.body.classList.add("bg-default");
   }
   componentWillUnmount() {
-    document.body.classList.remove('bg-default');
+    document.body.classList.remove("bg-default");
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === '/auth') {
+      if (prop.layout === "/auth") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -32,18 +32,18 @@ class Auth extends React.Component {
   };
   render() {
     if (this.props.loginData.isLogin) {
-      this.props.history.push('/admin/index');
+      this.props.history.push("/admin/index");
     }
     return (
       <>
         <div
           className="main-content"
           style={{
-            minHeight: '100vh',
+            minHeight: "100vh",
             backgroundImage:
-              'url(' + require('assets/img/theme/header-index-cover.jpg') + ')',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+              "url(" + require("assets/img/theme/header-index-cover.jpg") + ")",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
           }}
         >
           <AuthNavbar />

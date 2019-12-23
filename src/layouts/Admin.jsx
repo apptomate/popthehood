@@ -1,13 +1,13 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 // reactstrap components
-import { Container } from 'reactstrap';
+import { Container } from "reactstrap";
 // core components
-import AdminNavbar from 'components/Navbars/AdminNavbar.jsx';
-import AdminFooter from 'components/Footers/AdminFooter.jsx';
-import Sidebar from 'components/Sidebar/Sidebar.jsx';
-import routes from 'routes.js';
-import { connect } from 'react-redux';
+import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+import AdminFooter from "components/Footers/AdminFooter.jsx";
+import Sidebar from "components/Sidebar/Sidebar.jsx";
+import routes from "routes.js";
+import { connect } from "react-redux";
 class Admin extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -16,7 +16,7 @@ class Admin extends React.Component {
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === '/admin') {
+      if (prop.layout === "/admin") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -40,11 +40,11 @@ class Admin extends React.Component {
         return routes[i].name;
       }
     }
-    return 'Vehicle Service Details';
+    return "Vehicle Service Details";
   };
   render() {
     if (!this.props.loginData.isLogin) {
-      this.props.history.push('/auth/login');
+      this.props.history.push("/auth/login");
     }
     return (
       <>
@@ -52,9 +52,9 @@ class Admin extends React.Component {
           {...this.props}
           routes={routes}
           logo={{
-            innerLink: '/admin/index',
-            imgSrc: require('assets/img/brand/popthehood-logo.png'),
-            imgAlt: '...'
+            innerLink: "/admin/index",
+            imgSrc: require("assets/img/brand/popthehood-logo.png"),
+            imgAlt: "..."
           }}
         />
         <div className="main-content" ref="mainContent">
