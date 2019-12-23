@@ -28,7 +28,9 @@ import {
   updateUser,
   deleteUser,
   updateVehicle,
-  deleteVehicle
+  deleteVehicle,
+  getAllMakes,
+  getModelByMake
 } from '../../redux/actions/Index';
 // core components
 import UserHeader from 'components/Headers/UserHeader.jsx';
@@ -75,7 +77,7 @@ class Users extends React.Component {
           <Fragment>
             <span id={'email_' + row['_index']}> {row['_original'].email}</span>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'email_' + row['_index']}
             >
               {row['_original'].email}
@@ -136,37 +138,37 @@ class Users extends React.Component {
           <Fragment>
             <Button
               data-user_id={row['_original'].userId}
-              className="action_btn"
-              id="EditTooltip"
+              className='action_btn'
+              id='EditTooltip'
               onClick={e => this.editUser(e, row)}
-              size="sm"
+              size='sm'
             >
               <i
-                className="fas fa-pencil-alt edit_i"
+                className='fas fa-pencil-alt edit_i'
                 id={'edit-user-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'edit-user-id-' + row['_index']}
             >
               Edit User
             </UncontrolledTooltip>
             <Button
-              color="danger"
+              color='danger'
               data-user_id={row['_original'].userId}
-              className="action_btn"
-              id="DeleteTooltip"
+              className='action_btn'
+              id='DeleteTooltip'
               onClick={this.deleteUserDetail}
-              size="sm"
+              size='sm'
             >
               <i
-                className="fas fas fa-trash edit_i"
+                className='fas fas fa-trash edit_i'
                 id={'delete-user-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'delete-user-id-' + row['_index']}
             >
               Delete User
@@ -225,7 +227,7 @@ class Users extends React.Component {
             style={{ width: '100%' }}
             value={filter ? filter.value : 0}
           >
-            <option value="0">All Years</option>
+            <option value='0'>All Years</option>
             {staticYearArray().map((array_value, key) => (
               <option value={array_value} key={key}>
                 {array_value}
@@ -247,18 +249,18 @@ class Users extends React.Component {
           <Fragment>
             <Button
               user_id={row['_original'].vehicleId}
-              className="action_btn"
-              id="EditTooltip"
-              size="sm"
+              className='action_btn'
+              id='EditTooltip'
+              size='sm'
               onClick={e => this.editUserVehicle(e, row)}
             >
               <i
-                className="fas fa-pencil-alt"
+                className='fas fa-pencil-alt'
                 id={'edit-user_vehicle-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'edit-user_vehicle-id-' + row['_index']}
             >
               Edit Vehicle
@@ -266,19 +268,19 @@ class Users extends React.Component {
             <Button
               data-user_vehicle_id={row['_original'].vehicleId}
               data-user_id={row['_original'].userId}
-              className="action_btn"
-              color="danger"
-              size="sm"
-              id="DeleteTooltip"
+              className='action_btn'
+              color='danger'
+              size='sm'
+              id='DeleteTooltip'
               onClick={this.deleteUserVehicleDetail}
             >
               <i
-                className="fas fas fa-trash"
+                className='fas fas fa-trash'
                 id={'delete-user_vehicle-id-' + row['_index']}
               />
             </Button>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'delete-user_vehicle-id-' + row['_index']}
             >
               Delete Vehicle
@@ -298,7 +300,7 @@ class Users extends React.Component {
     const { expanded, user_data } = this.state;
     var expanded_row = { ...expanded };
     var user_id = parseInt(row['original'].userId);
-    Object.keys(expanded_row).map(key => {
+    Object.keys(expanded_row).forEach(key => {
       expanded_row[key] = row.nestingPath === key ? true : false;
     });
     expanded_row[row.nestingPath] = !expanded_row[row.nestingPath];
@@ -337,22 +339,34 @@ class Users extends React.Component {
   };
   //Edit User Vehicle
   editUserVehicle = (e, row) => {
+    let {
+      vehicleId,
+      make,
+      model,
+      year,
+      color,
+      licencePlate,
+      specialNotes,
+      vehicleImageURL,
+      makeId
+    } = row['_original'];
+    this.props.getModelByMake(parseInt(makeId));
     this.setState(prevState => ({
       editVehicleModal: !prevState.editVehicleModal,
       user_vehicle_data: {
-        vehicleId: parseInt(row['_original'].vehicleId),
+        vehicleId: parseInt(vehicleId),
         userId: parseInt(this.state.user_data.userId),
-        make: row['_original'].make,
-        model: row['_original'].model,
-        year: parseInt(row['_original'].year),
-        color: row['_original'].color,
-        licencePlate: row['_original'].licencePlate,
-        specialNotes: row['_original'].specialNotes,
+        make,
+        model,
+        year: parseInt(year),
+        color,
+        licencePlate,
+        specialNotes,
         imageType: '',
         vehicleImage: '',
         vehicleImageURL: ''
       },
-      storedImageURL: row['_original'].vehicleImageURL
+      storedImageURL: vehicleImageURL
     }));
   };
   //Onchange
@@ -365,6 +379,16 @@ class Users extends React.Component {
   //Onchange Vehicle Form Fields
   onChangeVehicleEdit(e) {
     let { name, value } = e.target;
+    if (name === 'make') {
+      let valueToApi = null;
+      if (value) {
+        let { selectedIndex } = e.target;
+        valueToApi = e.target.options[selectedIndex].getAttribute(
+          'value_to_api'
+        );
+      }
+      this.props.getModelByMake(valueToApi);
+    }
     this.setState(() => ({
       user_vehicle_data: {
         ...this.state.user_vehicle_data,
@@ -464,6 +488,7 @@ class Users extends React.Component {
   }
   componentDidMount() {
     this.props.getAllUsers();
+    this.props.getAllMakes();
   }
 
   render() {
@@ -486,7 +511,9 @@ class Users extends React.Component {
       getUserVehicleDetailsResponse: {
         data: vehicle_data = [],
         loading: loadingVehicle = ''
-      }
+      },
+      Makes = [],
+      ModelByMake = []
     } = this.props;
 
     const MyLoader = () => <Loader loading={loading} />;
@@ -495,12 +522,12 @@ class Users extends React.Component {
       <>
         <UserHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className='mt--7' fluid>
           <Row>
-            <div className="col">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <h3 className="mb-0">Users</h3>
+            <div className='col'>
+              <Card className='shadow'>
+                <CardHeader className='border-0'>
+                  <h3 className='mb-0'>Users</h3>
                 </CardHeader>
                 <ReactTable
                   expanded={expanded}
@@ -519,22 +546,22 @@ class Users extends React.Component {
                       }
                     };
                   }}
-                  id="users_table"
+                  id='users_table'
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={data}
                   columns={this.columns}
                   defaultPageSize={10}
                   pageSizeOptions={[5, 10, 15, 20]}
-                  noDataText="No Record Found.."
+                  noDataText='No Record Found..'
                   filterable
-                  HeaderClassName="text-bold"
+                  HeaderClassName='text-bold'
                   defaultFilterMethod={(filter, row) =>
                     String(row[filter.id])
                       .toLowerCase()
                       .includes(filter.value.toLowerCase())
                   }
-                  className="-striped -highlight"
+                  className='-striped -highlight'
                   SubComponent={() => {
                     return (
                       <div style={{ padding: '20px' }} key={shortid.generate()}>
@@ -558,16 +585,16 @@ class Users extends React.Component {
                                   <h3>User&apos;s Registered Vehicles</h3>{' '}
                                 </center>
                                 <ReactTable
-                                  id="users_vehicle_table"
+                                  id='users_vehicle_table'
                                   LoadingComponent={MyLoaderVehicle}
                                   ref={r => (this.reactTableVehicle = r)}
                                   data={vehicle_data}
                                   columns={this.vehicle_columns}
                                   pageSize={vehicle_data.length}
                                   showPagination={false}
-                                  noDataText="No Record Found.."
+                                  noDataText='No Record Found..'
                                   filterable
-                                  HeaderClassName="text-bold"
+                                  HeaderClassName='text-bold'
                                   defaultFilterMethod={(filter, row) =>
                                     String(row[filter.id])
                                       .toLowerCase()
@@ -576,7 +603,7 @@ class Users extends React.Component {
                                 />
                               </Fragment>
                             ) : (
-                              <Alert color="warning">
+                              <Alert color='warning'>
                                 <center>No vehicle found</center>
                               </Alert>
                             )}
@@ -599,25 +626,25 @@ class Users extends React.Component {
           >
             <AvForm onValidSubmit={this.updateUserDetails}>
               <ModalHeader toggle={this.editToggle}> Update User</ModalHeader>
-              <ModalBody className="cus_model1">
+              <ModalBody className='cus_model1'>
                 <AvField
-                  name="name"
-                  label="Name"
-                  placeholder="Name"
-                  id="username"
+                  name='name'
+                  label='Name'
+                  placeholder='Name'
+                  id='username'
                   value={name}
                   required
                   onChange={this.onChange}
-                  className="blue_label"
+                  className='blue_label'
                 />
                 <AvField
-                  name="phoneNumber"
-                  label="Phone Number"
-                  placeholder="Phone Number"
-                  id="phoneNumber"
+                  name='phoneNumber'
+                  label='Phone Number'
+                  placeholder='Phone Number'
+                  id='phoneNumber'
                   value={phoneNumber}
                   onChange={this.onChange}
-                  className="blue_label"
+                  className='blue_label'
                   validate={{
                     required: {
                       value: true,
@@ -630,85 +657,89 @@ class Users extends React.Component {
                   }}
                 />
                 <AvField
-                  name="email"
-                  type="email"
-                  label="Email"
-                  placeholder="Email"
-                  id="email"
+                  name='email'
+                  type='email'
+                  label='Email'
+                  placeholder='Email'
+                  id='email'
                   value={email}
                   required
                   onChange={this.onChange}
-                  className="blue_label"
+                  className='blue_label'
                   disabled
                 />
                 <AvField
-                  name="password"
-                  type="password"
-                  label="Password"
-                  placeholder="Password"
-                  id="password"
+                  name='password'
+                  type='password'
+                  label='Password'
+                  placeholder='Password'
+                  id='password'
                   disabled
                   value={password}
                   required
                   onChange={this.onChange}
-                  className="blue_label"
+                  className='blue_label'
                 />
                 <AvField
-                  name="sourceofReg"
-                  label="Source of Reg"
+                  name='sourceofReg'
+                  label='Source of Reg'
                   disabled
-                  placeholder="Source of Reg"
-                  id="sourceofReg"
+                  placeholder='Source of Reg'
+                  id='sourceofReg'
                   value={sourceofReg}
                   required
                   onChange={this.onChange}
-                  className="blue_label"
+                  className='blue_label'
                 />
                 <Label>Email Verified</Label>
                 <br />
-                <label className="custom-toggle">
+                <label className='custom-toggle'>
                   <input
                     defaultChecked={isEmailVerified}
                     value={isEmailVerified}
-                    type="checkbox"
+                    type='checkbox'
                     disabled
-                    name="isEmailVerified"
+                    name='isEmailVerified'
                     onChange={this.onCheck}
                   />
-                  <span className="custom-toggle-slider rounded-circle" />
+                  <span className='custom-toggle-slider rounded-circle' />
                 </label>
-                <span className="clearfix" />
+                <span className='clearfix' />
                 <Label>Phone Number Verified</Label>
                 <br />
-                <label className="custom-toggle">
+                <label className='custom-toggle'>
                   <input
                     defaultChecked={isPhoneNumVerified}
                     value={isPhoneNumVerified}
-                    type="checkbox"
-                    name="isPhoneNumVerified"
+                    type='checkbox'
+                    name='isPhoneNumVerified'
                     onChange={this.onCheck}
                     disabled
                   />
-                  <span className="custom-toggle-slider rounded-circle" />
+                  <span className='custom-toggle-slider rounded-circle' />
                 </label>
               </ModalBody>
               <ModalFooter>
                 <FormGroup>
                   <center>
-                    <Button color="success">Update</Button>
+                    <Button color='success'>Update</Button>
                   </center>
                 </FormGroup>
               </ModalFooter>
             </AvForm>
           </Modal>
           {/* Update Vehicle Modal */}
-          <VehicleUpdateModal
-            modal_toggle={editVehicleModal}
-            modal_toggle_func={this.editVehicleToggle}
-            updateUserVehicleDetails={this.updateUserVehicleDetails}
-            state_data={this.state}
-            onChange_func={this.onChangeVehicleEdit}
-          />
+          {editVehicleModal && (
+            <VehicleUpdateModal
+              model_by_make={ModelByMake}
+              makes_list={Makes}
+              modal_toggle={editVehicleModal}
+              modal_toggle_func={this.editVehicleToggle}
+              updateUserVehicleDetails={this.updateUserVehicleDetails}
+              state_data={this.state}
+              onChange_func={this.onChangeVehicleEdit}
+            />
+          )}
           {/* Update Vehicle Modal */}
         </Container>
       </>
@@ -720,17 +751,18 @@ const getState = state => {
     getAllUsersResponse: state.getAllUsers,
     getUserVehicleDetailsResponse: state.getUserVehicleDetails,
     updateVehicleResponse: state.updateVehicle,
-    deleteVehicleResponse: state.deleteVehicle
+    deleteVehicleResponse: state.deleteVehicle,
+    ModelByMake: state.getModelByMake.data,
+    Makes: state.getAllMakes.data
   };
 };
-export default connect(
-  getState,
-  {
-    getAllUsers,
-    getUserVehicleDetails,
-    updateUser,
-    deleteUser,
-    updateVehicle,
-    deleteVehicle
-  }
-)(Users);
+export default connect(getState, {
+  getAllUsers,
+  getUserVehicleDetails,
+  updateUser,
+  deleteUser,
+  updateVehicle,
+  getAllMakes,
+  deleteVehicle,
+  getModelByMake
+})(Users);

@@ -1,4 +1,4 @@
-import API from './API.jsx';
+import API from "./API.jsx";
 import {
   LOGIN_URL,
   ALLVEHICLES_URL,
@@ -13,9 +13,11 @@ import {
   SERVICEREPORT_URL,
   UPDATEVEHICLESERVICE_URL,
   VEHICLESERVICEDETAILS_URL,
-  DASHBOARD_URL
-} from '../../views/common/helpers/constants';
-import { authHeader } from '../../views/common/helpers/functions.jsx';
+  DASHBOARD_URL,
+  ALLVEHICLEMAKES_URL,
+  GETMODELBYMAKE_URL
+} from "../../views/common/helpers/constants";
+import { authHeader } from "../../views/common/helpers/functions.jsx";
 import {
   ALLUSERS_SUCCESS,
   ALLUSERS_ERROR,
@@ -58,8 +60,12 @@ import {
   GETSERVICEREPORTWITHFILTER_SUCCESS,
   DASHBOARD_LOADING,
   DASHBOARD_SUCCESS,
-  DASHBOARD_ERROR
-} from './ActionTypes.jsx';
+  DASHBOARD_ERROR,
+  ALLVEHICLEMAKES_SUCCESS,
+  ALLVEHICLEMAKES_ERROR,
+  GETMODELBYMAKE_SUCCESS,
+  GETMODELBYMAKE_ERROR
+} from "./ActionTypes.jsx";
 
 //Login
 //User Authentication
@@ -116,7 +122,7 @@ export function deleteUser(user_id) {
     dispatch({
       type: ALLUSERS_LOADING
     });
-    API.delete(UPDATE_DELETE_USER_URL + '/' + user_id, {
+    API.delete(UPDATE_DELETE_USER_URL + "/" + user_id, {
       headers: authHeader()
     })
       .then(response => {
@@ -138,7 +144,7 @@ export function deleteUser(user_id) {
 }
 
 //Update Vehicle
-export function updateVehicle(data, from = '') {
+export function updateVehicle(data, from = "") {
   return dispatch => {
     dispatch({
       type: USERVEHICLE_LOADING
@@ -150,7 +156,7 @@ export function updateVehicle(data, from = '') {
           payload: response.data
         });
         var get_data = { userId: data.userId };
-        if (from === 'vehicle') {
+        if (from === "vehicle") {
           dispatch(getAllVehicles());
         } else {
           dispatch(getUserVehicleDetails(get_data));
@@ -240,12 +246,56 @@ export function getAllVehicles() {
   };
 }
 
-export function deleteVehicle(vehicleID, from = '', user_id) {
+export function getAllMakes() {
+  return dispatch => {
+    API.get(ALLVEHICLEMAKES_URL, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: ALLVEHICLEMAKES_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response) {
+          dispatch({
+            type: ALLVEHICLEMAKES_ERROR,
+            payload: error.response
+          });
+        }
+      });
+  };
+}
+
+export function getModelByMake(makeId) {
+  return dispatch => {
+    API.get(GETMODELBYMAKE_URL + "/" + makeId, {
+      headers: authHeader()
+    })
+      .then(response => {
+        dispatch({
+          type: GETMODELBYMAKE_SUCCESS,
+          payload: response.data
+        });
+      })
+      .catch(function(error) {
+        if (error.response) {
+          dispatch({
+            type: GETMODELBYMAKE_ERROR,
+            payload: error.response
+          });
+        }
+      });
+  };
+}
+
+export function deleteVehicle(vehicleID, from = "", user_id) {
   return dispatch => {
     dispatch({
       type: DELETEVEHICLE_LOADING
     });
-    API.delete(DELETEVEHICLE_URL + '/' + vehicleID, {
+    API.delete(DELETEVEHICLE_URL + "/" + vehicleID, {
       headers: authHeader()
     })
       .then(response => {
@@ -254,7 +304,7 @@ export function deleteVehicle(vehicleID, from = '', user_id) {
           payload: response.data
         });
         var get_data = { userId: user_id };
-        if (from === 'vehicle') {
+        if (from === "vehicle") {
           dispatch(getAllVehicles());
         } else {
           dispatch(getAllUsers());
@@ -327,7 +377,7 @@ export function getServicePriceByID(id) {
     dispatch({
       type: GETSERVICEPRICEBYID_LOADING
     });
-    API.get(GETSERVICEPRICEBYID_URL + '/' + id, {
+    API.get(GETSERVICEPRICEBYID_URL + "/" + id, {
       headers: authHeader()
     })
       .then(response => {
@@ -384,7 +434,7 @@ export function vehicleServiceDetails(data) {
   return dispatch => {
     dispatch({
       type: UPDATEVEHICLESERVICE_LOADING,
-      payload: ''
+      payload: ""
     });
     API.get(VEHICLESERVICEDETAILS_URL, { headers: authHeader(), params: data })
       .then(response => {
@@ -434,7 +484,7 @@ export function updateVehicleService(data, reload_date) {
   return dispatch => {
     dispatch({
       type: UPDATEVEHICLESERVICE_LOADING,
-      payload: ''
+      payload: ""
     });
     API.put(UPDATEVEHICLESERVICE_URL, data, { headers: authHeader() })
       .then(response => {

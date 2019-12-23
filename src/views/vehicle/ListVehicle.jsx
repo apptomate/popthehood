@@ -20,7 +20,9 @@ import { getConfirm, dateTimeFormat } from '../common/helpers/functions.jsx';
 import {
   getAllVehicles,
   deleteVehicle,
-  updateVehicle
+  updateVehicle,
+  getAllMakes,
+  getModelByMake
 } from '../../redux/actions/Index.jsx';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
@@ -105,7 +107,7 @@ class ListVehicle extends Component {
               {row['_original'].address}
             </span>
             <UncontrolledTooltip
-              placement="top"
+              placement='top'
               target={'address_' + row['_index']}
             >
               {row['_original'].address}
@@ -131,7 +133,7 @@ class ListVehicle extends Component {
                 {dueService}
               </span>
               <UncontrolledTooltip
-                placement="left"
+                placement='left'
                 target={'dueService_' + row['_original'].vehicleId}
               >
                 {dueService}
@@ -158,7 +160,7 @@ class ListVehicle extends Component {
                 {nextServiceDateColumn}
               </span>
               <UncontrolledTooltip
-                placement="left"
+                placement='left'
                 target={'nextServiceDate_' + row['_original'].vehicleId}
               >
                 {nextServiceDateColumn}
@@ -174,37 +176,37 @@ class ListVehicle extends Component {
         Cell: ({ row }) => (
           <Fragment>
             <Button
-              className="action_btn"
-              id="EditTooltip"
-              size="sm"
-              data-tip="Edit Vehicle"
+              className='action_btn'
+              id='EditTooltip'
+              size='sm'
+              data-tip='Edit Vehicle'
               onClick={e => this.editVehicle(e, row)}
             >
               <i
-                className="fas fa-pencil-alt"
+                className='fas fa-pencil-alt'
                 id={'edit-vehicle-id-' + row['_original'].vehicleId}
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement='bottom'
               target={'edit-vehicle-id-' + row['_original'].vehicleId}
             >
               Edit Vehicle
             </UncontrolledTooltip>
             <Button
-              color="danger"
-              className="action_btn"
-              id="DeleteToolTip"
-              size="sm"
+              color='danger'
+              className='action_btn'
+              id='DeleteToolTip'
+              size='sm'
               onClick={e => this.deleteVehicle(e, row)}
             >
               <i
-                className="fas fa-trash"
+                className='fas fa-trash'
                 id={'delete-vehicle-id-' + row['_original'].vehicleId}
               />
             </Button>
             <UncontrolledTooltip
-              placement="bottom"
+              placement='bottom'
               target={'delete-vehicle-id-' + row['_original'].vehicleId}
             >
               Delete Vehicle
@@ -229,26 +231,39 @@ class ListVehicle extends Component {
       });
   }
   editVehicle(e, row) {
+    let {
+      vehicleId,
+      make,
+      model,
+      year,
+      color,
+      licencePlate,
+      specialNotes,
+      vehicleImageURL,
+      makeId
+    } = row['_original'];
+    this.props.getModelByMake(parseInt(makeId));
     this.setState(prevState => ({
       editVehicleModal: !prevState.editVehicleModal,
       user_vehicle_data: {
-        vehicleId: parseInt(row['_original'].vehicleId),
+        vehicleId: parseInt(vehicleId),
         userId: parseInt(this.props.loginData.user.userId),
-        make: row['_original'].make,
-        model: row['_original'].model,
-        year: parseInt(row['_original'].year),
-        color: row['_original'].color,
-        licencePlate: row['_original'].licencePlate,
-        specialNotes: row['_original'].specialNotes,
+        make,
+        model,
+        year: parseInt(year),
+        color,
+        licencePlate,
+        specialNotes,
         imageType: '',
         vehicleImage: '',
         vehicleImageURL: ''
       },
-      storedImageURL: row['_original'].vehicleImageURL
+      storedImageURL: vehicleImageURL
     }));
   }
   componentDidMount() {
     this.props.getAllVehicles();
+    this.props.getAllMakes();
   }
   download() {
     const currentRecords = this.reactTable.getResolvedState().sortedData;
@@ -351,6 +366,16 @@ class ListVehicle extends Component {
   }
   onChange(e) {
     let { name, value } = e.target;
+    if (name === 'make') {
+      let valueToApi = null;
+      if (value) {
+        let { selectedIndex } = e.target;
+        valueToApi = e.target.options[selectedIndex].getAttribute(
+          'value_to_api'
+        );
+      }
+      this.props.getModelByMake(valueToApi);
+    }
     this.setState({
       user_vehicle_data: { ...this.state.user_vehicle_data, [name]: value }
     });
@@ -375,98 +400,103 @@ class ListVehicle extends Component {
     });
   }
   render() {
-    const { Vehicles = [] } = this.props;
+    const { Vehicles = [], Makes = [], ModelByMake = [] } = this.props;
     const MyLoader = () => <Loader loading={Vehicles.loading} />;
+    const { editVehicleModal, dataToDownload } = this.state;
     return (
       <Fragment>
         <UserHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className='mt--7' fluid>
           <Row>
-            <div className="col">
-              <Card className="shadow">
-                <CardHeader className="border-0">
+            <div className='col'>
+              <Card className='shadow'>
+                <CardHeader className='border-0'>
                   <Row>
                     <Col>
-                      <h3 className="mb-0">List Of Vehicles</h3>
+                      <h3 className='mb-0'>List Of Vehicles</h3>
                     </Col>
                     <Col>
                       {Vehicles.allVehicles &&
                       Vehicles.allVehicles.length > 0 ? (
-                          <span style={{ float: 'right' }}>
-                            <Button
-                              color="primary"
-                              size="sm"
-                              onClick={this.download}
-                              id="down_csv"
-                            >
-                              <i className="fas fa-file-download"></i> CSV
-                            </Button>
-                            <CSVLink
-                              data={this.state.dataToDownload}
-                              filename={downFileName + '.csv'}
-                              className="hidden"
-                              ref={r => (this.csvLink = r)}
-                              target="_blank"
-                            />
-                            <UncontrolledTooltip
-                              placement="top"
-                              target={'down_csv'}
-                            >
+                        <span style={{ float: 'right' }}>
+                          <Button
+                            color='primary'
+                            size='sm'
+                            onClick={this.download}
+                            id='down_csv'
+                          >
+                            <i className='fas fa-file-download'></i> CSV
+                          </Button>
+                          <CSVLink
+                            data={dataToDownload}
+                            filename={downFileName + '.csv'}
+                            className='hidden'
+                            ref={r => (this.csvLink = r)}
+                            target='_blank'
+                          />
+                          <UncontrolledTooltip
+                            placement='top'
+                            target={'down_csv'}
+                          >
                             Download as CSV
-                            </UncontrolledTooltip>
-                            <Button
-                              color="info"
-                              size="sm"
-                              id="down_pdf"
-                              onClick={this.downloadPdf}
-                            >
-                              <i className="fas fa-file-download"></i> PDF
-                            </Button>
-                            <UncontrolledTooltip
-                              placement="top"
-                              target={'down_pdf'}
-                            >
+                          </UncontrolledTooltip>
+                          <Button
+                            color='info'
+                            size='sm'
+                            id='down_pdf'
+                            onClick={this.downloadPdf}
+                          >
+                            <i className='fas fa-file-download'></i> PDF
+                          </Button>
+                          <UncontrolledTooltip
+                            placement='top'
+                            target={'down_pdf'}
+                          >
                             Download as PDF
-                            </UncontrolledTooltip>
-                          </span>
-                        ) : (
-                          ''
-                        )}
+                          </UncontrolledTooltip>
+                        </span>
+                      ) : (
+                        ''
+                      )}
                     </Col>
                   </Row>
                 </CardHeader>
                 <ReactTable
-                  id="check_issues"
+                  id='check_issues'
                   LoadingComponent={MyLoader}
                   ref={r => (this.reactTable = r)}
                   data={Vehicles.allVehicles}
                   columns={this.columns}
                   defaultPageSize={10}
                   pageSizeOptions={[5, 10, 15, 20]}
-                  noDataText="No Record Found.."
+                  noDataText='No Record Found..'
                   filterable
-                  HeaderClassName="text-bold"
+                  HeaderClassName='text-bold'
                   defaultFilterMethod={(filter, row) =>
                     String(row[filter.id])
                       .toLowerCase()
                       .includes(filter.value.toLowerCase())
                   }
                   onFilteredChange={this.filterData}
-                  className="-striped -highlight"
+                  className='-striped -highlight'
                 />
               </Card>
             </div>
           </Row>
         </Container>
         {/* Update Vehicle Modal */}
-        <VehicleUpdateModal
-          modal_toggle={this.state.editVehicleModal}
-          modal_toggle_func={this.editVehicleToggle}
-          updateUserVehicleDetails={this.updateVehicle}
-          state_data={this.state}
-          onChange_func={this.onChange}
-        />
+        {editVehicleModal && (
+          <VehicleUpdateModal
+            model_by_make={ModelByMake}
+            makes_list={Makes}
+            modal_toggle={editVehicleModal}
+            modal_toggle_func={this.editVehicleToggle}
+            updateUserVehicleDetails={this.updateVehicle}
+            state_data={this.state}
+            onChange_func={this.onChange}
+          />
+        )}
         {/* Update Vehicle Modal */}
       </Fragment>
     );
@@ -475,14 +505,15 @@ class ListVehicle extends Component {
 const getState = state => {
   return {
     loginData: state.authLogin,
-    Vehicles: state.getAllVehicles
+    Vehicles: state.getAllVehicles,
+    Makes: state.getAllMakes.data,
+    ModelByMake: state.getModelByMake.data
   };
 };
-export default connect(
-  getState,
-  {
-    getAllVehicles,
-    deleteVehicle,
-    updateVehicle
-  }
-)(ListVehicle);
+export default connect(getState, {
+  getAllVehicles,
+  deleteVehicle,
+  updateVehicle,
+  getAllMakes,
+  getModelByMake
+})(ListVehicle);
