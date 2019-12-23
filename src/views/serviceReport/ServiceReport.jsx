@@ -327,6 +327,8 @@ class ServiceReport extends Component {
       let { isFilter, filterBy } = this.props.location.state;
       if (isFilter && filterBy === 'ON_DUE') {
         this.props.getServiceReport(true);
+      } else {
+        this.props.getServiceReport(false);
       }
       this.props.history.replace({ state: {} });
     } else {
